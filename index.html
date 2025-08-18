@@ -37,29 +37,57 @@
   </main>
 
   <!-- POPUP DE COUNTDOWN -->
-  <div id="popup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-xl shadow-xl p-8 max-w-md text-center">
-      <h2 class="text-2xl font-bold text-green-900 mb-4">Redirecionamento automático</h2>
-      <p class="text-gray-700 mb-4">Serás redirecionado para o <strong>site oficial</strong> em <span id="countdown">10</span> segundos, caso não escolhas nenhuma opção.</p>
-      <div class="w-full bg-gray-200 rounded-full h-2">
-        <div id="progress" class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+  <div id="popup" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-[92%] text-center">
+      <h2 class="text-2xl font-bold text-green-900 mb-3">Redirecionamento automático</h2>
+      <p class="text-gray-700 mb-4">Sem ação, serás redirecionado para o <strong>site oficial</strong> em <span id="countdown">10</span>s.</p>
+      <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-4">
+        <div id="progress" class="bg-green-600 h-2" style="width:100%"></div>
+      </div>
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <button id="stayBtn" class="inline-flex items-center justify-center px-5 py-2 rounded-full border border-green-700 text-green-800 font-semibold hover:bg-green-50 transition">Ficar aqui</button>
+        <a id="goBtn" href="https://lecafc.pt" class="inline-flex items-center justify-center px-5 py-2 rounded-full bg-green-700 text-white font-semibold shadow hover:bg-green-800 transition">Ir já para o site</a>
       </div>
     </div>
   </div>
 
   <script>
-    let timeLeft = 10;
+    const DESTINO = "https://lecafc.pt";
+    const INICIO = 10;
+    let t = INICIO;
+    let cancelado = false;
+
     const countdownEl = document.getElementById("countdown");
     const progressEl = document.getElementById("progress");
-    const timer = setInterval(() => {
-      timeLeft--;
-      countdownEl.textContent = timeLeft;
-      progressEl.style.width = (timeLeft * 10) + "%";
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        window.location.href = "https://lecafc.pt";
+    const popupEl = document.getElementById("popup");
+    const stayBtn = document.getElementById("stayBtn");
+    const goBtn = document.getElementById("goBtn");
+
+    function tick(){
+      if(cancelado) return;
+      t -= 1;
+      countdownEl.textContent = t;
+      progressEl.style.width = (t/INICIO*100) + "%";
+      if(t <= 0){ window.location.href = DESTINO; }
+    }
+
+    const interval = setInterval(tick, 1000);
+
+    stayBtn.addEventListener("click", () => {
+      cancelado = true;
+      clearInterval(interval);
+      popupEl.classList.add("hidden");
+    });
+
+    goBtn.addEventListener("click", () => {
+      window.location.href = DESTINO;
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape"){
+        cancelado = true; clearInterval(interval); popupEl.classList.add("hidden");
       }
-    }, 1000);
+    });
   </script>
 </body>
 </html>
