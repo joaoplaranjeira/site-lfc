@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Leça FC | Landing Page</title>
+  <title>Leça Futebol Clube</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="leca.png" />
@@ -51,43 +51,6 @@
     </div>
   </div>
 
-  <script>
-    const DESTINO = "https://lecafc.pt";
-    const INICIO = 10;
-    let t = INICIO;
-    let cancelado = false;
-
-    const countdownEl = document.getElementById("countdown");
-    const progressEl = document.getElementById("progress");
-    const popupEl = document.getElementById("popup");
-    const stayBtn = document.getElementById("stayBtn");
-    const goBtn = document.getElementById("goBtn");
-
-    function tick(){
-      if(cancelado) return;
-      t -= 1;
-      countdownEl.textContent = t;
-      progressEl.style.width = (t/INICIO*100) + "%";
-      if(t <= 0){ window.location.href = DESTINO; }
-    }
-
-    const interval = setInterval(tick, 1000);
-
-    stayBtn.addEventListener("click", () => {
-      cancelado = true;
-      clearInterval(interval);
-      popupEl.classList.add("hidden");
-    });
-
-    goBtn.addEventListener("click", () => {
-      window.location.href = DESTINO;
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if(e.key === "Escape"){
-        cancelado = true; clearInterval(interval); popupEl.classList.add("hidden");
-      }
-    });
-  </script>
+  <script>(function(){const e="https://lecafc.pt",t=10;let n,o=null,c=!1;const d=document.getElementById("countdown"),l=document.getElementById("progress"),r=document.getElementById("popup"),s=document.getElementById("stayBtn"),i=document.getElementById("goBtn");function u(){c||(n-=1,n<0&&(n=0),d.textContent=n,l.style.width=n/t*100+"%",0===n&&(a(),window.location.href=e))}function f(){c=!1,n=t,d.textContent=n,l.style.width="100%",r.classList.remove("hidden"),o&&clearInterval(o),o=setInterval(u,1e3)}function a(){o&&(clearInterval(o),o=null)}s.addEventListener("click",(()=>{c=!0,a(),r.classList.add("hidden")})),i.addEventListener("click",(()=>{window.location.href=e})),f(),window.addEventListener("pageshow",(t=>{const n=performance.getEntriesByType&&performance.getEntriesByType("navigation"),o=t.persisted||n&&n[0]&&"back_forward"===n[0].type;o&&f()})),window.addEventListener("pagehide",a)})();</script>
 </body>
 </html>
