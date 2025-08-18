@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leça Futebol Clube — Entrada</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="leca.png" />
+  <style>
+    :root{ scroll-behavior:smooth; }
+    body{ font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:#1f2937; }
+    .container{ max-width: 1100px; }
+    .card{ background:#f9fafb; border-radius: 0.75rem; box-shadow: 0 1px 2px rgb(0 0 0 / 0.06); padding:1.25rem; }
+    .btn{ display:inline-flex; align-items:center; justify-content:center; gap:.5rem; background:#15803d; color:#fff; padding:.75rem 1.25rem; border-radius:9999px; font-weight:700; box-shadow: 0 4px 12px rgba(0,0,0,.08); transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+    .btn:hover{ background:#166534; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,0,0,.12); }
+    .btn-outline{ display:inline-flex; align-items:center; justify-content:center; gap:.5rem; border:1px solid #15803d; color:#166534; padding:.75rem 1.25rem; border-radius:9999px; font-weight:700; }
+    .btn-outline:hover{ background:#f0fdf4; }
+    .btn-orange{ background:#F97316; } /* orange-500 */
+    .btn-orange:hover{ background:#EA580C; }
+    .kbd{ display:inline-flex; align-items:center; gap:.25rem; font-size:.75rem; color:#475569; border:1px solid #CBD5E1; background:#F8FAFC; border-radius:.5rem; padding:.15rem .4rem; }
+    /* countdown toast */
+    .toast{ position: fixed; left:50%; transform: translateX(-50%); bottom: 16px; z-index: 60; width: calc(100% - 2rem); max-width: 640px; background: white; border:1px solid #e2e8f0; border-radius: .75rem; box-shadow: 0 10px 25px rgba(0,0,0,.08); }
+    .toast-bar{ height:4px; background:#22c55e; width:0; transition: width .2s linear; border-radius:9999px; }
+  </style>
+</head>
+<body class="bg-white">
+  <!-- HERO -->
+  <header class="relative bg-green-900 text-white text-center overflow-hidden">
+    <div class="container mx-auto px-6 py-14">
+      <img src="leca.png" alt="Símbolo Leça Futebol Clube" class="w-28 h-28 mx-auto mb-4" />
+      <h1 class="text-4xl md:text-5xl font-bold drop-shadow-sm">Leça Futebol Clube</h1>
+      <p class="text-lg md:text-2xl mt-3 text-green-100">Escolhe para onde queres seguir</p>
+      <p class="text-sm md:text-base mt-1 italic text-green-200">Se não escolheres nada, vamos levar-te ao site oficial.</p>
+    </div>
+  </header>
+
+  <!-- GRID DE ESCOLHAS -->
+  <main class="container mx-auto px-6 py-10">
+    <div class="grid gap-6 md:grid-cols-3">
+      <!-- Transparência -->
+      <a href="/transparencia/" class="card group focus:outline-none focus:ring-4 focus:ring-green-200">
+        <div class="h-12 w-12 rounded-xl bg-green-100 text-green-800 grid place-items-center text-2xl mb-3">📄</div>
+        <h2 class="text-xl font-bold text-green-900">Portal de Transparência</h2>
+        <p class="text-sm text-gray-600 mt-1">Relatórios & contas, orçamentos, decisões, contratos e mais.</p>
+        <div class="mt-4"><span class="btn">Entrar</span></div>
+      </a>
+
+      <!-- Competições -->
+      <a href="/competicoes/" class="card group focus:outline-none focus:ring-4 focus:ring-green-200">
+        <div class="h-12 w-12 rounded-xl bg-green-100 text-green-800 grid place-items-center text-2xl mb-3">🏆</div>
+        <h2 class="text-xl font-bold text-green-900">Portal de Competições</h2>
+        <p class="text-sm text-gray-600 mt-1">Jogos, classificações, calendário, plantéis.</p>
+        <div class="mt-4"><span class="btn">Entrar</span></div>
+      </a>
+
+      <!-- Site Oficial -->
+      <a href="https://www.lecafc.pt/" class="card group focus:outline-none focus:ring-4 focus:ring-green-200" id="cta-oficial">
+        <div class="h-12 w-12 rounded-xl bg-green-100 text-green-800 grid place-items-center text-2xl mb-3">🌐</div>
+        <h2 class="text-xl font-bold text-green-900">Site Oficial</h2>
+        <p class="text-sm text-gray-600 mt-1">Notícias, comunicados, bilhética, loja e mais.</p>
+        <div class="mt-4"><span class="btn btn-orange">Ir para o site</span></div>
+      </a>
+    </div>
+
+    <div class="text-center text-sm text-gray-500 mt-6">
+      Sugestão: usa <span class="kbd">Tab</span> para navegar e <span class="kbd">Enter</span> para abrir.
+    </div>
+  </main>
+
+  <!-- TOAST DE COUNTDOWN -->
+  <div class="toast hidden" role="status" aria-live="polite" id="redirectToast">
+    <div class="px-4 py-3">
+      <p class="text-sm text-gray-700">Sem interação detectada. A redirecionar para o <strong>site oficial</strong> em <span id="countNum">10</span>s…</p>
+      <div class="mt-2 flex items-center gap-2">
+        <button id="stayBtn" class="btn-outline">Ficar aqui</button>
+        <a href="https://www.lecafc.pt/" class="btn">Ir já</a>
+      </div>
+    </div>
+    <div class="mx-4 mb-3 bg-gray-200 rounded-full overflow-hidden">
+      <div id="countBar" class="toast-bar"></div>
+    </div>
+  </div>
+
+  <footer class="bg-gray-100 text-center py-6 text-sm text-gray-600">
+    &copy; <span id="y"></span> Leça Futebol Clube
+  </footer>
+
+  <script>
+    // ===== Configurações =====
+    const MAIN_URL = 'https://www.lecafc.pt/'; // destino por omissão após 10s
+    const IDLE_TIMEOUT = 10; // segundos
+
+    // Ano no footer
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // ===== Inatividade com countdown =====
+    let idleSeconds = 0; let timer = null; let barTimer = null; let running = false;
+    const toast = document.getElementById('redirectToast');
+    const countNum = document.getElementById('countNum');
+    const countBar = document.getElementById('countBar');
+
+    function showToast(){ toast.classList.remove('hidden'); }
+    function hideToast(){ toast.classList.add('hidden'); }
+
+    function startCountdown(){
+      running = true; idleSeconds = IDLE_TIMEOUT; countNum.textContent = idleSeconds;
+      showToast();
+      // barra
+      let elapsed = 0; countBar.style.width = '0%';
+      clearInterval(barTimer);
+      barTimer = setInterval(()=>{
+        elapsed += 0.2; // 200ms
+        const pct = Math.min(100, (elapsed / IDLE_TIMEOUT) * 100);
+        countBar.style.width = pct + '%';
+      }, 200);
+      // números
+      clearInterval(timer);
+      timer = setInterval(()=>{
+        idleSeconds--; countNum.textContent = idleSeconds;
+        if(idleSeconds <= 0){ window.location.href = MAIN_URL; }
+      }, 1000);
+    }
+
+    function stopCountdown(){
+      running = false; clearInterval(timer); clearInterval(barTimer); hideToast(); countBar.style.width = '0%';
+    }
+
+    function resetIdle(){
+      // qualquer interação cancela o countdown e reinicia a vigilância
+      stopCountdown();
+      debouncedIdle();
+    }
+
+    // Botões da toast
+    document.getElementById('stayBtn').addEventListener('click', ()=>{ stopCountdown(); });
+
+    // Observa inatividade: se não houver eventos por 10s, inicia countdown
+    let idleWatcher = null;
+    function debouncedIdle(){
+      clearTimeout(idleWatcher);
+      idleWatcher = setTimeout(()=>{ if(!running) startCountdown(); }, IDLE_TIMEOUT * 1000);
+    }
+
+    // Eventos que contam como interação
+    ['mousemove','keydown','scroll','click','touchstart'].forEach(evt => {
+      window.addEventListener(evt, resetIdle, { passive: true });
+    });
+
+    // arranque inicial
+    debouncedIdle();
+  </script>
+</body>
+</html>
