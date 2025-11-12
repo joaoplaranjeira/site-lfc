@@ -7,8 +7,8 @@ const reconstructionData = {
       color: "emerald",
       tasks: [
         { name: "Reconstrução da cobertura", budget: 18000, progress: 100 },
-        { name: "Reconstrução do museu", budget: 15000, progress: 10 },
-        { name: "Salas técnicas, posto médico/fisioterapia, secretaria e sala das modalidades", budget: 10000, progress: 50 },
+        { name: "Reconstrução do museu", budget: 15000, progress: 63 },
+        { name: "Salas técnicas, posto médico/fisioterapia, secretaria e sala das modalidades", budget: 10000, progress: 0 },
         { name: "Colocação de novo piso desportivo", budget: 35000, progress: 0 },
         { name: "Abertura de porta para acesso de pessoas", budget: 1740, progress: 0, link: "https://www.unigo.pt/report/40ffc7ad-8744-467d-a181-2d7534768ac8" }
       ]
@@ -18,7 +18,7 @@ const reconstructionData = {
       icon: "fa-wrench",
       color: "orange",
       tasks: [
-        { name: "Obras de renovação dos balneários", budget: 30000, progress: 10 },
+        { name: "Obras de renovação dos balneários", budget: 30000, progress: 0 },
         { name: "Pintura exterior do pavilhão", budget: 17180, progress: 0, link: "https://www.unigo.pt/report/9f9aed33-482d-4561-8ce6-f892b8f67199" },
         { name: "Troca caixilharia janelas", budget: 9818, progress: 0, link: "https://www.unigo.pt/report/04827cb3-b634-4c15-8bc4-d7c1fa5bb5e7" },
         { name: "Troca material nas tabelas de proteção da quadra", budget: 16200, progress: 0, link: "https://unigo-app.vercel.app/report/b5218126-8b59-42fc-bb04-78761cb45f66" },
