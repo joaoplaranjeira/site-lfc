@@ -3,54 +3,106 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Leça Futebol Clube</title>
+  <title>Universo Leça FC</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="icon" type="image/png" href="leca.png" />
-  <style>
-    body { font-family: 'Poppins', sans-serif; color:#1f2937; }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="bg-white text-gray-800">
-  <header class="relative bg-green-900 text-white py-16 text-center overflow-hidden">
-    <img src="leca.png" alt="Símbolo Leça Futebol Clube" class="w-32 h-32 mx-auto mb-3" />
-    <h1 class="text-4xl md:text-5xl font-bold drop-shadow-lg">Leça Futebol Clube</h1>
-    <p class="text-lg md:text-2xl mt-3 text-green-100">Bem-vindo ao portal oficial</p>
-  </header>
-
-  <main class="max-w-4xl mx-auto px-6 py-16">
-    <h2 class="text-2xl md:text-3xl font-bold text-green-900 mb-8 text-center">Escolhe o portal a que queres aceder</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <a href="https://transparencia.lecafc.pt" class="card bg-green-50 hover:bg-green-100 text-center p-8 rounded-xl shadow transition">
-        <h3 class="text-xl font-semibold text-green-900 mb-2">Portal da Transparência</h3>
-        <p class="text-gray-700">Relatórios, contas, orçamentos e decisões importantes do clube.</p>
+<body>
+  <div class="min-h-screen flex flex-col items-center justify-center px-4 py-12">
+    <!-- Logo -->
+    <img src="leca.png" alt="Leça FC" class="w-24 h-24 md:w-32 md:h-32 mb-6" />
+    
+    <!-- Title -->
+    <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white text-center mb-4 tracking-tight">
+      UNIVERSO LEÇA FC
+    </h1>
+    
+    <p class="text-lg md:text-xl text-white/90 text-center mb-12 max-w-2xl">
+      O teu ponto de acesso a todo o universo leceiro
+    </p>
+    
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full px-4">
+      <!-- Transparência -->
+      <a href="transparencia.html" class="card p-8 rounded-2xl text-center">
+        <div class="icon-circle">
+          <i class="fa-solid fa-search text-white"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Portal da Transparência</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Relatórios, contas, orçamentos e decisões importantes do clube
+        </p>
       </a>
-      <a href="https://competicoes.lecafc.pt" class="card bg-green-50 hover:bg-green-100 text-center p-8 rounded-xl shadow transition">
-        <h3 class="text-xl font-semibold text-green-900 mb-2">Portal das Competições</h3>
-        <p class="text-gray-700">Calendários, resultados e classificações do futebol leceiro.</p>
+      
+      <!-- Competições -->
+      <a href="https://competicoes.lecafc.pt" class="card p-8 rounded-2xl text-center">
+        <div class="icon-circle">
+          <i class="fa-solid fa-futbol text-white"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Portal das Competições</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Calendários, resultados e classificações do futebol leceiro
+        </p>
       </a>
-      <a href="https://lecafc.pt" class="card bg-green-50 hover:bg-green-100 text-center p-8 rounded-xl shadow transition">
-        <h3 class="text-xl font-semibold text-green-900 mb-2">Site Oficial</h3>
-        <p class="text-gray-700">Notícias, história, modalidades e tudo sobre o Leça FC.</p>
+      
+      <!-- Site Oficial -->
+      <a href="https://lecafc.pt" class="card p-8 rounded-2xl text-center">
+        <div class="icon-circle">
+          <i class="fa-solid fa-trophy text-white"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Site Oficial</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Notícias, história, modalidades e tudo sobre o Leça FC
+        </p>
+      </a>
+      
+      <!-- Leça Talk -->
+      <a href="lecatalk.html" class="card p-8 rounded-2xl text-center">
+        <div class="icon-circle">
+          <i class="fa-solid fa-comments text-white"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Leça Talk</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Conversas com os sócios sobre a situação do clube em diversas áreas
+        </p>
+      </a>
+      
+      <!-- Reconstrução Pavilhão -->
+      <a href="reconstrucao.html" class="card p-8 rounded-2xl text-center">
+        <div class="icon-circle">
+          <i class="fa-solid fa-building text-white"></i>
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Reconstrução Pavilhão Custódio Antunes</h3>
+        <p class="text-gray-600 text-sm leading-relaxed">
+          Acompanha o progresso das obras de reconstrução do pavilhão
+        </p>
       </a>
     </div>
-  </main>
+  </div>
 
   <!-- POPUP DE COUNTDOWN -->
-  <div id="popup" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-[92%] text-center">
-      <h2 class="text-2xl font-bold text-green-900 mb-3">Redirecionamento automático</h2>
-      <p class="text-gray-700 mb-4">Sem ação, serás redirecionado para o <strong>site oficial</strong> em <span id="countdown">10</span>s.</p>
-      <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden mb-4">
-        <div id="progress" class="bg-green-600 h-2" style="width:100%"></div>
+  <div id="popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-[92%] mx-4 text-center">
+      <h2 class="text-2xl font-bold text-gray-900 mb-3">Redirecionamento automático</h2>
+      <p class="text-gray-600 mb-6">Sem ação, serás redirecionado para o <strong>site oficial</strong> em <span id="countdown" class="font-bold text-orange-600">10</span>s.</p>
+      <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden mb-6">
+        <div id="progress" class="h-3 rounded-full transition-all duration-1000" style="width:100%; background: linear-gradient(90deg, #f97316 0%, #ea580c 100%);"></div>
       </div>
-      <div class="flex flex-wrap items-center justify-center gap-3">
-        <button id="stayBtn" class="inline-flex items-center justify-center px-5 py-2 rounded-full border border-green-700 text-green-800 font-semibold hover:bg-green-50 transition">Ficar aqui</button>
-        <a id="goBtn" href="https://lecafc.pt" class="inline-flex items-center justify-center px-5 py-2 rounded-full bg-green-700 text-white font-semibold shadow hover:bg-green-800 transition">Ir já para o site</a>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <button id="stayBtn" class="w-full sm:w-auto px-6 py-3 rounded-full border-2 border-emerald-700 text-emerald-700 font-semibold hover:bg-emerald-50 transition">
+          Ficar aqui
+        </button>
+        <a id="goBtn" href="https://lecafc.pt" class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-semibold shadow-lg transition" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
+          Ir já para o site
+        </a>
       </div>
     </div>
   </div>
 
-  <script>(function(){const e="https://lecafc.pt",t=10;let n,o=null,c=!1;const d=document.getElementById("countdown"),l=document.getElementById("progress"),r=document.getElementById("popup"),s=document.getElementById("stayBtn"),i=document.getElementById("goBtn");function u(){c||(n-=1,n<0&&(n=0),d.textContent=n,l.style.width=n/t*100+"%",0===n&&(a(),window.location.href=e))}function f(){c=!1,n=t,d.textContent=n,l.style.width="100%",r.classList.remove("hidden"),o&&clearInterval(o),o=setInterval(u,1e3)}function a(){o&&(clearInterval(o),o=null)}s.addEventListener("click",(()=>{c=!0,a(),r.classList.add("hidden")})),i.addEventListener("click",(()=>{window.location.href=e})),f(),window.addEventListener("pageshow",(t=>{const n=performance.getEntriesByType&&performance.getEntriesByType("navigation"),o=t.persisted||n&&n[0]&&"back_forward"===n[0].type;o&&f()})),window.addEventListener("pagehide",a)})();</script>
+  <script src="script.js"></script>
 </body>
+</html>
 </html>

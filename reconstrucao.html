@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reconstrução Pavilhão Custódio Antunes - Universo Leça FC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="min-h-screen flex flex-col px-4 py-12">
+    <!-- Logo -->
+    <a href="index.html" class="mb-6 text-center">
+      <img src="leca.png" alt="Leça FC" class="w-24 h-24 md:w-32 md:h-32 mx-auto" />
+    </a>
+    
+    <!-- Title -->
+    <h1 class="text-3xl md:text-5xl lg:text-6xl font-black text-white text-center mb-4 tracking-tight">
+      RECONSTRUÇÃO PAVILHÃO CUSTÓDIO ANTUNES
+    </h1>
+    
+    <p class="text-lg md:text-xl text-white/90 text-center mb-12 max-w-3xl mx-auto">
+      Plano Estratégico 2025–2027
+    </p>
+    
+    <!-- Content -->
+    <div class="max-w-6xl w-full mx-auto space-y-8">
+      
+      <!-- Sobre o Projeto -->
+      <section class="card p-8 rounded-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <i class="fa-solid fa-info-circle text-3xl text-emerald-700"></i>
+          <h2 class="text-3xl font-black text-gray-900">Sobre o Projeto</h2>
+        </div>
+        <p class="text-gray-600 text-lg leading-relaxed">
+          O Pavilhão Custódio Antunes, casa do Leça Futebol Clube, será alvo de uma requalificação profunda entre 2025 e 2027. Este plano visa devolver ao clube e à comunidade um espaço moderno, seguro e funcional para a prática desportiva e formação dos nossos atletas.
+        </p>
+      </section>
+      
+      <!-- Progresso Geral -->
+      <section class="card p-8 rounded-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <i class="fa-solid fa-chart-line text-3xl text-emerald-700"></i>
+          <h2 class="text-3xl font-black text-gray-900">Progresso Geral do Projeto</h2>
+        </div>
+        <div class="mb-4">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-lg font-bold text-gray-900">Progresso Total da Reconstrução</span>
+            <span id="total-progress-text" class="text-2xl font-black text-emerald-700">0%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
+            <div id="total-progress-bar" class="bg-gradient-to-r from-emerald-600 to-emerald-500 h-6 rounded-full transition-all" style="width: 0%"></div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Plano por Fases -->
+      <section class="card p-8 rounded-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <i class="fa-solid fa-calendar-alt text-3xl text-emerald-700"></i>
+          <h2 class="text-3xl font-black text-gray-900">Plano por Fases</h2>
+        </div>
+        
+        <div id="phases-container">
+          <!-- Phases will be rendered here by JavaScript -->
+        </div>
+        
+        <!-- Investimento Total -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="p-6 bg-gradient-to-r from-emerald-700 to-emerald-600 text-white rounded-xl text-center">
+            <i class="fa-solid fa-euro-sign text-4xl mb-3"></i>
+            <h3 class="text-xl font-black mb-2">Investimento Total Necessário</h3>
+            <p id="total-budget" class="text-3xl font-black">0€*</p>
+            <p class="text-sm mt-2 opacity-90">A executar entre 2025 e 2027</p>
+          </div>
+          
+          <div class="p-6 bg-gradient-to-r from-orange-600 to-orange-500 text-white rounded-xl text-center">
+            <i class="fa-solid fa-check-circle text-4xl mb-3"></i>
+            <h3 class="text-xl font-black mb-2">Investimento Total Executado</h3>
+            <p id="total-spent" class="text-3xl font-black">0€</p>
+            <p class="text-sm mt-2 opacity-90">Investimento realizado até agora</p>
+          </div>
+        </div>
+        
+        <p class="text-sm text-gray-600 mt-4 italic">
+          * Orçamentos gerados pela plataforma <a href="https://unigo.pt/" class="text-emerald-700 underline" target="_blank">Unigo.pt</a>
+        </p>
+      </section>
+      
+      <!-- Como Apoiar -->
+      <section class="card p-8 rounded-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <i class="fa-solid fa-hands-helping text-3xl text-emerald-700"></i>
+          <h2 class="text-3xl font-black text-gray-900">Como Apoiar</h2>
+        </div>
+        <p class="text-gray-600 text-lg leading-relaxed mb-6">
+          Todos podem contribuir para este projeto, seja com donativos, materiais ou serviços. Empresas, instituições, sócios e simpatizantes podem juntar-se a esta missão.
+        </p>
+        
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Benefícios para os Parceiros</h3>
+        <ul class="space-y-3 mb-6">
+          <li class="flex items-start gap-3">
+            <i class="fa-solid fa-check-circle text-emerald-700 mt-1"></i>
+            <span class="text-gray-600">Presença do nome ou logótipo em zonas do pavilhão (ex: bancadas, vestiários, mural de parceiros)</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <i class="fa-solid fa-check-circle text-emerald-700 mt-1"></i>
+            <span class="text-gray-600">Visibilidade nos meios de comunicação do clube (site, redes sociais, eventos)</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <i class="fa-solid fa-check-circle text-emerald-700 mt-1"></i>
+            <span class="text-gray-600">Certificado oficial de apoio ao projeto</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <i class="fa-solid fa-check-circle text-emerald-700 mt-1"></i>
+            <span class="text-gray-600">Reconhecimento como agente ativo na valorização do desporto e da comunidade</span>
+          </li>
+        </ul>
+        
+        <button onclick="openSupportModal()" class="inline-flex items-center gap-2 px-8 py-4 bg-emerald-700 text-white font-bold rounded-full shadow-lg hover:bg-emerald-800 transition text-lg">
+          <i class="fa-solid fa-heart"></i>
+          Quero apoiar o projeto
+        </button>
+      </section>
+      
+      <!-- Impacto -->
+      <section class="card p-8 rounded-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <i class="fa-solid fa-trophy text-3xl text-emerald-700"></i>
+          <h2 class="text-3xl font-black text-gray-900">Impacto para o Clube e a Comunidade</h2>
+        </div>
+        <p class="text-gray-600 text-lg leading-relaxed">
+          Com este projeto, o Leça Futebol Clube passa a dispor de um pavilhão moderno, seguro e funcional, capaz de acolher com mais qualidade atletas, eventos e formação desportiva. Ganham os nossos jovens, ganham as modalidades, ganha a comunidade.
+        </p>
+      </section>
+      
+    </div>
+    
+    <!-- Back Button -->
+    <div class="text-center mt-12">
+      <a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar ao início
+      </a>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="text-center text-white/70 text-sm mt-12">
+      <p class="mb-2">Leça Futebol Clube | <a href="mailto:geral@lecafc.pt" class="text-white underline">geral@lecafc.pt</a> | 91 440 92 32</p>
+      <p>© 2025 Todos os direitos reservados</p>
+    </footer>
+  </div>
+
+  <!-- Support Modal -->
+  <div id="supportModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-gradient-to-r from-emerald-700 to-emerald-600 text-white p-6 rounded-t-2xl">
+        <div class="flex justify-between items-center">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-heart text-3xl"></i>
+            <h2 class="text-2xl font-black">Apoiar o Projeto</h2>
+          </div>
+          <button onclick="closeSupportModal()" class="text-white/90 hover:text-white transition text-2xl">
+            <i class="fa-solid fa-times"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="p-6">
+        <p class="text-gray-600 mb-6">
+          O seu apoio é fundamental para tornar este projeto realidade. Preencha o formulário abaixo e a nossa equipa entrará em contacto consigo.
+        </p>
+        
+        <form action="https://formspree.io/f/xjkjbnby" method="POST" class="space-y-4">
+          <div>
+            <label for="support-name" class="block text-sm font-semibold text-gray-700 mb-2">Nome / Empresa *</label>
+            <input type="text" id="support-name" name="name" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition">
+          </div>
+          
+          <div>
+            <label for="support-email" class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+            <input type="email" id="support-email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition">
+          </div>
+          
+          <div>
+            <label for="support-phone" class="block text-sm font-semibold text-gray-700 mb-2">Telefone</label>
+            <input type="tel" id="support-phone" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition">
+          </div>
+          
+          <div>
+            <label for="support-type" class="block text-sm font-semibold text-gray-700 mb-2">Tipo de Apoio *</label>
+            <select id="support-type" name="support_type" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition">
+              <option value="">Selecione uma opção</option>
+              <option value="financeiro">Apoio Financeiro</option>
+              <option value="materiais">Doação de Materiais</option>
+              <option value="servicos">Prestação de Serviços</option>
+              <option value="patrocinio">Patrocínio</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+          
+          <div>
+            <label for="support-message" class="block text-sm font-semibold text-gray-700 mb-2">Mensagem *</label>
+            <textarea id="support-message" name="message" rows="4" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition resize-none" placeholder="Descreva como pretende apoiar o projeto..."></textarea>
+          </div>
+          
+          <div class="flex gap-3 pt-4">
+            <button type="submit" class="flex-1 bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-emerald-800 transition">
+              <i class="fa-solid fa-paper-plane mr-2"></i>
+              Enviar
+            </button>
+            <button type="button" onclick="closeSupportModal()" class="px-6 py-3 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="reconstrucao-data.js"></script>
+  <script>
+    function openSupportModal() {
+      document.getElementById('supportModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeSupportModal() {
+      document.getElementById('supportModal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Close modal when clicking outside
+    document.getElementById('supportModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeSupportModal();
+      }
+    });
+  </script>
+</body>
+</html>

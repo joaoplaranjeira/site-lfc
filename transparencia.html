@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal da Transparência - Universo Leça FC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="min-h-screen flex flex-col px-4 py-12">
+    <!-- Logo -->
+    <a href="index.html" class="mb-6 text-center">
+      <img src="leca.png" alt="Leça FC" class="w-24 h-24 md:w-32 md:h-32 mx-auto" />
+    </a>
+    
+    <!-- Title -->
+    <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white text-center mb-4 tracking-tight">
+      PORTAL DA TRANSPARÊNCIA
+    </h1>
+    
+    <p class="text-lg md:text-xl text-white/90 text-center mb-2 max-w-3xl mx-auto">
+      Informação institucional, financeira e documental do Leça Futebol Clube
+    </p>
+    
+    <p class="text-md text-white/80 text-center mb-12 italic">
+      "Transparência, rigor e proximidade."
+    </p>
+    
+    <!-- Navigation Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 max-w-7xl w-full mx-auto mb-12">
+      <a href="#pessoas" class="card p-4 rounded-xl text-center hover:scale-105 transition-transform">
+        <i class="fa-solid fa-users text-3xl text-emerald-700 mb-2"></i>
+        <h3 class="text-sm font-bold text-gray-900">Pessoas & Organização</h3>
+      </a>
+      <a href="#contratos" class="card p-4 rounded-xl text-center hover:scale-105 transition-transform">
+        <i class="fa-solid fa-file-contract text-3xl text-emerald-700 mb-2"></i>
+        <h3 class="text-sm font-bold text-gray-900">Contratos & Info. Financeira</h3>
+      </a>
+      <a href="#infraestruturas" class="card p-4 rounded-xl text-center hover:scale-105 transition-transform">
+        <i class="fa-solid fa-building text-3xl text-emerald-700 mb-2"></i>
+        <h3 class="text-sm font-bold text-gray-900">Infraestruturas</h3>
+      </a>
+      <a href="#documentos" class="card p-4 rounded-xl text-center hover:scale-105 transition-transform">
+        <i class="fa-solid fa-folder-open text-3xl text-emerald-700 mb-2"></i>
+        <h3 class="text-sm font-bold text-gray-900">Documentos</h3>
+      </a>
+      <a href="#denuncia" class="card p-4 rounded-xl text-center hover:scale-105 transition-transform">
+        <i class="fa-solid fa-shield-halved text-3xl text-emerald-700 mb-2"></i>
+        <h3 class="text-sm font-bold text-gray-900">Denúncia</h3>
+      </a>
+    </div>
+    
+    <!-- Content Sections -->
+    <div class="max-w-6xl w-full mx-auto space-y-8">
+      
+      <!-- Pessoas & Organização -->
+      <section id="pessoas" class="card p-8 rounded-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <i class="fa-solid fa-users text-3xl text-emerald-700"></i>
+          <h2 class="text-3xl font-black text-gray-900">Pessoas & Organização</h2>
+        </div>
+        <p class="text-gray-600 mb-6">
+          Estrutura organizativa completa do Leça Futebol Clube, incluindo a composição dos órgãos sociais, funções de cada elemento e mandatos em vigor.
+        </p>
+        
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Órgãos sociais (mandato 2025–2027)</h3>
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
+          <a href="https://transparencia.lecafc.pt/docs/orgaos/direcao.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Direção</span>
+          </a>
+          <a href="https://transparencia.lecafc.pt/docs/orgaos/conselho-fiscal.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Conselho Fiscal</span>
+          </a>
+          <a href="https://transparencia.lecafc.pt/docs/orgaos/mesa-ag.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Mesa da Assembleia Geral</span>
+          </a>
+          <a href="https://transparencia.lecafc.pt/docs/orgaos/comissao-etica.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Comissão de Ética</span>
+          </a>
+        </div>
+      </section>
+      
+      <!-- Contratos & Informação Financeira -->
+      <section id="contratos" class="card p-8 rounded-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <i class="fa-solid fa-file-contract text-3xl text-emerald-700"></i>
+          <h2 class="text-3xl font-black text-gray-900">Contratos & Informação Financeira</h2>
+        </div>
+        
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Orçamentos & Execução</h3>
+        <div class="space-y-3 mb-6">
+          <a href="https://transparencia.lecafc.pt/docs/orcamentos/plano-orcamento-2025-2026.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Plano de Atividades e Orçamento 2025-2026</span>
+          </a>
+          <a href="https://transparencia.lecafc.pt/docs/orcamentos/plano-orcamento-2024-2025.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Plano de Atividades e Orçamento 2024-2025</span>
+          </a>
+          <a href="https://transparencia.lecafc.pt/docs/orcamentos/plano-orcamento-2023-2024.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Plano de Atividades e Orçamento 2023-2024</span>
+          </a>
+          <a href="https://transparencia.lecafc.pt/docs/orcamentos/plano-orcamento-2022-2023.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Plano de Atividades e Orçamento 2022-2023</span>
+          </a>
+          <a href="https://transparencia.lecafc.pt/docs/relatorios/relatorio-contas-2023-2024.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2023-2024</span>
+          </a>
+          <a href="https://transparencia.lecafc.pt/docs/relatorios/relatorio-contas-2022-2023.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2022-2023</span>
+          </a>
+          <a href="https://transparencia.lecafc.pt/docs/relatorios/relatorio-contas-2021-2022.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2021-2022</span>
+          </a>
+          <a href="https://transparencia.lecafc.pt/docs/relatorios/relatorio-contas-2020-2021.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2020-2021</span>
+          </a>
+          <a href="https://transparencia.lecafc.pt/docs/relatorios/relatorio-contas-2019-2020.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+            <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2019-2020</span>
+          </a>
+        </div>
+      </section>
+      
+      <!-- Infraestruturas -->
+      <section id="infraestruturas" class="card p-8 rounded-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <i class="fa-solid fa-building text-3xl text-emerald-700"></i>
+          <h2 class="text-3xl font-black text-gray-900">Infraestruturas</h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-emerald-700 text-white">
+              <tr>
+                <th class="p-3 text-left">Projeto</th>
+                <th class="p-3 text-left">Estado</th>
+                <th class="p-3 text-right">Orçamento (€)</th>
+                <th class="p-3 text-right">Executado (€)</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white">
+              <tr class="border-b">
+                <td class="p-3 font-semibold">Pavilhão Custódio Antunes</td>
+                <td class="p-3"><span class="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs font-semibold">Em curso</span></td>
+                <td class="p-3 text-right">75 000</td>
+                <td class="p-3 text-right">32 000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      
+      <!-- Documentos -->
+      <section id="documentos" class="card p-8 rounded-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <i class="fa-solid fa-folder-open text-3xl text-emerald-700"></i>
+          <h2 class="text-3xl font-black text-gray-900">Documentos</h2>
+        </div>
+        
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Relatórios & Contas</h3>
+            <div class="space-y-3">
+              <a href="https://transparencia.lecafc.pt/docs/relatorios/relatorio-contas-2023-2024.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2023-2024</span>
+              </a>
+              <a href="https://transparencia.lecafc.pt/docs/relatorios/relatorio-contas-2022-2023.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2022-2023</span>
+              </a>
+              <a href="https://transparencia.lecafc.pt/docs/relatorios/relatorio-contas-2021-2022.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2021-2022</span>
+              </a>
+              <a href="https://transparencia.lecafc.pt/docs/relatorios/relatorio-contas-2020-2021.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2020-2021</span>
+              </a>
+              <a href="https://transparencia.lecafc.pt/docs/relatorios/relatorio-contas-2019-2020.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2019-2020</span>
+              </a>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Decisões & Atas</h3>
+            <div class="space-y-3">
+              <a href="https://transparencia.lecafc.pt/docs/atas/ata-2025-09-18.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Ata 18-09-2025</span>
+              </a>
+              <a href="https://transparencia.lecafc.pt/docs/atas/ata-2025-07-29.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Ata 29-07-2025</span>
+              </a>
+              <a href="https://transparencia.lecafc.pt/docs/atas/ata-2024-11-29.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Ata 29-11-2024</span>
+              </a>
+              <a href="https://transparencia.lecafc.pt/docs/atas/ata-2024-07-22.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Ata 22-07-2024</span>
+              </a>
+              <a href="https://transparencia.lecafc.pt/docs/atas/ata-2023-09-20.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Ata 20-09-2023</span>
+              </a>
+              <a href="https://transparencia.lecafc.pt/docs/atas/ata-2023-07-03.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Ata 03-07-2023</span>
+              </a>
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-bold text-gray-900 mb-4">Estatutos & Regulamentos</h3>
+            <div class="space-y-3">
+              <a href="https://transparencia.lecafc.pt/docs/estatutos/estatutos.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Estatutos</span>
+              </a>
+              <a href="https://transparencia.lecafc.pt/docs/regulamentos/regulamento-disciplinar.pdf" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+                <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
+                <span class="font-semibold text-gray-900">Regulamento Interno</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Canais de Denúncia -->
+            <!-- Canais de Denúncia -->
+      <section id="denuncia" class="card p-8 rounded-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <i class="fa-solid fa-shield-halved text-3xl text-emerald-700"></i>
+          <h2 class="text-3xl font-black text-gray-900">Canais de Denúncia</h2>
+        </div>
+        <p class="text-gray-600 mb-6">
+          Canais internos para comunicação de irregularidades, garantindo confidencialidade e proteção do denunciante (Lei n.º 93/2021).
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 mb-4">
+          <button onclick="document.getElementById('denunciaModal').classList.remove('hidden')" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-emerald-700 text-white font-bold rounded-full shadow-lg hover:bg-emerald-800 transition">
+            <i class="fa-solid fa-envelope"></i>
+            Submeter Denúncia
+          </button>
+          <a href="https://transparencia.lecafc.pt/docs/politicas/politica-protecao-denunciante.pdf" class="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-emerald-700 text-emerald-700 font-bold rounded-full hover:bg-emerald-50 transition" target="_blank">
+            <i class="fa-solid fa-file-pdf"></i>
+            Política de proteção do denunciante
+          </a>
+        </div>
+        
+        <p class="text-sm text-gray-600 italic">
+          Prazos: acusar receção até 3 dias; feedback até 3 semanas.
+        </p>
+      </section>
+      
+    </div>
+    
+    <!-- Denúncia Modal -->
+    <div id="denunciaModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="sticky top-0 bg-emerald-700 text-white p-6 rounded-t-2xl flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-shield-halved text-2xl"></i>
+            <h3 class="text-2xl font-bold">Submeter Denúncia</h3>
+          </div>
+          <button onclick="document.getElementById('denunciaModal').classList.add('hidden')" class="text-white hover:text-gray-200 transition">
+            <i class="fa-solid fa-times text-2xl"></i>
+          </button>
+        </div>
+        
+        <div class="p-6">
+          <p class="text-gray-600 mb-6">
+            Utilize este formulário para reportar irregularidades de forma confidencial. Pode permanecer anónimo.
+          </p>
+          
+          <!-- Formspree Form -->
+          <form action="https://formspree.io/f/xnnlnane" method="POST" class="space-y-4">
+            <div>
+              <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Nome (opcional)</label>
+              <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent" placeholder="Pode permanecer anónimo">
+            </div>
+            
+            <div>
+              <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email (opcional)</label>
+              <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent" placeholder="Para recebermos resposta">
+            </div>
+            
+            <div>
+              <label for="category" class="block text-sm font-semibold text-gray-700 mb-2">Tipo de irregularidade</label>
+              <select id="category" name="category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+                <option value="">Selecione uma opção</option>
+                <option value="financeira">Irregularidade Financeira</option>
+                <option value="etica">Violação do Código de Ética</option>
+                <option value="conflito">Conflito de Interesse</option>
+                <option value="discriminacao">Discriminação ou Assédio</option>
+                <option value="outra">Outra</option>
+              </select>
+            </div>
+            
+            <div>
+              <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">Descrição da irregularidade *</label>
+              <textarea id="message" name="message" required rows="6" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent" placeholder="Descreva a situação com o máximo de detalhes possível..."></textarea>
+            </div>
+            
+            <div class="flex items-start gap-2">
+              <input type="checkbox" id="privacy" name="privacy" required class="mt-1">
+              <label for="privacy" class="text-sm text-gray-600">
+                Li e aceito a <a href="https://transparencia.lecafc.pt/docs/politicas/politica-protecao-denunciante.pdf" class="text-emerald-700 underline" target="_blank">Política de proteção do denunciante</a>
+              </label>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-3">
+              <button type="submit" class="flex-1 px-8 py-3 bg-emerald-700 text-white font-bold rounded-full shadow-lg hover:bg-emerald-800 transition">
+                <i class="fa-solid fa-paper-plane mr-2"></i>
+                Submeter Denúncia
+              </button>
+              <button type="button" onclick="document.getElementById('denunciaModal').classList.add('hidden')" class="px-6 py-3 border-2 border-gray-300 text-gray-700 font-bold rounded-full hover:bg-gray-50 transition">
+                Cancelar
+              </button>
+            </div>
+            
+            <div class="border-t pt-4 mt-4">
+              <p class="text-sm text-gray-600">
+                <strong>Alternativa:</strong> Pode também enviar por email para 
+                <a href="mailto:denuncia@lecafc.pt" class="text-emerald-700 underline">denuncia@lecafc.pt</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+      
+    </div>
+    
+    <!-- Back Button -->
+    <div class="text-center mt-12">
+      <a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar ao início
+      </a>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="text-center text-white/70 text-sm mt-12">
+      <p class="mb-2">Participa no futuro do nosso clube.</p>
+      <p class="mb-4">Contacta: <a href="mailto:geral@lecafc.pt" class="text-white underline hover:text-white/90">geral@lecafc.pt</a></p>
+      <p>© 2025 Leça Futebol Clube — Portal da Transparência.</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
