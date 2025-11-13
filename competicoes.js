@@ -151,7 +151,7 @@ function renderMatchCard(match) {
   
   return `
     <div class="${bgColor} rounded-lg p-4 ${hoverColor} transition">
-      <div class="grid grid-cols-[200px_1fr_200px] items-center gap-4">
+      <div class="grid grid-cols-1 lg:grid-cols-[200px_1fr_200px] items-center gap-4">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 ${iconBg} rounded-full flex items-center justify-center flex-shrink-0">
             <i class="fa-solid fa-calendar text-white text-sm"></i>
@@ -174,7 +174,7 @@ function renderMatchCard(match) {
             <p class="text-xs text-gray-600">Fora</p>
           </div>
         </div>
-        <div class="text-right">
+        <div class="text-right lg:text-right text-center">
           <p class="text-sm font-semibold text-gray-900">${match.competition}</p>
           <p class="text-xs text-gray-600">${match.stadium || ''}</p>
         </div>
@@ -437,7 +437,7 @@ function renderResultCard(match) {
   
   return `
     <div class="${bgColor} rounded-lg p-4 ${hoverColor} transition ${outcomeClass}">
-      <div class="grid grid-cols-[200px_1fr_200px] items-center gap-4">
+      <div class="grid grid-cols-1 lg:grid-cols-[200px_1fr_200px] items-center gap-4">
         <div class="flex items-center gap-3">
           ${outcomeIcon ? `<div class="text-xl flex-shrink-0">${outcomeIcon}</div>` : ''}
           <div>
@@ -460,7 +460,7 @@ function renderResultCard(match) {
             <p class="text-xs text-gray-600">Fora</p>
           </div>
         </div>
-        <div class="text-right">
+        <div class="text-right lg:text-right text-center">
           <p class="text-sm font-semibold text-gray-900">${match.competition}</p>
           <p class="text-xs text-gray-600">${match.stadium || ''}</p>
         </div>
