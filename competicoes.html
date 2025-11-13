@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal das Competições - Universo Leça FC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="min-h-screen flex flex-col px-4 py-12">
+    <!-- Logo -->
+    <a href="index.html" class="mb-6 text-center">
+      <img src="leca.png" alt="Leça FC" class="w-24 h-24 md:w-32 md:h-32 mx-auto" />
+    </a>
+    
+    <!-- Title -->
+    <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white text-center mb-4 tracking-tight">
+      PORTAL DAS COMPETIÇÕES
+    </h1>
+    
+    <p class="text-lg md:text-xl text-white/90 text-center mb-12 max-w-3xl mx-auto">
+      Acompanha os jogos, resultados e classificações de todas as equipas
+    </p>
+    
+    <!-- Tab Navigation -->
+    <div class="max-w-6xl w-full mx-auto mb-8">
+      <div class="flex flex-wrap gap-3 justify-center">
+        <button onclick="showTab('calendario')" id="tab-calendario" class="tab-button active px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
+          <i class="fa-solid fa-calendar-days mr-2"></i>
+          Calendário
+        </button>
+        <button onclick="showTab('classificacao')" id="tab-classificacao" class="tab-button px-6 py-3 bg-white/20 text-white font-bold rounded-full hover:bg-white/30 transition-all">
+          <i class="fa-solid fa-trophy mr-2"></i>
+          Classificação
+        </button>
+        <button onclick="showTab('resultados')" id="tab-resultados" class="tab-button px-6 py-3 bg-white/20 text-white font-bold rounded-full hover:bg-white/30 transition-all">
+          <i class="fa-solid fa-futbol mr-2"></i>
+          Resultados
+        </button>
+      </div>
+    </div>
+    
+    <!-- Tab Content -->
+    <div class="max-w-6xl w-full mx-auto">
+      
+      <!-- Calendário Tab -->
+      <div id="content-calendario" class="tab-content">
+        <div class="card p-8 rounded-2xl">
+          <div class="flex items-center gap-3 mb-6">
+            <i class="fa-solid fa-calendar-days text-3xl text-emerald-700"></i>
+            <h2 class="text-3xl font-black text-gray-900">Calendário de Jogos</h2>
+          </div>
+          
+          <p class="text-gray-600 mb-6">
+            Próximos jogos agendados para todas as equipas do Leça Futebol Clube
+          </p>
+          
+          <!-- Dynamic Match Cards Container -->
+          <div id="calendar-matches" class="space-y-4">
+            <!-- Matches will be loaded here dynamically -->
+            <div class="text-center py-12">
+              <i class="fa-solid fa-spinner fa-spin text-4xl text-emerald-700 mb-3"></i>
+              <p class="text-gray-600">A carregar calendário...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Classificação Tab -->
+      <div id="content-classificacao" class="tab-content hidden">
+        <div class="card p-8 rounded-2xl">
+          <div class="flex items-center gap-3 mb-6">
+            <i class="fa-solid fa-trophy text-3xl text-emerald-700"></i>
+            <h2 class="text-3xl font-black text-gray-900">Classificação</h2>
+          </div>
+          
+          <p class="text-gray-600 mb-6">
+            Tabela de classificação atual do campeonato
+          </p>
+          
+          <!-- Classification Tables Container -->
+          <div id="classification-tables"></div>
+        </div>
+      </div>
+      
+      <!-- Resultados Tab -->
+      <div id="content-resultados" class="tab-content hidden">
+        <div class="card p-8 rounded-2xl">
+          <div class="flex items-center gap-3 mb-6">
+            <i class="fa-solid fa-futbol text-3xl text-emerald-700"></i>
+            <h2 class="text-3xl font-black text-gray-900">Resultados</h2>
+          </div>
+          
+          <p class="text-gray-600 mb-6">
+            Resultados dos últimos jogos realizados
+          </p>
+          
+          <!-- Results Container -->
+          <div id="results-matches"></div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <!-- Back Button -->
+    <div class="text-center mt-12">
+      <a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar ao início
+      </a>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="text-center text-white/70 text-sm mt-12">
+      <p class="mb-2">Vive a paixão do Leça FC.</p>
+      <p class="mb-4">Contacta: <a href="mailto:geral@lecafc.pt" class="text-white underline hover:text-white/90">geral@lecafc.pt</a></p>
+      <p>© 2025 Leça Futebol Clube — Portal das Competições.</p>
+    </footer>
+    </div>
+
+    <script src="competicoes.js"></script>
+  </body>
+</html>
