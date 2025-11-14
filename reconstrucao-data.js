@@ -142,12 +142,12 @@ function renderReconstructionPage() {
                            progressColor === 'orange' ? 'orange-50' : 'gray-50';
             
             return `
-              <div class="flex items-center justify-between p-4 bg-${bgColor} rounded-lg">
-                <div class="flex-1">
-                  <div class="font-semibold text-gray-900">${task.name}</div>
+              <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 bg-${bgColor} rounded-lg">
+                <div class="flex-1 min-w-0">
+                  <div class="font-semibold text-gray-900 break-words">${task.name}</div>
                   <div class="text-sm text-gray-600">${formatCurrency(task.budget)}€${task.link ? '*' : ''}</div>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 flex-shrink-0">
                   <div class="w-24 bg-gray-200 rounded-full h-2">
                     <div class="bg-${progressColor}-600 h-2 rounded-full transition-all" style="width: ${task.progress}%"></div>
                   </div>
