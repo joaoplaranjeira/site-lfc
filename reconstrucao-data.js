@@ -145,7 +145,10 @@ function renderReconstructionPage() {
               <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 bg-${bgColor} rounded-lg">
                 <div class="flex-1 min-w-0">
                   <div class="font-semibold text-gray-900 break-words">${task.name}</div>
-                  <div class="text-sm text-gray-600">${formatCurrency(task.budget)}€${task.link ? '*' : ''}</div>
+                  <div class="text-sm text-gray-600">
+                    ${formatCurrency(task.budget)}€${task.link ? '*' : ''}
+                    ${task.link ? `<a href="${task.link}" target="_blank" class="ml-2 text-emerald-700 hover:text-emerald-800 underline"><i class="fa-solid fa-external-link-alt"></i> Ver orçamento</a>` : ''}
+                  </div>
                 </div>
                 <div class="flex items-center gap-3 flex-shrink-0">
                   <div class="w-24 bg-gray-200 rounded-full h-2">
