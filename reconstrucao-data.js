@@ -9,7 +9,7 @@ const reconstructionData = {
         { name: "Reconstrução da cobertura", budget: 18000, progress: 100 },
         { name: "Reconstrução do museu", budget: 15000, progress: 63 },
         { name: "Salas técnicas, posto médico/fisioterapia, secretaria e sala das modalidades", budget: 10000, progress: 0 },
-        { name: "Colocação de novo piso desportivo", budget: 35000, progress: 0 },
+        { name: "Colocação de novo piso desportivo", budget: 35000, progress: 0, link: "documents/work-budgets/Orçt.13716 - Leça F. C..pdf" },
         { name: "Abertura de porta para acesso de pessoas", budget: 1740, progress: 0, link: "https://www.unigo.pt/report/40ffc7ad-8744-467d-a181-2d7534768ac8" }
       ]
     },
