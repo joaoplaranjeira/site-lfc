@@ -10,7 +10,7 @@ const reconstructionData = {
         { name: "Reconstrução do museu", budget: 15000, progress: 63 },
         { name: "Salas técnicas, posto médico/fisioterapia, secretaria e sala das modalidades", budget: 10000, progress: 0 },
         { name: "Colocação de novo piso desportivo", budget: 35000, progress: 0, link: "documents/work-budgets/Orçt.13716 - Leça F. C..pdf" },
-        { name: "Abertura de porta para acesso de pessoas", budget: 1740, progress: 0, link: "https://www.unigo.pt/report/40ffc7ad-8744-467d-a181-2d7534768ac8" }
+        { name: "Abertura de porta para acesso de pessoas", budget: 1740, progress: 0, link: "https://www.unigo.pt/results/40ffc7ad-8744-467d-a181-2d7534768ac8" }
       ]
     },
     {
@@ -19,9 +19,9 @@ const reconstructionData = {
       color: "orange",
       tasks: [
         { name: "Obras de renovação dos balneários", budget: 30000, progress: 0 },
-        { name: "Pintura exterior do pavilhão", budget: 17180, progress: 0, link: "https://www.unigo.pt/report/9f9aed33-482d-4561-8ce6-f892b8f67199" },
-        { name: "Troca caixilharia janelas", budget: 9818, progress: 0, link: "https://www.unigo.pt/report/04827cb3-b634-4c15-8bc4-d7c1fa5bb5e7" },
-        { name: "Troca material nas tabelas de proteção da quadra", budget: 16200, progress: 0, link: "https://unigo-app.vercel.app/report/b5218126-8b59-42fc-bb04-78761cb45f66" },
+        { name: "Pintura exterior do pavilhão", budget: 17180, progress: 0, link: "https://www.unigo.pt/results/9f9aed33-482d-4561-8ce6-f892b8f67199" },
+        { name: "Troca caixilharia janelas", budget: 9818, progress: 0, link: "https://www.unigo.pt/results/04827cb3-b634-4c15-8bc4-d7c1fa5bb5e7" },
+        { name: "Troca material nas tabelas de proteção da quadra", budget: 16200, progress: 0, link: "https://www.unigo.pt/results/b5218126-8b59-42fc-bb04-78761cb45f66" },
         { name: "Verificação e reparação de cobertura", budget: 3850, progress: 0 }
       ]
     },
@@ -30,8 +30,8 @@ const reconstructionData = {
       icon: "fa-dumbbell",
       color: "gray",
       tasks: [
-        { name: "Colocação de bancada", budget: 30300, progress: 0, link: "https://www.unigo.pt/report/1063e54a-2e19-49eb-b80c-b4ae9dbc1cfe" },
-        { name: "Uniformização do piso fora da quadra", budget: 15670, progress: 0, link: "https://www.unigo.pt/report/9c8b30e0-1ca5-467a-80db-0f3378f7b392" }
+        { name: "Colocação de bancada", budget: 30300, progress: 0, link: "https://www.unigo.pt/results/1063e54a-2e19-49eb-b80c-b4ae9dbc1cfe" },
+        { name: "Uniformização do piso fora da quadra", budget: 15670, progress: 0, link: "https://www.unigo.pt/results/9c8b30e0-1ca5-467a-80db-0f3378f7b392" }
       ]
     }
   ]
