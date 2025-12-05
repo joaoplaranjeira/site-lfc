@@ -1,6 +1,6 @@
 body { 
   font-family: 'Poppins', sans-serif; 
-  background: linear-gradient(135deg, #065f46 0%, #10b981 100%);
+  background: linear-gradient(135deg, #034638 0%, #045a4a 100%);
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -20,10 +20,66 @@ body {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(135deg, #034638 0%, #045a4a 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
   font-size: 2.5rem;
 }
+
+/* Custom brand color */
+.text-brand {
+  color: #034638 !important;
+}
+
+.bg-brand {
+  background-color: #034638 !important;
+}
+
+.border-brand {
+  border-color: #034638 !important;
+}
+
+.hover\:bg-brand:hover {
+  background-color: #034638 !important;
+}
+
+.hover\:text-brand:hover {
+  color: #034638 !important;
+}
+
+.bg-brand-dark {
+  background-color: #022e26 !important;
+}
+
+.hover\:bg-brand-dark:hover {
+  background-color: #022e26 !important;
+}
+
+.bg-brand-light {
+  background-color: #e6f2f0 !important;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-brand {
+  background: linear-gradient(135deg, #034638 0%, #045a4a 100%) !important;
+}
+
+.from-brand-700 {
+  --tw-gradient-from: #034638 !important;
+}
+
+.to-brand-600 {
+  --tw-gradient-to: #045a4a !important;
+}
+
+/* Progress bars */
+.bg-brand-600 {
+  background-color: #045a4a !important;
+}
+
+.bg-brand-500 {
+  background-color: #056b57 !important;
+}
+
