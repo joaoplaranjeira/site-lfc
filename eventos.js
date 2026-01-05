@@ -16,7 +16,7 @@ const eventsData = {
     {
       id: 2,
       title: "Jogo das Estrelas",
-      date: "2026-01-01",
+      date: "2026-03-28",
       time: "A definir",
       location: "Local a definir",
       description: "Jogo com ex-atletas das modalidades de Basquetebol e Andebol do clube.",
@@ -156,11 +156,71 @@ const eventsData = {
       status: "completed",
       image: null,
       link: "talkclub.html"
+    },
+    {
+      id: 14,
+      title: "Talk Club - 2ª Sessão",
+      date: "2026-02-11",
+      time: "21:00",
+      location: "Local a definir",
+      description: "Segunda sessão do Talk Club - conversas com os sócios sobre modalidades e património. Ver mais detalhes na página do Talk Club.",
+      type: "default",
+      status: "upcoming",
+      image: null,
+      link: "talkclub.html"
+    },
+    {
+      id: 15,
+      title: "Assembleia Geral Ordinária e Extraordinária",
+      date: "2026-01-31",
+      time: "14:30",
+      location: "Local a definir",
+      description: "Assembleia Geral Ordinária e Extraordinária para deliberação sobre assuntos de interesse do clube.",
+      type: "assembleia",
+      status: "upcoming",
+      image: null,
+      link: null
+    },
+    {
+      id: 16,
+      title: "2º Torneio Jovem de Xadrez",
+      date: "2026-01-04",
+      time: "14:00 - 18:00",
+      location: "Local a definir",
+      description: "Segundo torneio jovem de xadrez organizado pelo clube.",
+      type: "default",
+      status: "completed",
+      image: null,
+      link: null
+    },
+    {
+      id: 17,
+      title: "2º Torneio Os Palmeirinhas",
+      date: "2025-12-27",
+      time: "10:00 - 13:00",
+      location: "Local a definir",
+      description: "Segundo torneio Os Palmeirinhas.",
+      type: "default",
+      status: "completed",
+      image: null,
+      link: null
+    },
+    {
+      id: 18,
+      title: "Festa de Natal da Patinagem Artística",
+      date: "2025-12-20",
+      time: "15:00 - 18:00",
+      location: "Local a definir",
+      description: "Festa de Natal da modalidade de Patinagem Artística.",
+      type: "default",
+      status: "completed",
+      image: null,
+      link: null
     }
   ],
   institucionais: [
     {
-      id: 14,
+      id: 19,
       title: "90º Aniversário do Rancho Típico da Amorosa",
       date: "2025-11-08",
       time: "21:00",
@@ -172,7 +232,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 15,
+      id: 20,
       title: "Tomada de Posse dos Órgãos Autárquicos",
       date: "2025-10-31",
       time: "A definir",
@@ -184,7 +244,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 16,
+      id: 21,
       title: "Receção de Comitivas Candidatas aos Órgãos Autárquicos",
       date: "2025-09-22",
       time: "Vários horários",
@@ -196,7 +256,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 17,
+      id: 22,
       title: "Inauguração do 1º Campo da AF Porto",
       date: "2025-09-15",
       time: "15:00",
