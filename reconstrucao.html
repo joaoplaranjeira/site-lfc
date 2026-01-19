@@ -182,7 +182,8 @@
     <footer class="text-center text-white/70 text-sm mt-12">
       <p class="mb-2">Vive a paixão do Leça FC.</p>
       <p class="mb-4">Contacta: <a href="mailto:geral@lecafc.pt" class="text-white underline hover:text-white/90">geral@lecafc.pt</a></p>
-      <p>© 2025 Leça Futebol Clube — Reconstrução Pavilhão Custódio Antunes.</p>
+      <p>© <span id="year"></span> Leça Futebol Clube — Reconstrução Pavilhão Custódio Antunes.</p>
+      <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
     </footer>
   </div>
 
