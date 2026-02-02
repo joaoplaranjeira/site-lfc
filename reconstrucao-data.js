@@ -7,8 +7,8 @@ const reconstructionData = {
       color: "emerald",
       tasks: [
         { name: "Reconstrução da cobertura", budget: 18000, progress: 100 },
-        { name: "Intervenção no sistema de iluminária do recinto do pavilhão", budget: 3000, progress: 100 },
-        { name: "Pintura interior do pavilhão", budget: 1500, progress: 100 }
+        { name: "Intervenção no sistema de iluminária do recinto do pavilhão", budget: 1500, progress: 100 },
+        { name: "Pintura interior do pavilhão", budget: 2500, progress: 100 }
       ]
     },
     {
