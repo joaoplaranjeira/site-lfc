@@ -11,7 +11,7 @@ const eventsData = {
       description: "Campanha de recolha de bens materiais para entregar à população na zona de Leiria afetada pela tempestade Kristin. Decorre entre 2 e 7 de Fevereiro de 2026.",
       type: "solidario",
       status: "ongoing",
-      image: "fa-hands-holding-circle",
+      image: "fa-hand-holding-heart",
       link: null
     },
     {
