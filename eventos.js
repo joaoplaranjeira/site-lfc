@@ -353,7 +353,7 @@ function getStatusBadge(status) {
 
 // Render event card
 function renderEventCard(event) {
-  const icon = getEventIcon(event.type);
+  const icon = event.image || getEventIcon(event.type);
   const statusBadge = getStatusBadge(event.status);
   const isUpcoming = event.status === 'upcoming';
   const isOngoing = event.status === 'ongoing';
