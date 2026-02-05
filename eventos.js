@@ -3,6 +3,19 @@ const eventsData = {
   clube: [
     {
       id: 1,
+      title: "Recolha de Bens para Afetados pela Tempestade Kristin",
+      date: "2026-02-02",
+      endDate: "2026-02-07",
+      time: "Todo o dia",
+      location: "Estádio do Leça Futebol Clube",
+      description: "Campanha de recolha de bens materiais para entregar à população na zona de Leiria afetada pela tempestade Kristin. Decorre entre 2 e 7 de Fevereiro de 2026.",
+      type: "solidario",
+      status: "ongoing",
+      image: null,
+      link: null
+    },
+    {
+      id: 2,
       title: "Jantar do 114º Aniversário do Leça Futebol Clube",
       date: "2026-03-21",
       time: "20:00",
@@ -14,7 +27,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 2,
+      id: 3,
       title: "Jogo das Estrelas",
       date: "2026-03-28",
       time: "A definir",
@@ -26,7 +39,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 3,
+      id: 4,
       title: "Entrega de Diplomas de Excelência",
       date: "2025-12-02",
       time: "19:00",
@@ -38,7 +51,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 4,
+      id: 5,
       title: "Campanha de Angariação de Leite",
       date: "2025-11-26",
       time: "Todo o dia",
@@ -50,7 +63,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 5,
+      id: 6,
       title: "Kick Off Leceiro",
       date: "2025-10-25",
       time: "16:30",
@@ -62,7 +75,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 6,
+      id: 7,
       title: "Entrega e Benção da Carrinha da Leça Academia 1912",
       date: "2025-09-29",
       time: "19:00",
@@ -74,7 +87,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 7,
+      id: 8,
       title: "Evento Decathlon PlaySport",
       date: "2025-09-20",
       time: "Todo o dia",
@@ -86,7 +99,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 8,
+      id: 9,
       title: "Assembleia Geral Ordinária",
       date: "2025-09-18",
       time: "20:30",
@@ -98,7 +111,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 9,
+      id: 10,
       title: "Assembleia Geral Extraordinária",
       date: "2025-09-18",
       time: "20:30",
@@ -110,7 +123,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 10,
+      id: 11,
       title: "Homenagem ao Sócio Leonardo Soares",
       date: "2025-09-14",
       time: "15:00",
@@ -122,7 +135,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 11,
+      id: 12,
       title: "Entrega de Camisola para Torneio Solidário",
       date: "2025-09-07",
       time: "A definir",
@@ -134,7 +147,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 12,
+      id: 13,
       title: "Hastear da Bandeira - 114º Aniversário",
       date: "2026-03-20",
       time: "A definir",
@@ -146,7 +159,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 13,
+      id: 14,
       title: "Talk Club - 1ª Sessão",
       date: "2025-11-12",
       time: "A definir",
@@ -158,7 +171,7 @@ const eventsData = {
       link: "talkclub.html"
     },
     {
-      id: 14,
+      id: 15,
       title: "Talk Club - 2ª Sessão",
       date: "2026-02-11",
       time: "21:00",
@@ -170,7 +183,7 @@ const eventsData = {
       link: "talkclub.html"
     },
     {
-      id: 15,
+      id: 16,
       title: "Assembleia Geral Ordinária e Extraordinária",
       date: "2026-01-31",
       time: "14:30",
@@ -182,7 +195,7 @@ const eventsData = {
       link: "documents/events/conv_ago_age_31012026.pdf"
     },
     {
-      id: 16,
+      id: 17,
       title: "2º Torneio Jovem de Xadrez",
       date: "2026-01-04",
       time: "14:00 - 18:00",
@@ -194,7 +207,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 17,
+      id: 18,
       title: "2º Torneio Os Palmeirinhas",
       date: "2025-12-27",
       time: "10:00 - 13:00",
@@ -206,7 +219,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 18,
+      id: 19,
       title: "Festa de Natal da Patinagem Artística",
       date: "2025-12-20",
       time: "15:00 - 18:00",
@@ -220,7 +233,7 @@ const eventsData = {
   ],
   institucionais: [
     {
-      id: 19,
+      id: 20,
       title: "90º Aniversário do Rancho Típico da Amorosa",
       date: "2025-11-08",
       time: "21:00",
@@ -232,7 +245,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 20,
+      id: 21,
       title: "Tomada de Posse dos Órgãos Autárquicos",
       date: "2025-10-31",
       time: "A definir",
@@ -244,7 +257,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 21,
+      id: 22,
       title: "Receção de Comitivas Candidatas aos Órgãos Autárquicos",
       date: "2025-09-22",
       time: "Vários horários",
@@ -256,7 +269,7 @@ const eventsData = {
       link: null
     },
     {
-      id: 22,
+      id: 23,
       title: "Inauguração do 1º Campo da AF Porto",
       date: "2025-09-15",
       time: "15:00",
@@ -321,6 +334,7 @@ function getEventIcon(type) {
     'assembleia': 'fa-users',
     'conferencia': 'fa-microphone',
     'aniversario': 'fa-cake-candles',
+    'solidario': 'fa-hands-holding-heart',
     'default': 'fa-calendar-check'
   };
   return icons[type] || icons['default'];
@@ -330,6 +344,7 @@ function getEventIcon(type) {
 function getStatusBadge(status) {
   const badges = {
     'upcoming': '<span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">Próximo</span>',
+    'ongoing': '<span class="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs font-semibold">A decorrer</span>',
     'completed': '<span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">Realizado</span>',
     'cancelled': '<span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-semibold">Cancelado</span>'
   };
@@ -341,8 +356,9 @@ function renderEventCard(event) {
   const icon = getEventIcon(event.type);
   const statusBadge = getStatusBadge(event.status);
   const isUpcoming = event.status === 'upcoming';
-  const bgColor = isUpcoming ? 'bg-emerald-50' : 'bg-gray-50';
-  const iconBg = isUpcoming ? 'bg-emerald-700' : 'bg-gray-400';
+  const isOngoing = event.status === 'ongoing';
+  const bgColor = isOngoing ? 'bg-orange-50' : (isUpcoming ? 'bg-emerald-50' : 'bg-gray-50');
+  const iconBg = isOngoing ? 'bg-orange-600' : (isUpcoming ? 'bg-emerald-700' : 'bg-gray-400');
   
   return `
     <div class="${bgColor} rounded-lg p-6 hover:shadow-md transition">
@@ -382,6 +398,38 @@ function renderEventCard(event) {
   `;
 }
 
+// Update event status based on current date
+function updateEventStatus(event) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  const eventDate = new Date(event.date);
+  eventDate.setHours(0, 0, 0, 0);
+  
+  // If event has an end date (for multi-day events)
+  if (event.endDate) {
+    const endDate = new Date(event.endDate);
+    endDate.setHours(0, 0, 0, 0);
+    
+    if (today < eventDate) {
+      return 'upcoming';
+    } else if (today >= eventDate && today <= endDate) {
+      return 'ongoing';
+    } else {
+      return 'completed';
+    }
+  }
+  
+  // For single-day events
+  if (today < eventDate) {
+    return 'upcoming';
+  } else if (today.getTime() === eventDate.getTime()) {
+    return 'ongoing';
+  } else {
+    return 'completed';
+  }
+}
+
 // Load Clube Events
 function loadClubeEvents() {
   const container = document.getElementById('clube-events');
@@ -399,8 +447,14 @@ function loadClubeEvents() {
       return;
     }
     
+    // Update status for all events based on current date
+    const eventsWithUpdatedStatus = events.map(event => ({
+      ...event,
+      status: updateEventStatus(event)
+    }));
+    
     // Sort events by date (most recent first)
-    const sortedEvents = events.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedEvents = eventsWithUpdatedStatus.sort((a, b) => new Date(b.date) - new Date(a.date));
     
     container.innerHTML = sortedEvents.map(event => renderEventCard(event)).join('');
     
@@ -432,8 +486,14 @@ function loadInstitucionaisEvents() {
       return;
     }
     
+    // Update status for all events based on current date
+    const eventsWithUpdatedStatus = events.map(event => ({
+      ...event,
+      status: updateEventStatus(event)
+    }));
+    
     // Sort events by date (most recent first)
-    const sortedEvents = events.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedEvents = eventsWithUpdatedStatus.sort((a, b) => new Date(b.date) - new Date(a.date));
     
     container.innerHTML = sortedEvents.map(event => renderEventCard(event)).join('');
     
