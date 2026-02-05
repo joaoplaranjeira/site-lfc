@@ -3,7 +3,7 @@ const eventsData = {
   clube: [
     {
       id: 1,
-      title: "Recolha de Bens para Afetados pela Tempestade Kristin",
+      title: "Juntos por Leiria - Solidariedade com as Vítimas da Tempestade Kristin",
       date: "2026-02-02",
       endDate: "2026-02-07",
       time: "Todo o dia",
@@ -11,7 +11,7 @@ const eventsData = {
       description: "Campanha de recolha de bens materiais para entregar à população na zona de Leiria afetada pela tempestade Kristin. Decorre entre 2 e 7 de Fevereiro de 2026.",
       type: "solidario",
       status: "ongoing",
-      image: null,
+      image: "fa-hands-holding-circle",
       link: null
     },
     {
