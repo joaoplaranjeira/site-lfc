@@ -6,7 +6,7 @@
   // Session dates
   const sessions = [
     { id: 'session1-badge', date: new Date('2025-11-12') },
-    { id: 'session2-badge', date: new Date('2026-02-01') }, // Placeholder for February
+    { id: 'session2-badge', date: new Date('2026-02-11') },
     { id: 'session3-badge', date: new Date('2026-04-01') }, // Placeholder for April
     { id: 'session4-badge', date: new Date('2026-06-01') }  // Placeholder for June
   ];
