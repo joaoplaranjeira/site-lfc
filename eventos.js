@@ -175,7 +175,7 @@ const eventsData = {
       title: "Talk Club - 2ª Sessão",
       date: "2026-02-11",
       time: "21:00",
-      location: "Local a definir",
+      location: "Centro de Dia da 3ª Idade da Junta de Freguesia de Leça da Palmeira",
       description: "Segunda sessão do Talk Club - conversas com os sócios sobre modalidades e património. Ver mais detalhes na página do Talk Club.",
       type: "default",
       status: "upcoming",
