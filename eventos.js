@@ -1,3 +1,6 @@
+// URL base da API (sempre usado)
+const API_BASE_URL = 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';
+
 // Events data structure
 const eventsData = {
   clube: [
@@ -344,7 +347,7 @@ async function fetchPublicEventByCode(eventCode) {
   }
 
   try {
-    const response = await fetch(`/api/Event/public/code/${encodeURIComponent(eventCode)}`);
+    const response = await fetch(`${API_BASE_URL}/api/Event/public/code/${encodeURIComponent(eventCode)}`);
     const payload = await response.json();
 
     if (!response.ok || !payload?.success || !payload?.content) {
@@ -470,31 +473,33 @@ function renderEventCard(event) {
     : '';
 
   return `
-    <div class="${bgColor} rounded-lg p-6 hover:shadow-md transition">
-      <div class="flex items-start gap-4">
+    <div class="${bgColor} rounded-lg p-4 md:p-6 hover:shadow-md transition">
+      <div class="flex items-start gap-3 md:gap-4">
         <div class="w-12 h-12 ${iconBg} rounded-full flex items-center justify-center flex-shrink-0">
           <i class="fa-solid ${icon} text-white text-lg"></i>
         </div>
-        <div class="flex-1">
-          <div class="flex items-start justify-between gap-4 mb-2">
-            <h3 class="text-xl font-bold text-gray-900">${event.title}</h3>
-            ${statusBadge}
+        <div class="flex-1 min-w-0">
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+            <h3 class="text-lg md:text-xl font-bold text-gray-900 break-words">${event.title}</h3>
+            <div class="flex-shrink-0 self-start">
+              ${statusBadge}
+            </div>
           </div>
           <div class="space-y-2 mb-4">
             <div class="flex items-center gap-2 text-gray-700">
-              <i class="fa-solid fa-calendar text-emerald-700"></i>
-              <span class="text-sm font-semibold">${formatDate(event.date)}</span>
+              <i class="fa-solid fa-calendar text-emerald-700 flex-shrink-0"></i>
+              <span class="text-sm font-semibold break-words">${formatDate(event.date)}</span>
             </div>
             <div class="flex items-center gap-2 text-gray-700">
-              <i class="fa-solid fa-clock text-emerald-700"></i>
+              <i class="fa-solid fa-clock text-emerald-700 flex-shrink-0"></i>
               <span class="text-sm">${event.time}</span>
             </div>
             <div class="flex items-center gap-2 text-gray-700">
-              <i class="fa-solid fa-location-dot text-emerald-700"></i>
-              <span class="text-sm">${event.location}</span>
+              <i class="fa-solid fa-location-dot text-emerald-700 flex-shrink-0"></i>
+              <span class="text-sm break-words">${event.location}</span>
             </div>
           </div>
-          <p class="text-gray-600 text-sm mb-4">${event.description}</p>
+          <p class="text-gray-600 text-sm mb-4 line-clamp-3">${event.description}</p>
           ${registrationUnavailableMessage}
           <div class="flex flex-wrap gap-3">
             ${event.link ? `
