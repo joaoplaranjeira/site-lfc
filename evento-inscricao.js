@@ -5,6 +5,11 @@ const state = {
   otpExpiresInMinutes: 10
 };
 
+// Configuração da API - detecta automaticamente o ambiente
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? '' // Localhost: usa proxy nginx (/api/ -> localhost:5004)
+  : 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com'; // Produção: URL direto da API
+
 function formatDateTime(dateString) {
   if (!dateString) return '-';
 
@@ -68,7 +73,8 @@ function getErrorMessage(payload, fallbackMessage) {
 }
 
 async function apiRequest(url, options = {}) {
-  const response = await fetch(url, options);
+  const fullUrl = `${API_BASE_URL}${url}`;
+  const response = await fetch(fullUrl, options);
   const payload = await response.json().catch(() => null);
 
   if (!response.ok || !payload?.success) {
