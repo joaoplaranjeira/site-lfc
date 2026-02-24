@@ -24,7 +24,10 @@ const eventsData = {
       type: "jantar",
       status: "upcoming",
       image: null,
-      link: null
+      link: null,
+      registration: {
+        eventCode: "EVT-001"
+      }
     },
     {
       id: 3,
@@ -283,6 +286,99 @@ const eventsData = {
   ]
 };
 
+const publicEventCache = {};
+
+function isPublishedStatus(status) {
+  return String(status || '').toLowerCase() === 'published';
+}
+
+function hasCapacityAvailable(apiEvent) {
+  const capacityMax = Number(apiEvent?.capacityMax);
+  const registrationsCount = Number(apiEvent?.registrationsCount || 0);
+
+  if (!Number.isFinite(capacityMax) || capacityMax <= 0) {
+    return true;
+  }
+
+  return registrationsCount < capacityMax;
+}
+
+function getRegistrationAvailability(apiEvent) {
+  if (!apiEvent) {
+    return {
+      canRegister: false,
+      reason: 'As inscrições estão indisponíveis no momento.'
+    };
+  }
+
+  if (!isPublishedStatus(apiEvent.status)) {
+    return {
+      canRegister: false,
+      reason: 'As inscrições estão fechadas.'
+    };
+  }
+
+  if (!hasCapacityAvailable(apiEvent)) {
+    const registrationsCount = Number(apiEvent.registrationsCount || 0);
+    const capacityMax = Number(apiEvent.capacityMax);
+
+    return {
+      canRegister: false,
+      reason: `Inscrições encerradas (lotação atingida: ${registrationsCount}/${capacityMax}).`
+    };
+  }
+
+  return {
+    canRegister: true,
+    reason: ''
+  };
+}
+
+async function fetchPublicEventByCode(eventCode) {
+  if (!eventCode) {
+    return null;
+  }
+
+  if (publicEventCache[eventCode]) {
+    return publicEventCache[eventCode];
+  }
+
+  try {
+    const response = await fetch(`/api/Event/public/code/${encodeURIComponent(eventCode)}`);
+    const payload = await response.json();
+
+    if (!response.ok || !payload?.success || !payload?.content) {
+      publicEventCache[eventCode] = null;
+      return null;
+    }
+
+    publicEventCache[eventCode] = payload.content;
+    return payload.content;
+  } catch (error) {
+    console.error(`Error fetching public event by code ${eventCode}:`, error);
+    publicEventCache[eventCode] = null;
+    return null;
+  }
+}
+
+async function enrichEventsWithRegistrationAvailability(events) {
+  const eventsWithRegistration = events.filter(event => event.registration?.eventCode);
+
+  await Promise.all(
+    eventsWithRegistration.map(async (event) => {
+      const apiEvent = await fetchPublicEventByCode(event.registration.eventCode);
+      const availability = getRegistrationAvailability(apiEvent);
+
+      event.registration = {
+        ...event.registration,
+        apiEvent,
+        canRegister: availability.canRegister,
+        unavailableReason: availability.reason
+      };
+    })
+  );
+}
+
 // Tab switching function
 function showTab(tabName) {
   // Hide all tab contents
@@ -360,6 +456,19 @@ function renderEventCard(event) {
   const bgColor = isOngoing ? 'bg-orange-50' : (isUpcoming ? 'bg-emerald-50' : 'bg-gray-50');
   const iconBg = isOngoing ? 'bg-orange-600' : (isUpcoming ? 'bg-emerald-700' : 'bg-gray-400');
   
+  const registrationButton = event.registration?.canRegister
+    ? `
+      <a href="evento-inscricao.html?code=${encodeURIComponent(event.registration.eventCode)}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition text-sm font-semibold">
+        <i class="fa-solid fa-ticket"></i>
+        Inscrição
+      </a>
+    `
+    : '';
+
+  const registrationUnavailableMessage = event.registration && !event.registration.canRegister
+    ? `<p class="text-sm text-red-700 font-semibold">${event.registration.unavailableReason || 'Inscrições indisponíveis.'}</p>`
+    : '';
+
   return `
     <div class="${bgColor} rounded-lg p-6 hover:shadow-md transition">
       <div class="flex items-start gap-4">
@@ -386,12 +495,16 @@ function renderEventCard(event) {
             </div>
           </div>
           <p class="text-gray-600 text-sm mb-4">${event.description}</p>
-          ${event.link ? `
-            <a href="${event.link}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition text-sm font-semibold">
-              <i class="fa-solid fa-external-link-alt"></i>
-              Mais informações
-            </a>
-          ` : ''}
+          ${registrationUnavailableMessage}
+          <div class="flex flex-wrap gap-3">
+            ${event.link ? `
+              <a href="${event.link}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition text-sm font-semibold">
+                <i class="fa-solid fa-external-link-alt"></i>
+                Mais informações
+              </a>
+            ` : ''}
+            ${registrationButton}
+          </div>
         </div>
       </div>
     </div>
@@ -431,7 +544,7 @@ function updateEventStatus(event) {
 }
 
 // Load Clube Events
-function loadClubeEvents() {
+async function loadClubeEvents() {
   const container = document.getElementById('clube-events');
   
   try {
@@ -452,6 +565,8 @@ function loadClubeEvents() {
       ...event,
       status: updateEventStatus(event)
     }));
+
+    await enrichEventsWithRegistrationAvailability(eventsWithUpdatedStatus);
     
     // Sort events by date (most recent first)
     const sortedEvents = eventsWithUpdatedStatus.sort((a, b) => new Date(b.date) - new Date(a.date));
