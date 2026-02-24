@@ -5,10 +5,8 @@ const state = {
   otpExpiresInMinutes: 10
 };
 
-// Configuração da API - detecta automaticamente o ambiente
-const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? '' // Localhost: usa proxy nginx (/api/ -> localhost:5004)
-  : 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com'; // Produção: URL direto da API
+// URL base da API (sempre usado)
+const API_BASE_URL = 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';
 
 function formatDateTime(dateString) {
   if (!dateString) return '-';
