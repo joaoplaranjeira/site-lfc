@@ -295,6 +295,10 @@ function isPublishedStatus(status) {
   return String(status || '').toLowerCase() === 'published';
 }
 
+function isDraftStatus(status) {
+  return String(status || '').toLowerCase() === 'draft';
+}
+
 function hasCapacityAvailable(apiEvent) {
   const capacityMax = Number(apiEvent?.capacityMax);
   const registrationsCount = Number(apiEvent?.registrationsCount || 0);
@@ -317,7 +321,9 @@ function getRegistrationAvailability(apiEvent) {
   if (!isPublishedStatus(apiEvent.status)) {
     return {
       canRegister: false,
-      reason: 'As inscrições estão fechadas.'
+      reason: isDraftStatus(apiEvent.status) 
+        ? 'As inscrições ainda não abriram.'
+        : 'As inscrições não estão disponíveis neste momento.'
     };
   }
 
@@ -469,7 +475,7 @@ function renderEventCard(event) {
     : '';
 
   const registrationUnavailableMessage = event.registration && !event.registration.canRegister
-    ? `<p class="text-sm text-red-700 font-semibold">${event.registration.unavailableReason || 'Inscrições indisponíveis.'}</p>`
+    ? `<p class="text-sm text-emerald-700 font-semibold">${event.registration.unavailableReason || 'Inscrições indisponíveis.'}</p>`
     : '';
 
   return `
