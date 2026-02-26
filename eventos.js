@@ -22,7 +22,7 @@ const eventsData = {
       title: "Jantar do 114º Aniversário do Leça Futebol Clube",
       date: "2026-03-21",
       time: "20:00",
-      location: "Hotel Tryp Porto Expo",
+      location: "Hotel Tryp Porto Expo (Leça da Palmeira)",
       description: "Celebração do 114º aniversário do Leça Futebol Clube com jantar para sócios, dirigentes e convidados.",
       type: "jantar",
       status: "upcoming",
