@@ -418,8 +418,25 @@ function showTab(tabName) {
 }
 
 // Format date to Portuguese format
+function parseEventDate(dateString) {
+  if (!dateString) {
+    return new Date(NaN);
+  }
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  }
+
+  return new Date(dateString);
+}
+
 function formatDate(dateString) {
-  const date = new Date(dateString);
+  const date = parseEventDate(dateString);
+  if (Number.isNaN(date.getTime())) {
+    return '-';
+  }
+
   const days = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
   const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
                   'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
@@ -527,12 +544,12 @@ function updateEventStatus(event) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
-  const eventDate = new Date(event.date);
+  const eventDate = parseEventDate(event.date);
   eventDate.setHours(0, 0, 0, 0);
   
   // If event has an end date (for multi-day events)
   if (event.endDate) {
-    const endDate = new Date(event.endDate);
+    const endDate = parseEventDate(event.endDate);
     endDate.setHours(0, 0, 0, 0);
     
     if (today < eventDate) {
@@ -580,7 +597,7 @@ async function loadClubeEvents() {
     await enrichEventsWithRegistrationAvailability(eventsWithUpdatedStatus);
     
     // Sort events by date (most recent first)
-    const sortedEvents = eventsWithUpdatedStatus.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedEvents = eventsWithUpdatedStatus.sort((a, b) => parseEventDate(b.date) - parseEventDate(a.date));
     
     container.innerHTML = sortedEvents.map(event => renderEventCard(event)).join('');
     
@@ -619,7 +636,7 @@ function loadInstitucionaisEvents() {
     }));
     
     // Sort events by date (most recent first)
-    const sortedEvents = eventsWithUpdatedStatus.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedEvents = eventsWithUpdatedStatus.sort((a, b) => parseEventDate(b.date) - parseEventDate(a.date));
     
     container.innerHTML = sortedEvents.map(event => renderEventCard(event)).join('');
     
