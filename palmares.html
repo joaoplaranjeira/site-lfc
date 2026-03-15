@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9ZCGD46H8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-P9ZCGD46H8');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Palmarés - Leça FC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              50: '#e6f2f0',
+              100: '#cce5e1',
+              200: '#99cbc3',
+              300: '#66b1a5',
+              400: '#339787',
+              500: '#056b57',
+              600: '#045a4a',
+              700: '#034638',
+              800: '#022e26',
+              900: '#011713'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .timeline-line {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      top: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, #034638, #45a082);
+    }
+    .timeline-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #034638;
+      border: 3px solid white;
+      box-shadow: 0 0 0 3px #034638;
+      flex-shrink: 0;
+    }
+    @media (max-width: 767px) {
+      .timeline-line {
+        left: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="min-h-screen flex flex-col px-4 py-12">
+
+    <a href="index.html" class="mb-6 text-center">
+      <img src="images/leca.png" alt="Leça FC" class="w-24 h-24 md:w-32 md:h-32 mx-auto" />
+    </a>
+
+    <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white text-center mb-4 tracking-tight">
+      PALMARÉS
+    </h1>
+    <p class="text-lg md:text-xl text-white/90 text-center mb-12 max-w-3xl mx-auto">
+      A história das conquistas do Leça FC, do futebol às modalidades.
+    </p>
+
+    <!-- Tabs -->
+    <div class="flex justify-center gap-3 mb-12">
+      <button id="tab-futebol" onclick="showTab('futebol')"
+        class="tab-btn px-6 py-3 rounded-full font-bold text-sm transition-all bg-white text-emerald-700 shadow-lg">
+        <i class="fa-solid fa-futbol mr-2"></i>Futebol
+      </button>
+      <button id="tab-modalidades" onclick="showTab('modalidades')"
+        class="tab-btn px-6 py-3 rounded-full font-bold text-sm transition-all bg-white/20 text-white hover:bg-white/30">
+        <i class="fa-solid fa-medal mr-2"></i>Modalidades
+      </button>
+    </div>
+
+    <!-- Futebol Timeline -->
+    <div id="section-futebol" class="max-w-4xl w-full mx-auto">
+      <div class="relative">
+        <div class="timeline-line hidden md:block"></div>
+        <div class="space-y-8">
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">2021/22</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Quartos de Final da Taça de Portugal</h3>
+                <p class="text-gray-500 text-sm mt-2">Brilhante percurso na Taça de Portugal, eliminando adversários de escalões superiores e levando o nome do Leça FC à ronda de oito equipas, repetindo a façanha de 1994/95.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">2017/18</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão AF Porto Divisão de Elite Pro-Nacional <span class="font-normal text-emerald-600">(1º Nível Distrital)</span></h3>
+                <p class="text-gray-500 text-sm mt-2">Conquista do principal título distrital da AF Porto, relançando a ambição de regressar ao futebol nacional após anos de reconstrução.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">2006/07</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão III Divisão Série B <span class="font-normal text-emerald-600">(4º Nível Nacional)</span></h3>
+                <p class="text-gray-500 text-sm mt-2">Título no quarto nível nacional que assinalou o relançamento do projeto desportivo do Leça FC após um período de reestruturação.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1995 — 1998</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Quatro Épocas na I Divisão Nacional</h3>
+                <p class="text-gray-500 text-sm mt-2">O período mais alto da história do futebol lequense. Quatro presenças consecutivas na elite, com destaque para o 12º lugar em 1997/98 e participação na Europa via Taça UEFA.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1994/95</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão 2ª Divisão de Honra · Quartos de Final da Taça de Portugal <span class="font-normal text-emerald-600">(2º Nível Nacional)</span></h3>
+                <p class="text-gray-500 text-sm mt-2">Época dupla: conquista do segundo escalão nacional e chegada histórica aos quartos de final da Taça de Portugal, com eliminação de adversários de divisões superiores.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1992/93</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão II Divisão B <span class="font-normal text-emerald-600">(3º Nível Nacional)</span></h3>
+                <p class="text-gray-500 text-sm mt-2">Título decisivo que abriu caminho para a gloriosa subida à I Divisão, lançando o período mais áureo do futebol sénior lequense.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1980/81 · 1991/92</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Vencedor de Série — III Divisão Nacional Série B <span class="font-normal text-emerald-600">(3º Nível Nacional)</span></h3>
+                <p class="text-gray-500 text-sm mt-2">Duas conquistas de série no terceiro escalão que mantiveram o Leça FC activo no futebol nacional ao longo de uma década de trabalho.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1977/78</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão 1ª Divisão Distrital — AF Porto <span class="font-normal text-emerald-600">(1º Nível Distrital)</span></h3>
+                <p class="text-gray-500 text-sm mt-2">Título distrital de máximo prestígio, coroando uma das melhores equipas da AF Porto nessa época e abrindo portas ao futebol nacional.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1962 — 1970</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">8 Presenças na Taça Ribeiro dos Reis</h3>
+                <p class="text-gray-500 text-sm mt-2">Participação regular ao longo de uma década numa das mais tradicionais competições de futebol da região norte, símbolo da solidez do clube.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1961/62</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Vencedor do Torneio Competência Norte — II Divisão</h3>
+                <p class="text-gray-500 text-sm mt-2">Troféu regional que confirmou o estatuto do Leça como uma das forças do norte do país no segundo escalão nacional.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1952/53 · 1954/55</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Vencedor de Série — III Divisão Nacional <span class="font-normal text-emerald-600">(3º Nível Nacional)</span></h3>
+                <p class="text-gray-500 text-sm mt-2">Duas conquistas de série no terceiro nível nacional, demonstrando a regularidade do Leça FC no futebol português dos anos 50.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1948/49 · 1985/86</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Vice-campeão da AF Porto</h3>
+                <p class="text-gray-500 text-sm mt-2">Duas chegadas ao segundo lugar distrital separadas por quatro décadas, mostrando a consistência do clube no panorama da AF Porto.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1942/43</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Vencedor de Série — II Divisão Grupo A <span class="font-normal text-emerald-600">(2º Nível Nacional)</span></h3>
+                <p class="text-gray-500 text-sm mt-2">Nova conquista no segundo nível nacional que manteve o Leça FC na luta contínua pelos escalões superiores do futebol português.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1941/42</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Estreia na I Divisão Nacional</h3>
+                <p class="text-gray-500 text-sm mt-2">Marco histórico: primeira presença no principal escalão do futebol português, culminando anos de crescimento e ambição do clube.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1940/41</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão II Divisão Douro Litoral <span class="font-normal text-emerald-600">(2º Nível Nacional)</span></h3>
+                <p class="text-gray-500 text-sm mt-2">Título de nível nacional que abriu as portas ao principal escalão do futebol português pela primeira vez na história do clube.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1928/29</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Quartos de Final — Campeonato de Portugal</h3>
+                <p class="text-gray-500 text-sm mt-2">Cinco presenças na prova rainha do futebol nacional, com destaque para a chegada aos quartos de final em 1928/29, o equivalente da época à atual Taça de Portugal.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="text-xs font-black text-emerald-700 uppercase tracking-widest">1922/23</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão do Campeonato da Promoção do Porto</h3>
+                <p class="text-gray-500 text-sm mt-2">Primeira grande conquista do clube, vencendo o campeonato de promoção da AF Porto num período de afirmação do futebol nacional.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Futebol Sénior</span></div>
+          </div>
+
+          <div class="flex justify-center pt-4">
+            <p class="text-white/50 text-xs text-center max-w-sm">
+              Palmarés histórico compilado com base nos registos do clube. Informação sujeita a validação com o arquivo oficial.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Modalidades Timeline -->
+    <div id="section-modalidades" class="max-w-4xl w-full mx-auto hidden">
+      <div class="relative">
+        <div class="timeline-line hidden md:block"></div>
+        <div class="space-y-8">
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">2024</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Nacional 1ª Divisão Carambola</h3>
+                <p class="text-gray-500 text-sm mt-2">O título mais recente do clube, conquistado na máxima divisão nacional de carambola, fruto de anos de trabalho e dedicação.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Bilhar</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Bilhar</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">2016</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Vice-campeão Nacional</h3>
+                <p class="text-gray-500 text-sm mt-2">Prata nacional na mesma temporada da Taça, reforçando o estatuto de clube de elite no bilhar português.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">2016</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Vencedor Taça de Portugal às 3 Tabelas (Carambola)</h3>
+                <p class="text-gray-500 text-sm mt-2">Conquista da Taça de Portugal na variante carambola, afirmando a versatilidade e excelência do bilhar do Leça.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Bilhar</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Bilhar</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">2007/08</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Finalista Taça de Portugal — Bilhar às 3 Tabelas Equipas</h3>
+                <p class="text-gray-500 text-sm mt-2">Chegada à final da Taça de Portugal na mesma época do título nacional, demonstrando a qualidade excecional da equipa.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">2007/08</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Nacional — Bilhar às 3 Tabelas Equipas</h3>
+                <p class="text-gray-500 text-sm mt-2">Primeiro título nacional no bilhar, coroando anos de dedicação à modalidade e consolidando o Leça no panorama nacional.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Bilhar</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Atletismo</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">2004</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">1º Lugar Coletivo — II Grande Prémio Atletismo Vilar Pinheiro Juvenis Masculino</h3>
+                <p class="text-gray-500 text-sm mt-2">Melhor classificação coletiva entre jovens atletas, num grande prémio regional que reuniu os melhores do distrito.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1999</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Nacional</h3>
+                <p class="text-gray-500 text-sm mt-2">Título nacional que marcou a incursão bem-sucedida do Leça FC nas artes marciais de contacto.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Kickboxing</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Futebol de Mesa</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1999</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">1º Classificado Equipas — Open Internacional</h3>
+                <p class="text-gray-500 text-sm mt-2">Conquista do open internacional por equipas, numa modalidade de grande exigência técnica e estratégica.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">anos 90</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Vencedor de torneios internacionais</h3>
+                <p class="text-gray-500 text-sm mt-2">Participação e vitória em torneios por toda a Europa, levando o nome do Leça FC além-fronteiras.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Subbuteo</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Subbuteo</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">anos 90</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Dois atletas Vice-campeões do Mundo</h3>
+                <p class="text-gray-500 text-sm mt-2">Dois atletas do Leça a um passo do título mundial, numa modalidade em que o clube se afirmou como potência europeia.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1998</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">2º Lugar Masculino — I Open Matosinhos Bodyboard</h3>
+                <p class="text-gray-500 text-sm mt-2">Presença sólida na vertente masculina, numa época de glória para o surf e bodyboard lequense.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Surf e Bodyboard</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Surf e Bodyboard</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1998</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">1º Lugar Feminino — I Open Matosinhos Bodyboard</h3>
+                <p class="text-gray-500 text-sm mt-2">Destaque feminino na primeira edição do Open de Matosinhos, reforçando a hegemonia do clube na modalidade.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1998</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Europeu — Atleta Rui Ferreira</h3>
+                <p class="text-gray-500 text-sm mt-2">Título europeu conquistado pelo atleta Rui Ferreira, colocando o Leça FC no mapa do bodyboard continental.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Surf e Bodyboard</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Surf e Bodyboard</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1997</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Nacional por Equipas</h3>
+                <p class="text-gray-500 text-sm mt-2">Bicampeonato nacional por equipas, confirmando o Leça FC como a maior força do surf português da época.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1996</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Nacional por Equipas</h3>
+                <p class="text-gray-500 text-sm mt-2">Primeiro título nacional numa modalidade que aproveitou a privilegiada localização do clube junto ao mar.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Surf e Bodyboard</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Andebol</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1995/96</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Regional 1ª Divisão Séniores Masculinos</h3>
+                <p class="text-gray-500 text-sm mt-2">O ponto mais alto do andebol lequense, com a conquista do mais importante título regional sénior.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1995</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">1º Classificado — II Torneio Andebol Leça FC</h3>
+                <p class="text-gray-500 text-sm mt-2">Vitória no próprio torneio organizado pelo clube, afirmando o Leça como referência regional da modalidade.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Andebol</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Andebol</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1994/95</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Regional 2ª Divisão</h3>
+                <p class="text-gray-500 text-sm mt-2">Mais um título regional numa época de dupla conquista para o andebol do Leça FC.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1994/95</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Regional 3ª Divisão Iniciados Masculinos</h3>
+                <p class="text-gray-500 text-sm mt-2">Conquista que revelou a solidez da formação de andebol, com jovens atletas a destacarem-se na região.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Andebol</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Andebol</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1979</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Subida à 1ª Divisão Regional AD Porto · Vencedor da Taça Disciplina</h3>
+                <p class="text-gray-500 text-sm mt-2">Época memorável com promoção ao principal escalão regional e galardão pela exemplar conduta desportiva.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1978</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão III Divisão Nacional</h3>
+                <p class="text-gray-500 text-sm mt-2">Promoção histórica ao nível nacional, consolidando o Leça FC no panorama do basquetebol português.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Basquetebol</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Basquetebol</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1977/78</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Regional 2ª Divisão Séniores Masculinos</h3>
+                <p class="text-gray-500 text-sm mt-2">Regresso ao topo regional após anos de trabalho contínuo no basquetebol sénior masculino.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1968</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">1º Classificado — Torneio Quadrangular Juniores</h3>
+                <p class="text-gray-500 text-sm mt-2">Vitória no torneio quadrangular que evidenciou a qualidade das camadas jovens do basquetebol.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Basquetebol</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Andebol</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1965/66</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Regional 2ª Divisão Séniores Masculinos</h3>
+                <p class="text-gray-500 text-sm mt-2">Primeira grande conquista do andebol do Leça, lançando as bases de um percurso de sucesso regional.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1963/64</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Regional</h3>
+                <p class="text-gray-500 text-sm mt-2">Título regional alcançado numa das épocas douradas do basquetebol lequense.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Basquetebol</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Basquetebol</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1961/62</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Taça de Honra Matosinhos</h3>
+                <p class="text-gray-500 text-sm mt-2">Distinção regional que reconheceu a crescente qualidade do basquetebol do Leça FC.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1947</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Regional II Divisão</h3>
+                <p class="text-gray-500 text-sm mt-2">Consolidação do voleibol no clube, com mais um título regional alcançado na mesma época de ouro.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Voleibol</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Voleibol</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">anos 40</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão — Voleibol Feminino</h3>
+                <p class="text-gray-500 text-sm mt-2">Pioneirismo feminino no desporto lequense, numa época em que o voleibol dava os primeiros passos no país.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1945</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Regional 2ª Divisão</h3>
+                <p class="text-gray-500 text-sm mt-2">Conquista regional que marcou a presença do Leça FC numa das modalidades mais populares da época.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Hóquei em Campo</span></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right"><span class="text-white/60 font-bold text-sm">Basquetebol</span></div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1944/45</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">Campeão Regional 2ª Divisão</h3>
+                <p class="text-gray-500 text-sm mt-2">Título conquistado numa época de afirmação da modalidade no clube, que crescia para além do futebol.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-center gap-4 md:gap-0">
+            <div class="md:w-1/2 md:pr-12 md:text-right">
+              <div class="card p-6 rounded-2xl inline-block w-full">
+                <span class="block text-xs font-black text-emerald-700 uppercase tracking-widest">1926</span>
+                <h3 class="text-lg font-black text-gray-900 mt-1">2º Prémio — Travessia de Leixões</h3>
+                <p class="text-gray-500 text-sm mt-2">Uma das primeiras distinções do clube em competição aquática, na histórica travessia da baía de Leixões.</p>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center justify-center z-10"><div class="timeline-dot"></div></div>
+            <div class="md:w-1/2 md:pl-12"><span class="text-white/60 font-bold text-sm">Natação</span></div>
+          </div>
+
+          <div class="flex justify-center pt-4">
+            <p class="text-white/50 text-xs text-center max-w-sm">
+              Conquistas sem data exata apresentadas pela época aproximada. Informação sujeita a validação com o arquivo do clube.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+        <div class="text-center mt-16">
+      <a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar ao início
+      </a>
+    </div>
+
+    <footer class="text-center text-white/70 text-sm mt-12">
+      <p class="mb-2">Vive a paixão do Leça FC.</p>
+      <p class="mb-4">Contacta: <a href="mailto:geral@lecafc.pt" class="text-white underline hover:text-white/90">geral@lecafc.pt</a></p>
+      <p>© <span id="year"></span> Leça Futebol Clube.</p>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    function showTab(tab) {
+      const isFutebol = tab === 'futebol';
+      document.getElementById('section-futebol').classList.toggle('hidden', !isFutebol);
+      document.getElementById('section-modalidades').classList.toggle('hidden', isFutebol);
+
+      document.getElementById('tab-futebol').className = isFutebol
+        ? 'tab-btn px-6 py-3 rounded-full font-bold text-sm transition-all bg-white text-emerald-700 shadow-lg'
+        : 'tab-btn px-6 py-3 rounded-full font-bold text-sm transition-all bg-white/20 text-white hover:bg-white/30';
+      document.getElementById('tab-modalidades').className = isFutebol
+        ? 'tab-btn px-6 py-3 rounded-full font-bold text-sm transition-all bg-white/20 text-white hover:bg-white/30'
+        : 'tab-btn px-6 py-3 rounded-full font-bold text-sm transition-all bg-white text-emerald-700 shadow-lg';
+    }
+  </script>
+</body>
+</html>

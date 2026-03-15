@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9ZCGD46H8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-P9ZCGD46H8');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Museu - Universo Leça FC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              50: '#e6f2f0',
+              100: '#cce5e1',
+              200: '#99cbc3',
+              300: '#66b1a5',
+              400: '#339787',
+              500: '#056b57',
+              600: '#045a4a',
+              700: '#034638',
+              800: '#022e26',
+              900: '#011713'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="min-h-screen flex flex-col px-4 py-12">
+    <a href="index.html" class="mb-6 text-center">
+      <img src="images/leca.png" alt="Leça FC" class="w-24 h-24 md:w-32 md:h-32 mx-auto" />
+    </a>
+
+    <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white text-center mb-4 tracking-tight">
+      MUSEU LEÇA FC
+    </h1>
+
+    <p class="text-lg md:text-xl text-white/90 text-center mb-10 max-w-3xl mx-auto">
+      Descobre momentos marcantes da nossa história. Nesta página, cada ponto do percurso do museu pode ser acedido por QR code.
+    </p>
+
+    <div class="max-w-6xl w-full mx-auto mb-8">
+      <div class="card p-8 rounded-2xl">
+        <div class="flex items-center gap-3 mb-4">
+          <i class="fa-solid fa-landmark text-3xl text-emerald-700"></i>
+          <h2 class="text-3xl font-black text-gray-900">Sobre o Museu</h2>
+        </div>
+        <p class="text-gray-700 leading-relaxed">
+          O Museu do Leça FC preserva a memória do clube e da comunidade leceira. Aqui podes revisitar conquistas,
+          personagens históricas, equipamentos icónicos e episódios que construíram a identidade do nosso emblema.
+          Ao longo da visita, encontra os QR codes e abre os conteúdos multimédia no teu telemóvel.
+        </p>
+      </div>
+    </div>
+
+    <div class="max-w-6xl w-full mx-auto">
+      <div class="flex items-center gap-3 mb-5 px-2">
+        <i class="fa-solid fa-qrcode text-2xl text-white"></i>
+        <h2 class="text-2xl md:text-3xl font-black text-white">Momentos em Vídeo</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <a href="museu-video.html?id=evolucao" class="card p-6 rounded-2xl hover:scale-[1.02] transition-transform">
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
+              <i class="fa-solid fa-futbol"></i>
+              FUTEBOL
+            </span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-emerald-700"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">A Evolução do Futebol</h3>
+          <p class="text-gray-600 text-sm">Como o jogo mudou ao longo das décadas, vista pela perspetiva do Leça FC.</p>
+        </a>
+
+        <a href="museu-video.html?id=constantino" class="card p-6 rounded-2xl hover:scale-[1.02] transition-transform">
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
+              <i class="fa-solid fa-microphone"></i>
+              ENTREVISTA
+            </span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-emerald-700"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Entrevista com o Constantino</h3>
+          <p class="text-gray-600 text-sm">Uma das figuras históricas do futebol do Leça partilha as suas memórias.</p>
+        </a>
+
+        <a href="museu-video.html?id=socio" class="card p-6 rounded-2xl hover:scale-[1.02] transition-transform">
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
+              <i class="fa-solid fa-id-card"></i>
+              SÓCIO
+            </span>
+            <i class="fa-solid fa-arrow-up-right-from-square text-emerald-700"></i>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">Entrevista com Leonardo Soares</h3>
+          <p class="text-gray-600 text-sm">O segundo sócio mais antigo do clube partilha décadas de história e paixão pelo Leça FC.</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="text-center mt-12">
+      <a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar ao início
+      </a>
+    </div>
+
+    <footer class="text-center text-white/70 text-sm mt-12">
+      <p class="mb-2">Vive a paixão do Leça FC.</p>
+      <p class="mb-4">Contacta: <a href="mailto:geral@lecafc.pt" class="text-white underline hover:text-white/90">geral@lecafc.pt</a></p>
+      <p>© <span id="year"></span> Leça Futebol Clube - Museu.</p>
+    </footer>
+  </div>
+
+  <script src="museu.js"></script>
+</body>
+</html>
