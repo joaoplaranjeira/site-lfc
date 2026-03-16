@@ -7,14 +7,14 @@ const museumVideos = {
     poster: 'videos/evolucao.jpg'
   },
   constantino: {
-    title: 'Entrevista com o Constantino',
+    title: 'Entrevista Constantino Jardim',
     intro: 'Uma das figuras históricas do futebol do Leça FC partilha as suas memórias e vivências do clube.',
     description: 'O Constantino recorda momentos marcantes, personagens inesquecíveis e o que significa carregar as cores verde e branca.',
     videoSrc: 'videos/constantino.mp4',
     poster: 'videos/constantino.jpg'
   },
   socio: {
-    title: 'Entrevista com Leonardo Soares',
+    title: 'Entrevista Leonardo Soares',
     intro: 'Uma conversa única com Leonardo Soares, o segundo sócio mais antigo do Leça FC.',
     description: 'Leonardo Soares partilha décadas de história, de paixão e de pertença ao Leça FC — uma memória viva do clube.',
     videoSrc: 'videos/leonardo_soares.mp4',
