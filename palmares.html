@@ -60,8 +60,47 @@
       flex-shrink: 0;
     }
     @media (max-width: 767px) {
+      /* Mostrar a linha da timeline à esquerda no mobile */
       .timeline-line {
-        left: 20px;
+        display: block !important;
+        left: 8px;
+        transform: none;
+        width: 2px;
+      }
+
+      /* Cada entrada da timeline: espaço à esquerda para a linha + ponto */
+      .space-y-8 > .flex {
+        padding-left: 36px;
+        position: relative;
+        align-items: flex-start !important;
+      }
+
+      /* Ponto como pseudo-elemento no mobile */
+      .space-y-8 > .flex::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 20px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #034638;
+        border: 3px solid white;
+        box-shadow: 0 0 0 3px #034638;
+        z-index: 10;
+      }
+
+      /* Esconder as divs com apenas o label (sem card), deixando só os cards visíveis */
+      .space-y-8 > .flex > div:not(:has(.card)):not(.hidden) {
+        display: none;
+      }
+
+      /* Card ocupa toda a largura e fica alinhado à esquerda */
+      .space-y-8 > .flex > div:has(.card) {
+        width: 100% !important;
+        text-align: left !important;
+        padding-right: 0 !important;
+        padding-left: 0 !important;
       }
     }
   </style>
