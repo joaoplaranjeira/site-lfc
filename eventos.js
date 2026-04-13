@@ -235,6 +235,25 @@ const eventsData = {
       status: "completed",
       image: null,
       link: null
+    },
+    {
+      id: 20,
+      title: "Cerimónia de Entrega dos Cartões de Platina, Ouro e Prata",
+      date: "2026-05-09",
+      time: "A definir",
+      location: "A definir",
+      description: "Cerimónia de entrega dos cartões de reconhecimento de Platina, Ouro e Prata aos sócios.",
+      type: "default",
+      status: "upcoming",
+      image: null,
+      link: null,
+      alerts: [
+        {
+          type: "important",
+          title: "Nota aos Sócios",
+          message: "Os sócios com mais de 25 anos de associado deve atualizar o seu contacto e foto até dia 20 de Abril em www.lecafutebolclube.com ou através do número 913 467 588."
+        }
+      ]
     }
   ],
   institucionais: [
@@ -450,6 +469,67 @@ function formatDate(dateString) {
 }
 
 // Get event type icon
+// Render alert/notification banners for events
+function renderEventAlerts(alerts) {
+  if (!alerts || alerts.length === 0) return '';
+  
+  const alertStyles = {
+    info: {
+      bg: 'bg-blue-50',
+      border: 'border-blue-200',
+      icon: 'fa-circle-info',
+      iconBg: 'bg-blue-100',
+      iconColor: 'text-blue-600',
+      titleColor: 'text-blue-900',
+      textColor: 'text-blue-800'
+    },
+    warning: {
+      bg: 'bg-amber-50',
+      border: 'border-amber-200',
+      icon: 'fa-triangle-exclamation',
+      iconBg: 'bg-amber-100',
+      iconColor: 'text-amber-600',
+      titleColor: 'text-amber-900',
+      textColor: 'text-amber-800'
+    },
+    important: {
+      bg: 'bg-orange-50',
+      border: 'border-orange-200',
+      icon: 'fa-bell',
+      iconBg: 'bg-orange-100',
+      iconColor: 'text-orange-600',
+      titleColor: 'text-orange-900',
+      textColor: 'text-orange-800'
+    },
+    success: {
+      bg: 'bg-emerald-50',
+      border: 'border-emerald-200',
+      icon: 'fa-circle-check',
+      iconBg: 'bg-emerald-100',
+      iconColor: 'text-emerald-600',
+      titleColor: 'text-emerald-900',
+      textColor: 'text-emerald-800'
+    }
+  };
+  
+  return alerts.map(alert => {
+    const style = alertStyles[alert.type] || alertStyles.info;
+    return `
+      <div class="${style.bg} ${style.border} border rounded-lg p-4 mb-3">
+        <div class="flex items-start gap-3">
+          <div class="${style.iconBg} rounded-full p-2 flex-shrink-0">
+            <i class="fa-solid ${style.icon} ${style.iconColor} text-sm"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="font-bold ${style.titleColor} text-sm mb-1">${alert.title}</h4>
+            <p class="${style.textColor} text-sm leading-relaxed">${alert.message}</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
 function getEventIcon(type) {
   const icons = {
     'jantar': 'fa-utensils',
@@ -523,6 +603,7 @@ function renderEventCard(event) {
             </div>
           </div>
           <p class="text-gray-600 text-sm mb-4 line-clamp-3">${event.description}</p>
+          ${renderEventAlerts(event.alerts)}
           ${registrationUnavailableMessage}
           <div class="flex flex-wrap gap-3">
             ${event.link ? `
