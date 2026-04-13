@@ -7,7 +7,7 @@
   const sessions = [
     { id: 'session1-badge', date: new Date('2025-11-12') },
     { id: 'session2-badge', date: new Date('2026-02-11') },
-    { id: 'session3-badge', date: new Date('2026-04-01') }, // Placeholder for April
+    { id: 'session3-badge', date: new Date('2026-05-14') }, // Formação Futebol
     { id: 'session4-badge', date: new Date('2026-06-01') }  // Placeholder for June
   ];
   
