@@ -251,7 +251,7 @@ const eventsData = {
         {
           type: "important",
           title: "Nota aos Sócios",
-          message: "Os sócios com mais de 25 anos de associado deve atualizar o seu contacto e foto até dia 20 de Abril em www.lecafutebolclube.com ou através do número 913 467 588."
+          message: "Os sócios com mais de 25 anos de associado devem atualizar o seu contacto e foto até dia 20 de Abril em www.lecafutebolclube.com ou através do número 913 467 588."
         }
       ]
     }
