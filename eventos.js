@@ -237,11 +237,26 @@ const eventsData = {
       link: null
     },
     {
+      id: 21,
+      title: "Visita Guiada ao Museu Custódio Antunes",
+      date: "2026-05-16",
+      time: "11:00",
+      location: "Museu Custódio Antunes (Pavilhão Custódio Antunes)",
+      description: "Mergulha na história do Leça FC! Junta-te a nós numa visita guiada ao Museu Custódio Antunes e descobre os momentos, figuras e conquistas que moldaram a identidade do nosso clube ao longo de mais de um século.",
+      type: "default",
+      status: "upcoming",
+      image: null,
+      link: null,
+      registration: {
+        eventCode: "EVT-002"
+      }
+    },
+    {
       id: 20,
       title: "Cerimónia de Entrega dos Cartões de Platina, Ouro e Prata",
       date: "2026-05-09",
-      time: "A definir",
-      location: "A definir",
+      time: "10:00 - 13:00",
+      location: "Museu Custódio Antunes (Pavilhão Custódio Antunes)",
       description: "Cerimónia de entrega dos cartões de reconhecimento de Platina, Ouro e Prata aos sócios.",
       type: "default",
       status: "upcoming",
