@@ -60,7 +60,10 @@
           spellcheck="false"
           class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-emerald-500 outline-none text-gray-900 font-mono text-lg text-center tracking-widest uppercase transition-colors"
         />
-        <p id="access-error" class="text-red-600 text-sm text-center hidden">Código inválido. Tenta novamente.</p>
+        <div id="access-error" class="hidden items-center gap-2 px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm">
+          <i class="fa-solid fa-circle-exclamation flex-shrink-0"></i>
+          <span id="access-error-text">Código inválido. Por favor, tenta novamente.</span>
+        </div>
         <button
           type="submit"
           id="access-submit"

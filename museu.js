@@ -3,6 +3,15 @@ const MUSEUM_CONTEXT_TYPE = 'Museum';
 const MUSEUM_CONTEXT_ID = '1';
 const SESSION_KEY = 'museu_access_granted';
 
+const ERROR_MESSAGES = {
+  'invalid access code': 'Código inválido. Por favor, tenta novamente.',
+  'código de acesso inválido': 'Código inválido. Por favor, tenta novamente.',
+  'código de acesso revogado': 'Este código foi revogado e já não pode ser utilizado.',
+  'código de acesso expirado': 'Este código expirou e já não é válido.',
+  'código de acesso atingiu o limite de utilizações': 'Este código já atingiu o número máximo de utilizações.',
+  'código de acesso inválido para este contexto': 'Código inválido. Por favor, tenta novamente.',
+};
+
 async function validateAccessCode(code) {
   const response = await fetch(`${ACCESS_API_BASE}/api/AccessCode/validate`, {
     method: 'POST',
@@ -13,7 +22,17 @@ async function validateAccessCode(code) {
       contextId: MUSEUM_CONTEXT_ID,
     }),
   });
-  return response.ok;
+
+  if (response.ok) return { valid: true };
+
+  let friendlyMessage = 'Código inválido. Por favor, tenta novamente.';
+  try {
+    const data = await response.json();
+    const raw = (data?.content?.message || data?.message || '').toLowerCase();
+    friendlyMessage = ERROR_MESSAGES[raw] || friendlyMessage;
+  } catch { /* use default message */ }
+
+  return { valid: false, message: friendlyMessage };
 }
 
 function grantAccess() {
@@ -43,17 +62,20 @@ function grantAccess() {
     submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> A verificar...';
 
     try {
-      const valid = await validateAccessCode(code);
-      if (valid) {
+      const result = await validateAccessCode(code);
+      if (result.valid) {
         grantAccess();
       } else {
+        document.getElementById('access-error-text').textContent = result.message;
         error.classList.remove('hidden');
+        error.classList.add('flex');
         input.value = '';
         input.focus();
       }
     } catch {
-      error.textContent = 'Erro de ligação. Tenta novamente.';
+      document.getElementById('access-error-text').textContent = 'Erro de ligação. Tenta novamente.';
       error.classList.remove('hidden');
+      error.classList.add('flex');
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerHTML = '<i class="fa-solid fa-unlock"></i> Entrar';
