@@ -19,6 +19,13 @@ const museumVideos = {
     description: 'Leonardo Soares partilha décadas de história, de paixão e de pertença ao Leça FC — uma memória viva do clube.',
     videoSrc: 'videos/leonardo_soares.mp4',
     poster: 'videos/leonardosoares.jpg'
+  },
+  luisgentil: {
+    title: 'Entrevista Luís Gentil',
+    intro: 'Um ex-jogador do Leça FC partilha as suas memórias de carreira e a ligação ao clube.',
+    description: 'Luís Gentil recorda os anos em que vestiu as cores verde e branca, os bastidores do futebol leceiro e os momentos que ficaram para sempre na sua memória.',
+    videoSrc: 'videos/luis_gentil.mp4',
+    poster: 'videos/luisgentil.jpg'
   }
 };
 
