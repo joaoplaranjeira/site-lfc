@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9ZCGD46H8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-P9ZCGD46H8');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hall of Fame — Museu Leça FC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    .hof-card {
+      position: relative;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1.5rem;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .hof-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 56px rgba(0,0,0,0.45);
+      border-color: rgba(5,107,87,0.45);
+    }
+    .hof-card-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #011713;
+      position: relative;
+      overflow: hidden;
+    }
+    .hof-card-thumb video,
+    .hof-card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .hof-play-btn {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.38);
+      transition: background 0.3s;
+    }
+    .hof-card:hover .hof-play-btn { background: rgba(0,0,0,0.18); }
+    .hof-play-circle {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      background: rgba(5,107,87,0.85);
+      border: 2px solid rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: #fff;
+      transition: transform 0.25s ease, background 0.25s;
+    }
+    .hof-card:hover .hof-play-circle {
+      transform: scale(1.12);
+      background: #056b57;
+    }
+    .hof-card-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .hof-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 0.85rem;
+    }
+    .badge-interview {
+      background: rgba(5,107,87,0.2);
+      border: 1px solid rgba(5,107,87,0.35);
+      color: #5ecfb1;
+    }
+    .badge-doc {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.55);
+    }
+    .hof-card-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    .hof-card-desc {
+      font-size: 0.84rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.65;
+      flex: 1;
+    }
+    .hof-card-cta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #5ecfb1;
+    }
+    .hof-card:hover .hof-card-cta { gap: 0.7rem; }
+    .hof-card-cta i { transition: transform 0.2s; }
+    .hof-card:hover .hof-card-cta i { transform: translateX(3px); }
+
+    /* Thumbnail fallback gradient */
+    .thumb-gradient-1 { background: linear-gradient(135deg, #011713 0%, #022e26 100%); }
+    .thumb-gradient-2 { background: linear-gradient(135deg, #022e26 0%, #034638 100%); }
+    .thumb-gradient-3 { background: linear-gradient(135deg, #034638 0%, #045a4a 100%); }
+    .thumb-gradient-4 { background: linear-gradient(135deg, #045a4a 0%, #056b57 100%); }
+
+    .thumb-icon {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: rgba(255,255,255,0.07);
+    }
+
+    /* Fade-in */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in.d1 { transition-delay: 0.1s; }
+    .fade-in.d2 { transition-delay: 0.2s; }
+    .fade-in.d3 { transition-delay: 0.3s; }
+    .fade-in.d4 { transition-delay: 0.4s; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header style="position: sticky; top: 0; z-index: 40; background: rgba(2,20,14,0.96); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(5,107,87,0.25);">
+    <div style="max-width: 1100px; margin: 0 auto; display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1.25rem;">
+      <a href="museu.html" style="display:inline-flex; align-items:center; gap:0.4rem; color:rgba(255,255,255,0.5); font-size:0.78rem; font-weight:600; letter-spacing:0.05em; text-decoration:none; padding:0.3rem 0.75rem; border-radius:9999px; border:1px solid rgba(255,255,255,0.1); transition:all 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.25)'" onmouseout="this.style.color='rgba(255,255,255,0.5)'; this.style.borderColor='rgba(255,255,255,0.1)'">
+        <i class="fa-solid fa-arrow-left"></i> Museu
+      </a>
+      <div style="width:1px; height:18px; background:rgba(255,255,255,0.1);"></div>
+      <span style="color:rgba(255,255,255,0.8); font-size:0.85rem; font-weight:700; letter-spacing:0.04em;">Hall of Fame</span>
+    </div>
+  </header>
+
+  <!-- Hero section -->
+  <section style="padding: 4.5rem 1.5rem 3rem; text-align: center;">
+    <a href="museu.html" style="display:inline-block; margin-bottom:1.5rem;">
+      <img src="images/leca.png" alt="Leça FC" width="68" height="68" style="filter: drop-shadow(0 6px 18px rgba(0,0,0,0.5));" />
+    </a>
+    <h1 class="fade-in" style="font-size: clamp(2.2rem, 7vw, 4rem); font-weight: 900; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1rem;">
+      Hall of Fame
+    </h1>
+    <p class="fade-in d1" style="font-size: 1.05rem; color: rgba(255,255,255,0.6); max-width: 560px; margin: 0 auto; line-height: 1.7;">
+      Sócios e antigos atletas do clube dão voz e imagem à história. Testemunhos reais, memórias únicas.
+    </p>
+
+    <!-- Divider -->
+    <div style="width: 48px; height: 3px; background: #056b57; border-radius: 9999px; margin: 2rem auto 0;"></div>
+  </section>
+
+  <!-- Cards grid -->
+  <main style="max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem 5rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+
+      <!-- Entrevista: Constantino Jardim -->
+      <a href="museu-video.html?id=constantino" class="hof-card fade-in d1">
+        <div class="hof-card-thumb thumb-gradient-1">
+          <div class="thumb-icon"><i class="fa-solid fa-user-tie"></i></div>
+          <img src="videos/constantino.jpg" alt="Constantino Jardim" onerror="this.style.display='none'" loading="lazy" />
+          <div class="hof-play-btn"><div class="hof-play-circle"><i class="fa-solid fa-play" style="margin-left:3px"></i></div></div>
+        </div>
+        <div class="hof-card-body">
+          <span class="hof-badge badge-interview"><i class="fa-solid fa-microphone"></i> Entrevista</span>
+          <div class="hof-card-title">Constantino Jardim</div>
+          <p class="hof-card-desc">Uma das figuras históricas do futebol do Leça FC partilha as suas memórias e vivências do clube.</p>
+          <div class="hof-card-cta">Ver entrevista <i class="fa-solid fa-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- Entrevista: Leonardo Soares -->
+      <a href="museu-video.html?id=socio" class="hof-card fade-in d2">
+        <div class="hof-card-thumb thumb-gradient-2">
+          <div class="thumb-icon"><i class="fa-solid fa-id-card"></i></div>
+          <img src="videos/leonardosoares.jpg" alt="Leonardo Soares" onerror="this.style.display='none'" loading="lazy" />
+          <div class="hof-play-btn"><div class="hof-play-circle"><i class="fa-solid fa-play" style="margin-left:3px"></i></div></div>
+        </div>
+        <div class="hof-card-body">
+          <span class="hof-badge badge-interview"><i class="fa-solid fa-microphone"></i> Entrevista</span>
+          <div class="hof-card-title">Leonardo Soares</div>
+          <p class="hof-card-desc">O segundo sócio mais antigo do clube partilha décadas de história, de paixão e de pertença ao Leça FC.</p>
+          <div class="hof-card-cta">Ver entrevista <i class="fa-solid fa-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- Entrevista: Luís Gentil -->
+      <a href="museu-video.html?id=luisgentil" class="hof-card fade-in d3">
+        <div class="hof-card-thumb thumb-gradient-3">
+          <div class="thumb-icon"><i class="fa-solid fa-futbol"></i></div>
+          <img src="videos/luisgentil.jpg" alt="Luís Gentil" onerror="this.style.display='none'" loading="lazy" />
+          <div class="hof-play-btn"><div class="hof-play-circle"><i class="fa-solid fa-play" style="margin-left:3px"></i></div></div>
+        </div>
+        <div class="hof-card-body">
+          <span class="hof-badge badge-interview"><i class="fa-solid fa-microphone"></i> Entrevista</span>
+          <div class="hof-card-title">Luís Gentil</div>
+          <p class="hof-card-desc">Um ex-jogador do Leça FC recorda os anos em que vestiu as cores verde e branca e os momentos que ficaram para sempre na sua memória.</p>
+          <div class="hof-card-cta">Ver entrevista <i class="fa-solid fa-arrow-right"></i></div>
+        </div>
+      </a>
+
+      <!-- Documentário: A Evolução do Futebol -->
+      <a href="museu-video.html?id=evolucao" class="hof-card fade-in d4">
+        <div class="hof-card-thumb thumb-gradient-4">
+          <div class="thumb-icon"><i class="fa-solid fa-film"></i></div>
+          <img src="videos/evolucao.jpg" alt="A Evolução do Futebol" onerror="this.style.display='none'" loading="lazy" />
+          <div class="hof-play-btn"><div class="hof-play-circle"><i class="fa-solid fa-play" style="margin-left:3px"></i></div></div>
+        </div>
+        <div class="hof-card-body">
+          <span class="hof-badge badge-doc"><i class="fa-solid fa-clapperboard"></i> Documentário</span>
+          <div class="hof-card-title">A Evolução do Futebol</div>
+          <p class="hof-card-desc">Como o jogo mudou ao longo das décadas — regras, equipamentos, táticas — vista pela perspetiva do Leça FC.</p>
+          <div class="hof-card-cta">Ver vídeo <i class="fa-solid fa-arrow-right"></i></div>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="text-align:center; padding:2rem 1.5rem 4rem; border-top: 1px solid rgba(5,107,87,0.15);">
+    <a href="museu.html" style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.7rem 1.5rem; background:#056b57; color:#fff; font-weight:700; border-radius:9999px; text-decoration:none; font-size:0.9rem; transition:background 0.2s;" onmouseover="this.style.background='#034638'" onmouseout="this.style.background='#056b57'">
+      <i class="fa-solid fa-arrow-left"></i> Voltar ao Museu
+    </a>
+    <p style="color:rgba(255,255,255,0.2); font-size:0.75rem; margin-top:2.5rem;">© <span id="year"></span> Leça Futebol Clube</p>
+  </footer>
+
+  <script>
+    // Session guard
+    if (sessionStorage.getItem('museu_access_granted') !== '1') {
+      window.location.replace('museu.html');
+    }
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Fade-in on scroll
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    fadeEls.forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

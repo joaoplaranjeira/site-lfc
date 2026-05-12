@@ -77,103 +77,76 @@
   </div>
 
   <div id="page-content" class="hidden">
-  <div class="min-h-screen flex flex-col px-4 py-12">
-    <a href="index.html" class="mb-6 text-center">
-      <img src="images/leca.png" alt="Leça FC" class="w-24 h-24 md:w-32 md:h-32 mx-auto" />
-    </a>
 
-    <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white text-center mb-4 tracking-tight">
-      MUSEU LEÇA FC
-    </h1>
-
-    <p class="text-lg md:text-xl text-white/90 text-center mb-10 max-w-3xl mx-auto">
-      Descobre momentos marcantes da nossa história. Nesta página, cada ponto do percurso do museu pode ser acedido por QR code.
-    </p>
-
-    <div class="max-w-6xl w-full mx-auto mb-8">
-      <div class="card p-8 rounded-2xl">
-        <div class="flex items-center gap-3 mb-4">
-          <i class="fa-solid fa-landmark text-3xl text-emerald-700"></i>
-          <h2 class="text-3xl font-black text-gray-900">Sobre o Museu</h2>
-        </div>
-        <p class="text-gray-700 leading-relaxed">
-          O Museu do Leça FC preserva a memória do clube e da comunidade leceira. Aqui podes revisitar conquistas,
-          personagens históricas, equipamentos icónicos e episódios que construíram a identidade do nosso emblema.
-          Ao longo da visita, encontra os QR codes e abre os conteúdos multimédia no teu telemóvel.
+    <!-- Hero -->
+    <section class="relative flex flex-col items-center justify-center min-h-[50vh] py-20 px-4 overflow-hidden">
+      <div class="absolute inset-0 z-0" style="background-image: url('images/museum/timeline/01_fundacao_jornais.png'); background-size: cover; background-position: center; filter: blur(3px); transform: scale(1.05); opacity: 0.2;"></div>
+      <div class="absolute inset-0 z-0" style="background: linear-gradient(160deg, #022e26 0%, #034638 60%, #045a4a 100%);"></div>
+      <div class="relative z-10 flex flex-col items-center gap-5 text-center">
+        <a href="index.html">
+          <img src="images/leca.png" alt="Leça FC" class="w-20 h-20 md:w-24 md:h-24 drop-shadow-2xl" />
+        </a>
+        <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight drop-shadow-lg">
+          MUSEU LEÇA FC
+        </h1>
+        <p class="text-lg md:text-xl text-white/80 max-w-2xl leading-relaxed">
+          Mais de 100 anos de história verde e branca. Explora as secções e mergulha na memória do clube.
         </p>
       </div>
-    </div>
+    </section>
 
-    <div class="max-w-6xl w-full mx-auto">
-      <div class="flex items-center gap-3 mb-5 px-2">
-        <i class="fa-solid fa-qrcode text-2xl text-white"></i>
-        <h2 class="text-2xl md:text-3xl font-black text-white">Momentos em Vídeo</h2>
-      </div>
+    <!-- Subsections -->
+    <section class="max-w-5xl mx-auto w-full px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-6">
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <a href="museu-video.html?id=evolucao" class="card p-6 rounded-2xl hover:scale-[1.02] transition-transform">
-          <div class="flex items-center justify-between mb-4">
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
-              <i class="fa-solid fa-futbol"></i>
-              FUTEBOL
-            </span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-emerald-700"></i>
+      <!-- Timeline -->
+      <a href="museu-timeline.html" class="group relative overflow-hidden rounded-3xl min-h-[340px] flex flex-col justify-end cursor-pointer shadow-2xl" style="transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+        <div class="absolute inset-0 z-0" style="background-image: url('images/museum/timeline/01_fundacao_jornais.png'); background-size: cover; background-position: center;"></div>
+        <div class="absolute inset-0 z-0" style="background: linear-gradient(to top, rgba(2,46,38,0.95) 0%, rgba(3,70,56,0.6) 55%, rgba(3,70,56,0.1) 100%);"></div>
+        <div class="relative z-10 p-8">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4" style="background: rgba(5,107,87,0.85); color: white; letter-spacing: 0.05em;">
+            <i class="fa-solid fa-clock-rotate-left"></i> HISTÓRIA
+          </span>
+          <h2 class="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">Timeline</h2>
+          <p class="text-white/75 text-sm leading-relaxed mb-5">Percorre mais de 100 anos de história do clube, época a época, com imagens, textos e momentos marcantes.</p>
+          <div class="inline-flex items-center gap-2 text-emerald-300 font-semibold text-sm">
+            Explorar a história <i class="fa-solid fa-arrow-right"></i>
           </div>
-          <h3 class="text-xl font-bold text-gray-900 mb-2">A Evolução do Futebol</h3>
-          <p class="text-gray-600 text-sm">Como o jogo mudou ao longo das décadas, vista pela perspetiva do Leça FC.</p>
-        </a>
+        </div>
+      </a>
 
-        <a href="museu-video.html?id=constantino" class="card p-6 rounded-2xl hover:scale-[1.02] transition-transform">
-          <div class="flex items-center justify-between mb-4">
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
-              <i class="fa-solid fa-microphone"></i>
-              ENTREVISTA
-            </span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-emerald-700"></i>
+      <!-- Hall of Fame -->
+      <a href="museu-hall-of-fame.html" class="group relative overflow-hidden rounded-3xl min-h-[340px] flex flex-col justify-end cursor-pointer shadow-2xl" style="transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+        <div class="absolute inset-0 z-0" style="background: linear-gradient(135deg, #011713 0%, #022e26 50%, #034638 100%);"></div>
+        <div class="absolute inset-0 z-0 flex items-center justify-center">
+          <i class="fa-solid fa-trophy" style="font-size: 11rem; color: rgba(5,107,87,0.18); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -54%);"></i>
+        </div>
+        <div class="absolute inset-0 z-0" style="background: radial-gradient(ellipse at 70% 30%, rgba(5,107,87,0.25) 0%, transparent 60%);"></div>
+        <div class="relative z-10 p-8">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4" style="background: rgba(255,255,255,0.12); color: white; letter-spacing: 0.05em; border: 1px solid rgba(255,255,255,0.2);">
+            <i class="fa-solid fa-microphone"></i> ENTREVISTAS
+          </span>
+          <h2 class="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">Hall of Fame</h2>
+          <p class="text-white/75 text-sm leading-relaxed mb-5">Sócios e antigos atletas do clube dão voz e imagem à história. Testemunhos reais em vídeo.</p>
+          <div class="inline-flex items-center gap-2 text-emerald-300 font-semibold text-sm">
+            Ver entrevistas <i class="fa-solid fa-arrow-right"></i>
           </div>
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Entrevista com o Constantino</h3>
-          <p class="text-gray-600 text-sm">Uma das figuras históricas do futebol do Leça partilha as suas memórias.</p>
-        </a>
+        </div>
+      </a>
 
-        <a href="museu-video.html?id=socio" class="card p-6 rounded-2xl hover:scale-[1.02] transition-transform">
-          <div class="flex items-center justify-between mb-4">
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
-              <i class="fa-solid fa-microphone"></i>
-              ENTREVISTA
-            </span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-emerald-700"></i>
-          </div>
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Entrevista com Leonardo Soares</h3>
-          <p class="text-gray-600 text-sm">O segundo sócio mais antigo do clube partilha décadas de história e paixão pelo Leça FC.</p>
-        </a>
+    </section>
 
-        <a href="museu-video.html?id=luisgentil" class="card p-6 rounded-2xl hover:scale-[1.02] transition-transform">
-          <div class="flex items-center justify-between mb-4">
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
-              <i class="fa-solid fa-microphone"></i>
-              ENTREVISTA
-            </span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-emerald-700"></i>
-          </div>
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Entrevista com Luís Gentil</h3>
-          <p class="text-gray-600 text-sm">Um ex-jogador do Leça FC partilha as suas memórias de carreira e a ligação ao clube.</p>
-        </a>
-      </div>
-    </div>
-
-    <div class="text-center mt-12">
+    <div class="text-center pb-12">
       <a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
         <i class="fa-solid fa-arrow-left"></i>
         Voltar ao início
       </a>
     </div>
 
-    <footer class="text-center text-white/70 text-sm mt-12">
+    <footer class="text-center text-white/70 text-sm pb-12">
       <p class="mb-2">Vive a paixão do Leça FC.</p>
       <p class="mb-4">Contacta: <a href="mailto:geral@lecafc.pt" class="text-white underline hover:text-white/90">geral@lecafc.pt</a></p>
       <p>© <span id="year"></span> Leça Futebol Clube - Museu.</p>
     </footer>
-  </div>
 
   </div><!-- /page-content -->
 
