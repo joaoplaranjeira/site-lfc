@@ -42,7 +42,7 @@ const eventsData = {
       type: "default",
       status: "completed",
       image: null,
-      link: null
+      link: "galeria.html?id=jogo-estrelas-2026"
     },
     {
       id: 4,
@@ -621,12 +621,17 @@ function renderEventCard(event) {
           ${renderEventAlerts(event.alerts)}
           ${registrationUnavailableMessage}
           <div class="flex flex-wrap gap-3">
-            ${event.link ? `
-              <a href="${event.link}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition text-sm font-semibold">
-                <i class="fa-solid fa-external-link-alt"></i>
-                Mais informações
-              </a>
-            ` : ''}
+            ${event.link ? (() => {
+              const isGallery = event.link.startsWith('galeria.html');
+              const isInternal = isGallery || (!event.link.startsWith('http') && !event.link.startsWith('//'));
+              const target = isInternal ? '' : 'target="_blank"';
+              const icon = isGallery ? 'fa-images' : 'fa-external-link-alt';
+              const label = isGallery ? 'Ver galeria' : 'Mais informações';
+              return `<a href="${event.link}" ${target} class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition text-sm font-semibold">
+                <i class="fa-solid ${icon}"></i>
+                ${label}
+              </a>`;
+            })() : ''}
             ${registrationButton}
           </div>
         </div>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9ZCGD46H8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-P9ZCGD46H8');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galeria — Universo Leça FC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            emerald: {
+              50:  '#e6f2f0',
+              100: '#cce5e1',
+              200: '#99cbc3',
+              300: '#66b1a5',
+              400: '#339787',
+              500: '#056b57',
+              600: '#045a4a',
+              700: '#034638',
+              800: '#022e26',
+              900: '#011713'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Page override: darker background ── */
+    body {
+      background: linear-gradient(160deg, #011713 0%, #022e26 60%, #034638 100%);
+    }
+
+    /* ── Section panel ── */
+    .gallery-panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1.25rem;
+      padding: 2rem;
+      transition: border-color 0.3s;
+    }
+    .gallery-panel:hover {
+      border-color: rgba(5,107,87,0.35);
+    }
+
+    /* ── Gallery grid ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.6rem;
+      aspect-ratio: 4 / 3;
+      cursor: pointer;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+      display: block;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.07);
+    }
+
+    .gallery-item .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(1, 23, 19, 0.6);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-item:hover .overlay {
+      opacity: 1;
+    }
+
+    /* ── Tabs ── */
+    .gallery-tab-active {
+      background: rgba(5,107,87,0.25);
+      border: 1px solid rgba(5,107,87,0.5);
+      color: #5ecfb1;
+    }
+    .gallery-tab-inactive {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.55);
+    }
+    .gallery-tab-inactive:hover {
+      background: rgba(255,255,255,0.09);
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* ── Divider accent ── */
+    .accent-line {
+      width: 48px;
+      height: 3px;
+      background: #056b57;
+      border-radius: 9999px;
+      margin: 1.25rem auto 0;
+    }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.94);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    #lightbox.hidden { display: none; }
+
+    #lightbox-img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 0.5rem;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.7);
+      user-select: none;
+    }
+
+    #lightbox-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.25rem;
+      color: white;
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    #lightbox-close:hover { opacity: 1; }
+
+    #lightbox-prev,
+    #lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 2.5rem;
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+      padding: 0.5rem;
+      line-height: 1;
+    }
+    #lightbox-prev { left: 1rem; }
+    #lightbox-next { right: 1rem; }
+    #lightbox-prev:hover,
+    #lightbox-next:hover { opacity: 1; }
+
+    #lightbox-caption {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.45);
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky header -->
+  <header style="position:sticky;top:0;z-index:40;background:rgba(1,23,19,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(5,107,87,0.2);">
+    <div style="max-width:1152px;margin:0 auto;display:flex;align-items:center;gap:1rem;padding:0.75rem 1.25rem;">
+      <a href="eventos.html" style="display:inline-flex;align-items:center;gap:0.4rem;color:rgba(255,255,255,0.5);font-size:0.78rem;font-weight:600;letter-spacing:0.05em;text-decoration:none;padding:0.3rem 0.75rem;border-radius:9999px;border:1px solid rgba(255,255,255,0.1);transition:all 0.2s;" onmouseover="this.style.color='#fff';this.style.borderColor='rgba(255,255,255,0.25)'" onmouseout="this.style.color='rgba(255,255,255,0.5)';this.style.borderColor='rgba(255,255,255,0.1)'">
+        <i class="fa-solid fa-arrow-left"></i> Eventos
+      </a>
+      <div style="width:1px;height:18px;background:rgba(255,255,255,0.1);"></div>
+      <span id="header-title" style="color:rgba(255,255,255,0.75);font-size:0.85rem;font-weight:700;letter-spacing:0.04em;"></span>
+    </div>
+  </header>
+
+  <div class="min-h-screen flex flex-col px-4 py-12">
+
+    <!-- Loading state -->
+    <div id="gallery-loading" class="text-center py-20">
+      <i class="fa-solid fa-spinner fa-spin text-5xl text-white/30 mb-4"></i>
+      <p class="text-white/50 text-base">A carregar galeria...</p>
+    </div>
+
+    <!-- Error state -->
+    <div id="gallery-error" class="hidden text-center py-20">
+      <i class="fa-solid fa-circle-exclamation text-5xl text-white/30 mb-4"></i>
+      <p id="gallery-error-text" class="text-white/60 text-lg mb-6">Galeria não encontrada.</p>
+      <a href="eventos.html" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.5rem;border-radius:9999px;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:0.85rem;font-weight:600;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.35)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='rgba(255,255,255,0.7)'">
+        <i class="fa-solid fa-arrow-left"></i> Voltar aos Eventos
+      </a>
+    </div>
+
+    <!-- Gallery content -->
+    <div id="gallery-content" class="hidden max-w-6xl w-full mx-auto">
+
+      <!-- Hero title -->
+      <div class="text-center mb-10">
+        <a href="eventos.html" class="inline-block mb-5">
+          <img src="images/leca.png" alt="Leça FC" class="w-16 h-16 mx-auto" style="filter:drop-shadow(0 6px 18px rgba(0,0,0,0.5));" />
+        </a>
+        <h1 id="gallery-title" style="font-size:clamp(2rem,6vw,3.5rem);font-weight:900;color:#fff;letter-spacing:-0.02em;line-height:1.1;margin-bottom:0.6rem;"></h1>
+        <p id="gallery-subtitle" style="color:rgba(255,255,255,0.5);font-size:0.95rem;"></p>
+        <div class="accent-line"></div>
+      </div>
+
+      <!-- Section tabs (only shown when more than 1 section) -->
+      <div id="section-tabs" class="flex flex-wrap gap-3 justify-center mb-8 hidden">
+      </div>
+
+      <!-- Sections -->
+      <div id="sections-container" class="space-y-6">
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-16" style="color:rgba(255,255,255,0.25);font-size:0.8rem;">
+      <p class="mb-1">Vive a paixão do Leça FC.</p>
+      <p class="mb-3">Contacta: <a href="mailto:geral@lecafc.pt" style="color:rgba(255,255,255,0.4);text-decoration:underline;">geral@lecafc.pt</a></p>
+      <p>© <span id="year"></span> Leça Futebol Clube — Galeria.</p>
+      <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+    </footer>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="hidden" role="dialog" aria-modal="true" aria-label="Visualizador de imagem">
+    <span id="lightbox-close" title="Fechar" aria-label="Fechar">&times;</span>
+    <span id="lightbox-prev" title="Anterior" aria-label="Imagem anterior">&#8249;</span>
+    <img id="lightbox-img" src="" alt="" />
+    <span id="lightbox-next" title="Seguinte" aria-label="Próxima imagem">&#8250;</span>
+    <span id="lightbox-caption"></span>
+  </div>
+
+  <script src="galerias-data.js"></script>
+  <script src="galeria.js"></script>
+</body>
+</html>
