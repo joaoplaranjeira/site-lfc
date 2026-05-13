@@ -51,13 +51,17 @@
   let lightboxImages = [];   // flat list of { src, alt } for the active section
   let lightboxIndex  = 0;
 
-  const lightbox         = document.getElementById('lightbox');
-  const lightboxImg      = document.getElementById('lightbox-img');
-  const lightboxCap      = document.getElementById('lightbox-caption');
-  const lightboxClose    = document.getElementById('lightbox-close');
-  const lightboxPrev     = document.getElementById('lightbox-prev');
-  const lightboxNext     = document.getElementById('lightbox-next');
-  const lightboxSpinner  = document.getElementById('lightbox-spinner');
+  let lightbox, lightboxImg, lightboxCap, lightboxClose, lightboxPrev, lightboxNext, lightboxSpinner;
+
+  function initLightboxRefs() {
+    lightbox        = document.getElementById('lightbox');
+    lightboxImg     = document.getElementById('lightbox-img');
+    lightboxCap     = document.getElementById('lightbox-caption');
+    lightboxClose   = document.getElementById('lightbox-close');
+    lightboxPrev    = document.getElementById('lightbox-prev');
+    lightboxNext    = document.getElementById('lightbox-next');
+    lightboxSpinner = document.getElementById('lightbox-spinner');
+  }
 
   function openLightbox(images, index) {
     lightboxImages = images;
@@ -105,17 +109,8 @@
     if (lightboxIndex < lightboxImages.length - 1) { lightboxIndex++; showLightboxImage(); }
   }
 
-  // Lightbox event handlers
-  lightboxClose.addEventListener('click', closeLightbox);
-  lightboxPrev.addEventListener('click', prevImage);
-  lightboxNext.addEventListener('click', nextImage);
-
-  lightbox.addEventListener('click', function (e) {
-    if (e.target === lightbox) closeLightbox();
-  });
-
   document.addEventListener('keydown', function (e) {
-    if (lightbox.classList.contains('hidden')) return;
+    if (!lightbox || lightbox.classList.contains('hidden')) return;
     if (e.key === 'Escape')      closeLightbox();
     if (e.key === 'ArrowLeft')   prevImage();
     if (e.key === 'ArrowRight')  nextImage();
@@ -263,6 +258,18 @@
   }
 
   async function init() {
+    initLightboxRefs();
+
+    // Ligar event listeners do lightbox
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    if (lightboxPrev)  lightboxPrev.addEventListener('click', prevImage);
+    if (lightboxNext)  lightboxNext.addEventListener('click', nextImage);
+    if (lightbox) {
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) closeLightbox();
+      });
+    }
+
     const params    = new URLSearchParams(window.location.search);
     const galleryId = params.get('id');
 
