@@ -51,12 +51,13 @@
   let lightboxImages = [];   // flat list of { src, alt } for the active section
   let lightboxIndex  = 0;
 
-  const lightbox      = document.getElementById('lightbox');
-  const lightboxImg   = document.getElementById('lightbox-img');
-  const lightboxCap   = document.getElementById('lightbox-caption');
-  const lightboxClose = document.getElementById('lightbox-close');
-  const lightboxPrev  = document.getElementById('lightbox-prev');
-  const lightboxNext  = document.getElementById('lightbox-next');
+  const lightbox         = document.getElementById('lightbox');
+  const lightboxImg      = document.getElementById('lightbox-img');
+  const lightboxCap      = document.getElementById('lightbox-caption');
+  const lightboxClose    = document.getElementById('lightbox-close');
+  const lightboxPrev     = document.getElementById('lightbox-prev');
+  const lightboxNext     = document.getElementById('lightbox-next');
+  const lightboxSpinner  = document.getElementById('lightbox-spinner');
 
   function openLightbox(images, index) {
     lightboxImages = images;
@@ -75,6 +76,20 @@
   function showLightboxImage() {
     const item = lightboxImages[lightboxIndex];
     if (!item) return;
+
+    // Mostrar spinner, esconder imagem enquanto carrega
+    lightboxImg.style.opacity = '0';
+    lightboxSpinner.style.display = 'flex';
+
+    lightboxImg.onload = function () {
+      lightboxSpinner.style.display = 'none';
+      lightboxImg.style.opacity = '1';
+    };
+    lightboxImg.onerror = function () {
+      lightboxSpinner.style.display = 'none';
+      lightboxImg.style.opacity = '0.3';
+    };
+
     lightboxImg.src = item.src;
     lightboxImg.alt = item.alt;
     lightboxCap.textContent = `${lightboxIndex + 1} / ${lightboxImages.length}`;
