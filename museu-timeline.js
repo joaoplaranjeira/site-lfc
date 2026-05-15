@@ -75,6 +75,43 @@ function renderMiniTimeline(items) {
     </div>`;
 }
 
+function renderFounderSpotlight(fs) {
+  if (!fs) return '';
+
+  const galleryHtml = (fs.gallery && fs.gallery.length)
+    ? `<div class="founder-gallery">
+        ${fs.gallery.map(img => `
+          <div class="gallery-thumb" onclick="openLightbox(this)">
+            <img src="${escAttr(img.src)}" alt="${escAttr(img.alt)}" data-caption="${escAttr(img.caption || '')}" loading="lazy" />
+          </div>`).join('')}
+       </div>`
+    : '';
+
+  // Se houver foto principal, também é clicável no lightbox
+  const photoHtml = fs.photo
+    ? `<div class="gallery-thumb" style="width:90px;height:110px;border-radius:0.75rem;flex-shrink:0;" onclick="openLightbox(this)">
+         <img src="${escAttr(fs.photo)}" alt="${escAttr(fs.name)}" data-caption="${escAttr(fs.photoCaption || fs.name)}" loading="lazy" style="object-position:top;" />
+       </div>`
+    : '';
+
+  return `
+    <div class="founder-spotlight">
+      <div class="founder-spotlight-header">
+        <span class="fs-eyebrow"><i class="fa-solid fa-star" style="margin-right:0.35rem;font-size:0.6rem;"></i>Fundador em destaque</span>
+        <div class="fs-divider"></div>
+      </div>
+      <div class="founder-spotlight-body">
+        ${photoHtml}
+        <div class="founder-spotlight-info">
+          <h3>${escHtml(fs.name)}</h3>
+          ${fs.role ? `<div class="fs-role">${escHtml(fs.role)}</div>` : ''}
+          ${(fs.paragraphs || []).map(p => `<p>${escHtml(p)}</p>`).join('')}
+          ${galleryHtml}
+        </div>
+      </div>
+    </div>`;
+}
+
 function renderBlock(block, isLast) {
   const periodAttr = block.periodStyle === 'extra'
     ? ' style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.55);"'
@@ -109,6 +146,7 @@ function renderBlock(block, isLast) {
           ${extraHtml}
         </div>
       </div>
+      ${renderFounderSpotlight(block.founderSpotlight)}
       ${renderGallery(block)}
     </div>
   </article>
@@ -178,8 +216,16 @@ function initObservers() {
         fadeObserver.unobserve(e.target);
       }
     });
-  }, { threshold: 0.12 });
-  fadeEls.forEach(el => fadeObserver.observe(el));
+  }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+  fadeEls.forEach(el => {
+    // Se já está visível no viewport ao carregar, mostrar imediatamente
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      el.classList.add('visible');
+    } else {
+      fadeObserver.observe(el);
+    }
+  });
 
   // Active nav highlight
   const navBtns = document.querySelectorAll('.nav-btn');
