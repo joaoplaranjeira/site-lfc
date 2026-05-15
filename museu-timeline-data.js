@@ -82,7 +82,7 @@ const TIMELINE_BLOCKS = [
     ],
     galleryLabel: 'Galeria',
     gallery: [
-      { src: 'images/museum/timeline/02_equipa_1924.png', alt: 'Mais uma equipa', caption: 'Mais uma equipa do ano de 1924.' }
+      { src: 'images/museum/timeline/02_equipa_1924.png', alt: 'Mais uma equipa', caption: 'Mais uma equipa do ano de 1935.' }
     ],
   },
 
@@ -130,7 +130,7 @@ const TIMELINE_BLOCKS = [
     ],
     galleryLabel: 'Galeria',
     gallery: [
-      { src: 'images/museum/timeline/04_primeira_liga_1941_1942_2.png', alt: 'Primeira Divisão 1941–1942', caption: 'A equipa que alcançou pela primeira vez a Primeira Divisão.' },
+      { src: 'images/museum/timeline/04_campo_do_leca_3.png', alt: 'Primeira Divisão 1941–1942', caption: 'A equipa que alcançou pela primeira vez a Primeira Divisão.' },
       { src: 'images/museum/timeline/04_campo_do_leca_4.png',           alt: 'Campo do Leça',           caption: 'O Campo do Leça, inaugurado em 1944 e a casa do clube durante décadas.' },
       { src: 'images/museum/timeline/05_geracao_de_ouro_1.jpeg',           alt: 'Bancada do Campo do Leça',           caption: 'A bancada do Campo do Leça.' },
       { src: 'images/museum/timeline/04_localizacao_campos.jpeg',           alt: 'Perspetiva do Campo do Leça',           caption: 'Perspetiva desde o centro do pelado.' },
@@ -216,7 +216,7 @@ const TIMELINE_BLOCKS = [
     layout: 'reverse',
     articleStyle: 'background: linear-gradient(180deg, transparent 0%, rgba(5,107,87,0.07) 30%, rgba(5,107,87,0.07) 70%, transparent 100%);',
     heroImage: {
-      src: 'images/museum/timeline/08_caminhada_primeira_liga_anos_90_1.png',
+      src: 'images/museum/timeline/08_caminhada_primeira_liga_anos_90_5.png',
       alt: 'Caminhada até à Primeira Liga',
       caption: 'Momentos inesquecíveis da ascensão ao principal escalão do futebol português.',
     },
@@ -291,7 +291,7 @@ const TIMELINE_BLOCKS = [
     periodStyle: 'extra',
     layout: 'normal',
     heroImage: {
-      src: 'images/museum/timeline/02_modalidades_ecletismo_1.png',
+      src: 'images/museum/timeline/02_modalidades_ecletismo_6.jpeg',
       alt: 'Modalidades — Ecletismo',
       caption: 'O Leça FC como clube eclético, com dezenas de modalidades ao longo da sua história.',
     },
@@ -301,7 +301,6 @@ const TIMELINE_BLOCKS = [
     ],
     galleryLabel: 'Galeria',
     gallery: [
-      { src: 'images/museum/timeline/02_modalidades_ecletismo_6.jpeg',  alt: 'Ecletismo', caption: 'A modalidade de bodyboard do Leça Futebol Clube.' },
       { src: 'images/museum/timeline/02_modalidades_ecletismo_7.png', alt: 'Ecletismo', caption: 'Hóquei em campo no ano de 1929.' },
       { src: 'images/museum/timeline/02_modalidades_ecletismo_8.png',  alt: 'Ecletismo', caption: 'Andebol de 11, época 1949/1959.' },
       { src: 'images/museum/timeline/02_modalidades_ecletismo_10.png',  alt: 'Ecletismo', caption: 'Basquetebol, 1947' }
