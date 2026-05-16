@@ -38,6 +38,7 @@
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <link rel="icon" type="image/png" href="images/leca.png" />
   <link rel="stylesheet" href="styles.css" />
   <style>
@@ -125,6 +126,85 @@
       border-radius: 9999px;
       margin: 1.25rem auto 0;
     }
+
+    /* ── Download button on each photo ── */
+    .gallery-item .dl-btn {
+      position: absolute;
+      bottom: 0.4rem;
+      right: 0.4rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: rgba(1,23,19,0.75);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.7);
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s, background 0.2s;
+      cursor: pointer;
+      z-index: 2;
+    }
+    .gallery-item:hover .dl-btn {
+      opacity: 1;
+    }
+    .gallery-item .dl-btn:hover {
+      background: rgba(5,107,87,0.85);
+      color: #fff;
+      border-color: rgba(5,107,87,0.6);
+    }
+    .gallery-item .dl-btn.loading {
+      pointer-events: none;
+    }
+
+    /* ── Download ZIP button ── */
+    .dl-zip-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.85rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(5,107,87,0.35);
+      background: rgba(5,107,87,0.1);
+      color: #5ecfb1;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-left: auto;
+    }
+    .dl-zip-btn:hover {
+      background: rgba(5,107,87,0.22);
+      border-color: rgba(5,107,87,0.6);
+    }
+    .dl-zip-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ── Lightbox download button ── */
+    #lightbox-download {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: rgba(5,107,87,0.5);
+      border: 1px solid rgba(5,107,87,0.6);
+      color: #fff;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s, background 0.2s;
+    }
+    #lightbox-download:hover { opacity: 1; background: rgba(5,107,87,0.85); }
 
     /* ── Lightbox ── */
     #lightbox {
@@ -262,6 +342,9 @@
     <img id="lightbox-img" src="" alt="" style="transition:opacity 0.25s ease;" />
     <span id="lightbox-next" title="Seguinte" aria-label="Próxima imagem">&#8250;</span>
     <span id="lightbox-caption"></span>
+    <button id="lightbox-download" title="Descarregar foto" aria-label="Descarregar foto">
+      <i class="fa-solid fa-download"></i>
+    </button>
   </div>
 
   <script src="galerias-data.js"></script>

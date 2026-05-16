@@ -46,21 +46,81 @@
     return resources.map(r => ({ publicId: r.public_id, alt: sectionTitle }));
   }
 
-  // ─── Lightbox state ────────────────────────────────────────────────────────
+  // ─── Download helpers ──────────────────────────────────────────────────────
+
+  /** Faz fetch de uma imagem e devolve um Blob */
+  async function fetchBlob(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.blob();
+  }
+
+  /** Descarrega uma imagem individualmente */
+  async function downloadSingle(src, filename) {
+    const blob = await fetchBlob(src);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  }
+
+  /** Descarrega todas as imagens de uma secção como ZIP */
+  async function downloadSectionZip(sectionId, sectionTitle, cloudName) {
+    const images = sectionImagesCache[sectionId] || [];
+    if (!images.length) return;
+
+    const btn = document.getElementById(`dl-zip-${sectionId}`);
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> A preparar...';
+    }
+
+    try {
+      const zip = new JSZip();
+      const folder = zip.folder(sectionTitle);
+
+      await Promise.all(images.map(async (img, i) => {
+        const url  = fullUrl(cloudName, img.publicId);
+        const blob = await fetchBlob(url);
+        const ext  = blob.type.includes('png') ? 'png' : 'jpg';
+        const name = `${String(i + 1).padStart(3, '0')}_${img.publicId.replace(/\//g, '_')}.${ext}`;
+        folder.file(name, blob);
+      }));
+
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(zipBlob);
+      a.download = `${sectionTitle.toLowerCase().replace(/\s+/g, '-')}.zip`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+    } catch (err) {
+      console.error('Erro ao gerar ZIP:', err);
+      alert('Erro ao descarregar fotos. Tenta novamente.');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-file-zipper"></i> Descarregar tudo';
+      }
+    }
+  }
+
+  // ─── Lightbox state ──────────────────────────────────────────────────────────────────
 
   let lightboxImages = [];   // flat list of { src, alt } for the active section
   let lightboxIndex  = 0;
 
-  let lightbox, lightboxImg, lightboxCap, lightboxClose, lightboxPrev, lightboxNext, lightboxSpinner;
+  let lightbox, lightboxImg, lightboxCap, lightboxClose, lightboxPrev, lightboxNext, lightboxSpinner, lightboxDownload;
 
   function initLightboxRefs() {
-    lightbox        = document.getElementById('lightbox');
-    lightboxImg     = document.getElementById('lightbox-img');
-    lightboxCap     = document.getElementById('lightbox-caption');
-    lightboxClose   = document.getElementById('lightbox-close');
-    lightboxPrev    = document.getElementById('lightbox-prev');
-    lightboxNext    = document.getElementById('lightbox-next');
-    lightboxSpinner = document.getElementById('lightbox-spinner');
+    lightbox          = document.getElementById('lightbox');
+    lightboxImg       = document.getElementById('lightbox-img');
+    lightboxCap       = document.getElementById('lightbox-caption');
+    lightboxClose     = document.getElementById('lightbox-close');
+    lightboxPrev      = document.getElementById('lightbox-prev');
+    lightboxNext      = document.getElementById('lightbox-next');
+    lightboxSpinner   = document.getElementById('lightbox-spinner');
+    lightboxDownload  = document.getElementById('lightbox-download');
   }
 
   function openLightbox(images, index) {
@@ -150,7 +210,9 @@
 
   let gallerySections = [];
 
-  window.switchSection = function (sectionId) {
+  window.downloadSectionZip = downloadSectionZip;
+
+  window.switchSection      = function (sectionId) {
     gallerySections.forEach(s => {
       const panel = document.getElementById(`panel-${s.id}`);
       const tab   = document.getElementById(`tab-${s.id}`);
@@ -175,6 +237,27 @@
   // ─── Click delegation for gallery items ───────────────────────────────────
 
   document.getElementById('sections-container').addEventListener('click', function (e) {
+    // Download individual
+    const dlBtn = e.target.closest('.dl-btn');
+    if (dlBtn) {
+      e.stopPropagation();
+      const publicId  = dlBtn.dataset.publicId;
+      const cloudName = document.getElementById('gallery-content').dataset.cloudName;
+      const src       = fullUrl(cloudName, publicId);
+      const filename  = publicId.replace(/\//g, '_') + '.jpg';
+      const icon = dlBtn.querySelector('i');
+      dlBtn.classList.add('loading');
+      if (icon) { icon.className = 'fa-solid fa-spinner fa-spin'; }
+      downloadSingle(src, filename)
+        .catch(console.error)
+        .finally(() => {
+          dlBtn.classList.remove('loading');
+          if (icon) { icon.className = 'fa-solid fa-download'; }
+        });
+      return;
+    }
+
+    // Abrir lightbox
     const item = e.target.closest('.gallery-item');
     if (!item) return;
 
@@ -238,11 +321,14 @@
           const items = images.map((img, idx) => {
             const thumb = thumbnailUrl(cloudName, img.publicId);
             return `
-              <div class="gallery-item" data-section="${section.id}" data-index="${idx}" tabindex="0" role="button" aria-label="Ver ${img.alt}">
+              <div class="gallery-item" data-section="${section.id}" data-index="${idx}" data-public-id="${img.publicId}" tabindex="0" role="button" aria-label="Ver ${img.alt}">
                 <img src="${thumb}" alt="${img.alt}" loading="lazy" />
                 <div class="overlay">
                   <i class="fa-solid fa-magnifying-glass-plus text-white text-3xl"></i>
                 </div>
+                <button class="dl-btn" data-public-id="${img.publicId}" title="Descarregar foto" aria-label="Descarregar foto">
+                  <i class="fa-solid fa-download"></i>
+                </button>
               </div>`;
           }).join('');
           gridEl.innerHTML = `<div class="gallery-grid" data-section="${section.id}">${items}</div>`;
@@ -261,9 +347,15 @@
     initLightboxRefs();
 
     // Ligar event listeners do lightbox
-    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
-    if (lightboxPrev)  lightboxPrev.addEventListener('click', prevImage);
-    if (lightboxNext)  lightboxNext.addEventListener('click', nextImage);
+    if (lightboxClose)    lightboxClose.addEventListener('click', closeLightbox);
+    if (lightboxPrev)     lightboxPrev.addEventListener('click', prevImage);
+    if (lightboxNext)     lightboxNext.addEventListener('click', nextImage);
+    if (lightboxDownload) lightboxDownload.addEventListener('click', function () {
+      const item = lightboxImages[lightboxIndex];
+      if (!item) return;
+      const filename = item.src.split('/').pop().split('?')[0] || 'foto.jpg';
+      downloadSingle(item.src, filename).catch(console.error);
+    });
     if (lightbox) {
       lightbox.addEventListener('click', function (e) {
         if (e.target === lightbox) closeLightbox();
@@ -327,7 +419,10 @@
         header.innerHTML = `
           <i class="fa-solid ${section.icon || 'fa-images'}" style="color:#5ecfb1;font-size:1.1rem;"></i>
           <h2 style="font-size:1.15rem;font-weight:800;color:#fff;letter-spacing:0.01em;">${section.title}</h2>
-          <span id="count-${section.id}" style="color:rgba(255,255,255,0.3);font-size:0.8rem;">…</span>`;
+          <span id="count-${section.id}" style="color:rgba(255,255,255,0.3);font-size:0.8rem;">…</span>
+          <button id="dl-zip-${section.id}" class="dl-zip-btn" onclick="downloadSectionZip('${section.id}','${section.title}','${cloudName}')">
+            <i class="fa-solid fa-file-zipper"></i> Descarregar tudo
+          </button>`;
         panel.insertBefore(header, panel.firstChild);
 
         // Ocultar todos os painéis exceto o primeiro
