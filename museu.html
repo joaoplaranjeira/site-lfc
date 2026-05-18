@@ -76,79 +76,557 @@
     </div>
   </div>
 
+  <style>
+    /* ── Reset & base ── */
+    #page-content {
+      background: #010f0c;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* ── Hero ── */
+    .museum-hero {
+      position: relative;
+      width: 100%;
+      height: 100dvh;
+      min-height: 560px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+    }
+
+    /* Fallback poster when video fails */
+    .hero-poster-fallback {
+      position: absolute;
+      inset: 0;
+      background-image: url('images/museum/timeline/01_fundacao_jornais.png');
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
+    /* Cinematic overlay: black vignette + green tint at bottom */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(to bottom,
+          rgba(1,9,7,0.55)  0%,
+          rgba(1,9,7,0.15) 35%,
+          rgba(1,9,7,0.15) 55%,
+          rgba(1,15,12,0.7) 80%,
+          rgba(1,9,7,0.97) 100%),
+        radial-gradient(ellipse at 50% 40%, rgba(5,107,87,0.18) 0%, transparent 65%);
+    }
+
+    /* Content */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 1.5rem;
+      max-width: 800px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #5ecfb1;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 0.7s ease 0.3s forwards;
+    }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.5;
+    }
+
+    .hero-logo {
+      width: 72px;
+      height: 72px;
+      margin-bottom: 1.25rem;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.6));
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.7s ease 0.5s forwards;
+    }
+
+    .hero-title {
+      font-size: clamp(2.6rem, 8vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      color: #fff;
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease 0.65s forwards;
+    }
+    .hero-title span { color: #5ecfb1; }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-weight: 400;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 0.6rem;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.8s ease 0.8s forwards;
+    }
+
+    .hero-desc {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 0.8s ease 0.95s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 0.8s ease 1.1s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.85rem 2rem;
+      background: #056b57;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.22s, transform 0.18s, box-shadow 0.22s;
+      box-shadow: 0 6px 24px rgba(5,107,87,0.45);
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      background: #068a6e;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(5,107,87,0.55);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.85rem 1.75rem;
+      background: rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.85);
+      font-weight: 600;
+      font-size: 0.9rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      cursor: pointer;
+      transition: background 0.22s, border-color 0.22s, transform 0.18s;
+      text-decoration: none;
+    }
+    .btn-secondary:hover {
+      background: rgba(255,255,255,0.13);
+      border-color: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.5s forwards;
+      cursor: pointer;
+    }
+    .scroll-indicator span {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+    .scroll-arrow {
+      width: 20px;
+      height: 20px;
+      border-right: 2px solid rgba(255,255,255,0.25);
+      border-bottom: 2px solid rgba(255,255,255,0.25);
+      transform: rotate(45deg);
+      animation: scrollBounce 1.6s ease-in-out infinite;
+    }
+
+    /* ── Sections strip ── */
+    #museum-sections {
+      background: #010f0c;
+      padding: 5rem 1.25rem 4rem;
+    }
+
+    .sections-eyebrow {
+      text-align: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #5ecfb1;
+      margin-bottom: 0.75rem;
+    }
+    .sections-title {
+      text-align: center;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .sections-sub {
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 3rem;
+    }
+
+    .sections-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    @media (max-width: 640px) {
+      .sections-grid { grid-template-columns: 1fr; }
+    }
+
+    .section-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      min-height: 340px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    }
+    .section-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 56px rgba(0,0,0,0.65);
+      border-color: rgba(5,107,87,0.35);
+    }
+
+    .section-card-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.5s ease;
+    }
+    .section-card:hover .section-card-bg { transform: scale(1.04); }
+
+    .section-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top,
+        rgba(1,9,7,0.97) 0%,
+        rgba(2,25,18,0.65) 50%,
+        rgba(2,25,18,0.15) 100%);
+    }
+
+    .section-card-body {
+      position: relative;
+      z-index: 2;
+      padding: 2rem;
+    }
+
+    .section-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .badge-green { background: rgba(5,107,87,0.8); color: #fff; }
+    .badge-white { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.18); }
+
+    .section-card h2 {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.6rem;
+      line-height: 1.1;
+    }
+    .section-card p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+    .section-card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #5ecfb1;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Footer ── */
+    .museum-footer {
+      background: #010f0c;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+      padding: 3rem 1.25rem;
+    }
+    .museum-footer a { color: rgba(255,255,255,0.4); }
+    .museum-footer a:hover { color: rgba(255,255,255,0.7); }
+
+    /* ── Video Modal ── */
+    #video-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: rgba(0,0,0,0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    #video-modal.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    #video-modal video {
+      max-width: 100%;
+      max-height: 88vh;
+      border-radius: 0.75rem;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.8);
+    }
+    #modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.25rem;
+      color: rgba(255,255,255,0.55);
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    #modal-close:hover { color: #fff; }
+
+    /* ── Keyframes ── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollBounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50%       { transform: rotate(45deg) translateY(5px); }
+    }
+  </style>
+
   <div id="page-content" class="hidden">
 
-    <!-- Hero -->
-    <section class="relative flex flex-col items-center justify-center min-h-[50vh] py-20 px-4 overflow-hidden">
-      <div class="absolute inset-0 z-0" style="background-image: url('images/museum/timeline/01_fundacao_jornais.png'); background-size: cover; background-position: center; filter: blur(3px); transform: scale(1.05); opacity: 0.2;"></div>
-      <div class="absolute inset-0 z-0" style="background: linear-gradient(160deg, #022e26 0%, #034638 60%, #045a4a 100%);"></div>
-      <div class="relative z-10 flex flex-col items-center gap-5 text-center">
-        <a href="index.html">
-          <img src="images/leca.png" alt="Leça FC" class="w-20 h-20 md:w-24 md:h-24 drop-shadow-2xl" />
-        </a>
-        <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight drop-shadow-lg">
-          MUSEU LEÇA FC
-        </h1>
-        <p class="text-lg md:text-xl text-white/80 max-w-2xl leading-relaxed">
-          Mais de 100 anos de história verde e branca. Explora as secções e mergulha na memória do clube.
-        </p>
+    <!-- ══ HERO ══════════════════════════════════════════════════════════ -->
+    <section class="museum-hero">
+
+      <!-- Video background -->
+      <div class="hero-poster-fallback"></div>
+      <video class="hero-video" autoplay muted loop playsinline preload="auto"
+             poster="images/museum/timeline/01_fundacao_jornais.png">
+        <source src="videos/video_landing_page_museu_online.mp4" type="video/mp4" />
+      </video>
+
+      <!-- Overlay -->
+      <div class="hero-overlay"></div>
+
+      <!-- Content -->
+      <div class="hero-content">
+        <div class="hero-eyebrow">Leça Futebol Clube</div>
+        <img src="images/leca.png" alt="Leça FC" class="hero-logo" />
+        <h1 class="hero-title">Museu<br><span>Digital</span> Leça FC</h1>
+        <p class="hero-subtitle">Uma viagem pela história verde e branca.</p>
+        <p class="hero-desc">Mais de um século de memórias, paixão e identidade.</p>
+        <div class="hero-actions">
+          <a href="#museum-sections" class="btn-primary" id="btn-enter-museum">
+            <i class="fa-solid fa-door-open"></i>
+            Entrar no Museu
+          </a>
+          <button class="btn-secondary" id="btn-watch-film">
+            <i class="fa-solid fa-play"></i>
+            Ver Filme Completo
+          </button>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="scroll-indicator" onclick="document.getElementById('museum-sections').scrollIntoView({behavior:'smooth'})">
+        <span>Explorar História</span>
+        <div class="scroll-arrow"></div>
       </div>
     </section>
 
-    <!-- Subsections -->
-    <section class="max-w-5xl mx-auto w-full px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- ══ SECTIONS ══════════════════════════════════════════════════════ -->
+    <section id="museum-sections">
+      <p class="sections-eyebrow">Museu Digital</p>
+      <h2 class="sections-title">Escolhe a tua experiência</h2>
+      <p class="sections-sub">Mergulha na memória do clube através da história ou das suas figuras.</p>
 
-      <!-- Timeline -->
-      <a href="museu-timeline.html" class="group relative overflow-hidden rounded-3xl min-h-[340px] flex flex-col justify-end cursor-pointer shadow-2xl" style="transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-        <div class="absolute inset-0 z-0" style="background-image: url('images/museum/timeline/01_fundacao_jornais.png'); background-size: cover; background-position: center;"></div>
-        <div class="absolute inset-0 z-0" style="background: linear-gradient(to top, rgba(2,46,38,0.95) 0%, rgba(3,70,56,0.6) 55%, rgba(3,70,56,0.1) 100%);"></div>
-        <div class="relative z-10 p-8">
-          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4" style="background: rgba(5,107,87,0.85); color: white; letter-spacing: 0.05em;">
-            <i class="fa-solid fa-clock-rotate-left"></i> HISTÓRIA
-          </span>
-          <h2 class="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">Timeline</h2>
-          <p class="text-white/75 text-sm leading-relaxed mb-5">Percorre mais de 100 anos de história do clube, época a época, com imagens, textos e momentos marcantes.</p>
-          <div class="inline-flex items-center gap-2 text-emerald-300 font-semibold text-sm">
-            Explorar a história <i class="fa-solid fa-arrow-right"></i>
+      <div class="sections-grid">
+
+        <!-- Timeline -->
+        <a href="museu-timeline.html" class="section-card">
+          <div class="section-card-bg" style="background-image: url('images/museum/timeline/01_fundacao_jornais.png');"></div>
+          <div class="section-card-overlay"></div>
+          <div class="section-card-body">
+            <span class="section-card-badge badge-green">
+              <i class="fa-solid fa-clock-rotate-left"></i> História
+            </span>
+            <h2>Timeline</h2>
+            <p>Percorre mais de 100 anos de história do clube, época a época, com imagens, textos e momentos marcantes.</p>
+            <div class="section-card-cta">
+              Explorar a história <i class="fa-solid fa-arrow-right"></i>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
 
-      <!-- Hall of Fame -->
-      <a href="museu-hall-of-fame.html" class="group relative overflow-hidden rounded-3xl min-h-[340px] flex flex-col justify-end cursor-pointer shadow-2xl" style="transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
-        <div class="absolute inset-0 z-0" style="background: linear-gradient(135deg, #011713 0%, #022e26 50%, #034638 100%);"></div>
-        <div class="absolute inset-0 z-0 flex items-center justify-center">
-          <i class="fa-solid fa-trophy" style="font-size: 11rem; color: rgba(5,107,87,0.18); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -54%);"></i>
-        </div>
-        <div class="absolute inset-0 z-0" style="background: radial-gradient(ellipse at 70% 30%, rgba(5,107,87,0.25) 0%, transparent 60%);"></div>
-        <div class="relative z-10 p-8">
-          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-4" style="background: rgba(255,255,255,0.12); color: white; letter-spacing: 0.05em; border: 1px solid rgba(255,255,255,0.2);">
-            <i class="fa-solid fa-microphone"></i> ENTREVISTAS
-          </span>
-          <h2 class="text-3xl md:text-4xl font-black text-white mb-3 tracking-tight">Hall of Fame</h2>
-          <p class="text-white/75 text-sm leading-relaxed mb-5">Sócios e antigos atletas do clube dão voz e imagem à história. Testemunhos reais em vídeo.</p>
-          <div class="inline-flex items-center gap-2 text-emerald-300 font-semibold text-sm">
-            Ver entrevistas <i class="fa-solid fa-arrow-right"></i>
+        <!-- Hall of Fame -->
+        <a href="museu-hall-of-fame.html" class="section-card">
+          <div class="section-card-bg" style="background: linear-gradient(135deg, #011713 0%, #022e26 50%, #034638 100%);"></div>
+          <div class="section-card-overlay" style="background: linear-gradient(to top, rgba(1,9,7,0.97) 0%, rgba(1,9,7,0.5) 60%, transparent 100%);"></div>
+          <!-- Trophy watermark -->
+          <i class="fa-solid fa-trophy" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);font-size:9rem;color:rgba(5,107,87,0.15);z-index:1;pointer-events:none;"></i>
+          <div class="section-card-body">
+            <span class="section-card-badge badge-white">
+              <i class="fa-solid fa-microphone"></i> Entrevistas
+            </span>
+            <h2>Hall of Fame</h2>
+            <p>Sócios e antigos atletas dão voz e imagem à história. Testemunhos reais em vídeo.</p>
+            <div class="section-card-cta">
+              Ver entrevistas <i class="fa-solid fa-arrow-right"></i>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
 
+      </div>
     </section>
 
-    <div class="text-center pb-12">
-      <a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
-        <i class="fa-solid fa-arrow-left"></i>
-        Voltar ao início
+    <!-- ══ FOOTER ══════════════════════════════════════════════════════════ -->
+    <footer class="museum-footer">
+      <a href="index.html" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.5rem;border-radius:9999px;border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:0.8rem;font-weight:600;text-decoration:none;transition:all 0.2s;margin-bottom:2rem;"
+         onmouseover="this.style.borderColor='rgba(255,255,255,0.25)';this.style.color='#fff'"
+         onmouseout="this.style.borderColor='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.5)'">
+        <i class="fa-solid fa-arrow-left"></i> Voltar ao início
       </a>
-    </div>
-
-    <footer class="text-center text-white/70 text-sm pb-12">
-      <p class="mb-2">Vive a paixão do Leça FC.</p>
-      <p class="mb-4">Contacta: <a href="mailto:geral@lecafc.pt" class="text-white underline hover:text-white/90">geral@lecafc.pt</a></p>
-      <p>© <span id="year"></span> Leça Futebol Clube - Museu.</p>
+      <p style="font-size:0.8rem;color:rgba(255,255,255,0.2);margin-top:0.5rem;">
+        Vive a paixão do Leça FC. ·
+        <a href="mailto:geral@lecafc.pt">geral@lecafc.pt</a>
+      </p>
+      <p style="font-size:0.75rem;color:rgba(255,255,255,0.15);margin-top:0.35rem;">
+        © <span id="year"></span> Leça Futebol Clube — Museu Digital.
+      </p>
     </footer>
 
   </div><!-- /page-content -->
+
+  <!-- ══ VIDEO MODAL ════════════════════════════════════════════════════════ -->
+  <div id="video-modal" role="dialog" aria-modal="true" aria-label="Filme completo">
+    <button id="modal-close" title="Fechar" aria-label="Fechar">&times;</button>
+    <video id="modal-video" controls preload="none"
+           poster="images/museum/timeline/01_fundacao_jornais.png">
+      <source src="videos/video_landing_page_museu_online.mp4" type="video/mp4" />
+    </video>
+  </div>
+
+  <script>
+    // ── Video Modal ──────────────────────────────────────────────────────────
+    const modal      = document.getElementById('video-modal');
+    const modalVideo = document.getElementById('modal-video');
+    const modalClose = document.getElementById('modal-close');
+    const btnFilm    = document.getElementById('btn-watch-film');
+
+    btnFilm.addEventListener('click', function () {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      modalVideo.play();
+    });
+
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      modalVideo.pause();
+      modalVideo.currentTime = 0;
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+    });
+
+    // ── Smooth scroll for "Entrar no Museu" ─────────────────────────────────
+    document.getElementById('btn-enter-museum').addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('museum-sections').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // ── Year ─────────────────────────────────────────────────────────────────
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 
   <script src="museu.js"></script>
 </body>
