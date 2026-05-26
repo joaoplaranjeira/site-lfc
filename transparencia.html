@@ -38,6 +38,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="icon" type="image/png" href="images/leca.png" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    @media print {
+      #docViewerModal, #docAccessModal { display: none !important; }
+    }
+  </style>
 </head>
 <body>
   <div class="min-h-screen flex flex-col px-4 py-12">
@@ -287,6 +292,26 @@
                 <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
                 <span class="font-semibold text-gray-900">Regulamento Interno da Patinagem Artística</span>
               </a>
+              <button type="button" onclick="openDocumentAccess('novos-estatutos', 'Novos Estatutos')" class="flex items-center gap-3 p-4 bg-amber-50 rounded-lg hover:bg-amber-100 transition w-full text-left border border-amber-200">
+                <i class="fa-solid fa-file-pdf text-2xl text-amber-600"></i>
+                <div class="flex-1">
+                  <span class="font-semibold text-gray-900 block">Novos Estatutos</span>
+                  <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
+                    <i class="fa-solid fa-hourglass-half text-xs"></i>Em validação
+                  </span>
+                </div>
+                <i class="fa-solid fa-lock text-amber-500 flex-shrink-0"></i>
+              </button>
+              <button type="button" onclick="openDocumentAccess('novo-regulamento-interno', 'Novo Regulamento Interno')" class="flex items-center gap-3 p-4 bg-amber-50 rounded-lg hover:bg-amber-100 transition w-full text-left border border-amber-200">
+                <i class="fa-solid fa-file-pdf text-2xl text-amber-600"></i>
+                <div class="flex-1">
+                  <span class="font-semibold text-gray-900 block">Novo Regulamento Interno</span>
+                  <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
+                    <i class="fa-solid fa-hourglass-half text-xs"></i>Em validação
+                  </span>
+                </div>
+                <i class="fa-solid fa-lock text-amber-500 flex-shrink-0"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -416,5 +441,370 @@
   </div>
 
   <script src="script.js"></script>
+
+  <!-- ============================================================
+       Document Access Modal (OTP Flow)
+  ============================================================ -->
+  <div id="docAccessModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+
+      <!-- Header -->
+      <div class="sticky top-0 bg-emerald-700 text-white p-6 rounded-t-2xl flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-lock text-2xl"></i>
+          <div>
+            <h3 class="text-xl font-bold" id="docAccessTitle">Aceder ao documento</h3>
+            <span class="text-sm text-emerald-200">Em validação pelos sócios</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeDocAccessModal()" class="text-white hover:text-gray-200 transition" aria-label="Fechar">
+          <i class="fa-solid fa-times text-2xl"></i>
+        </button>
+      </div>
+
+      <!-- Step 1: Credentials -->
+      <div id="docStep1" class="p-6">
+        <p class="text-gray-600 mb-6 text-sm">
+          Este documento encontra-se em fase de validação pelos sócios. Para o consultar, confirme a sua identidade como sócio do Leça FC.
+        </p>
+        <form id="docRequestForm" class="space-y-4" onsubmit="handleDocOtpRequest(event)" novalidate>
+          <div>
+            <label for="docMemberCode" class="block text-sm font-semibold text-gray-700 mb-1">Nº de Sócio *</label>
+            <input type="number" id="docMemberCode" name="memberCode" required min="1"
+                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                   placeholder="Ex: 1234" autocomplete="off">
+          </div>
+          <div>
+            <label for="docBirthDate" class="block text-sm font-semibold text-gray-700 mb-1">Data de Nascimento *</label>
+            <input type="text" id="docBirthDate" name="birthDate" required
+                   inputmode="numeric" placeholder="DD/MM/AAAA" pattern="\d{2}/\d{2}/\d{4}" maxlength="10" autocomplete="bday"
+                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent">
+          </div>
+          <div>
+            <label for="docEmail" class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
+            <input type="email" id="docEmail" name="email" required
+                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                   placeholder="Email registado no perfil de sócio" autocomplete="email">
+          </div>
+          <div id="docStep1Error" class="hidden p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"></div>
+          <button type="submit" id="docStep1Btn"
+                  class="w-full px-6 py-3 bg-emerald-700 text-white font-bold rounded-full hover:bg-emerald-800 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i>
+            Enviar código por email
+          </button>
+        </form>
+      </div>
+
+      <!-- Step 2: OTP Input -->
+      <div id="docStep2" class="p-6 hidden">
+        <p class="text-gray-600 mb-2 text-sm">
+          Foi enviado um código de 6 dígitos para o seu email. Introduza-o abaixo para aceder ao documento.
+        </p>
+        <p class="flex items-center gap-2 text-amber-600 text-sm mb-6">
+          <i class="fa-solid fa-clock"></i>
+          Válido durante 10 minutos
+        </p>
+        <form id="docOtpForm" class="space-y-4" onsubmit="handleDocOtpValidate(event)" novalidate>
+          <div>
+            <label for="docOtpCode" class="block text-sm font-semibold text-gray-700 mb-1">Código recebido por email *</label>
+            <input type="text" id="docOtpCode" name="otp" required maxlength="6" inputmode="numeric" autocomplete="one-time-code"
+                   class="w-full px-4 py-3 border border-gray-300 rounded-lg text-center text-3xl font-mono tracking-[0.5em] focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                   placeholder="000000">
+          </div>
+          <div id="docStep2Error" class="hidden p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"></div>
+          <button type="submit" id="docStep2Btn"
+                  class="w-full px-6 py-3 bg-emerald-700 text-white font-bold rounded-full hover:bg-emerald-800 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-check"></i>
+            Confirmar e aceder
+          </button>
+          <button type="button" onclick="backToDocStep1()"
+                  class="w-full px-6 py-3 border-2 border-gray-300 text-gray-600 font-semibold rounded-full hover:bg-gray-50 transition text-sm">
+            Voltar
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================
+       Document Viewer Modal (full-screen, view-only)
+  ============================================================ -->
+  <div id="docViewerModal" class="fixed inset-0 z-[60] flex-col bg-black" style="display:none;">
+    <div class="flex items-center justify-between px-4 sm:px-6 py-3 bg-emerald-800 text-white flex-shrink-0">
+      <div class="flex items-center gap-3 min-w-0">
+        <i class="fa-solid fa-file-pdf text-xl flex-shrink-0"></i>
+        <span class="font-bold truncate" id="docViewerTitle"></span>
+        <span class="hidden sm:inline-flex items-center gap-1 ml-1 px-2 py-0.5 bg-amber-400 text-amber-900 text-xs font-semibold rounded-full flex-shrink-0">
+          <i class="fa-solid fa-hourglass-half text-xs"></i>Em validação
+        </span>
+      </div>
+      <div class="flex items-center gap-4 flex-shrink-0 ml-3">
+        <span class="hidden md:block text-sm text-emerald-300 italic">Apenas leitura — documento em análise</span>
+        <button type="button" onclick="closeDocViewer()" class="text-white hover:text-gray-200 transition" aria-label="Fechar visualizador">
+          <i class="fa-solid fa-times text-2xl"></i>
+        </button>
+      </div>
+    </div>
+    <div class="flex-1 relative" style="min-height:0;" oncontextmenu="return false;">
+      <div id="docViewerLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-gray-900 text-white gap-4 z-10">
+        <i class="fa-solid fa-spinner fa-spin text-4xl text-emerald-400"></i>
+        <p class="text-sm text-gray-300">A carregar documento...</p>
+      </div>
+      <div id="docViewerCanvas" class="w-full h-full overflow-y-auto bg-gray-700 py-4 px-4"
+           oncontextmenu="return false;" style="user-select:none;-webkit-user-select:none;"></div>
+    </div>
+  </div>
+
+  <script>
+    // ─── Configuration ───────────────────────────────────────────────────────
+    const DOC_ACCESS_API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:5003/api'
+      : 'https://otw-clevvo-api-members-89a7e45743a6.herokuapp.com/api';
+
+    const PROTECTED_DOCUMENTS = {
+      'novos-estatutos': {
+        title: 'Novos Estatutos',
+        cloudflareUrl: 'documents/oficial/lfc_estatutos_em_validacao.pdf'
+      },
+      'novo-regulamento-interno': {
+        title: 'Novo Regulamento Interno',
+        cloudflareUrl: 'documents/oficial/lfc_regulamento_interno_em_validacao.pdf'
+      }
+    };
+
+    // ─── State ───────────────────────────────────────────────────────────────
+    let _currentDocId = null;
+    let _currentDocEmail = null;
+
+    // ─── OTP Modal helpers ───────────────────────────────────────────────────
+    function openDocumentAccess(docId, title) {
+      _currentDocId = docId;
+      _currentDocEmail = null;
+
+      document.getElementById('docAccessTitle').textContent = title;
+      document.getElementById('docRequestForm').reset();
+      document.getElementById('docOtpForm').reset();
+      document.getElementById('docStep1Error').classList.add('hidden');
+      document.getElementById('docStep2Error').classList.add('hidden');
+      document.getElementById('docStep1').classList.remove('hidden');
+      document.getElementById('docStep2').classList.add('hidden');
+      _setDocStep1BtnLoading(false);
+      _setDocStep2BtnLoading(false);
+
+      document.getElementById('docAccessModal').classList.remove('hidden');
+    }
+
+    function closeDocAccessModal() {
+      document.getElementById('docAccessModal').classList.add('hidden');
+    }
+
+    function backToDocStep1() {
+      document.getElementById('docStep2').classList.add('hidden');
+      document.getElementById('docStep2Error').classList.add('hidden');
+      document.getElementById('docStep1').classList.remove('hidden');
+      _setDocStep1BtnLoading(false);
+    }
+
+    function _setDocStep1BtnLoading(loading) {
+      const btn = document.getElementById('docStep1Btn');
+      btn.disabled = loading;
+      btn.innerHTML = loading
+        ? '<i class="fa-solid fa-spinner fa-spin"></i>A enviar...'
+        : '<i class="fa-solid fa-paper-plane"></i>Enviar código por email';
+    }
+
+    function _setDocStep2BtnLoading(loading) {
+      const btn = document.getElementById('docStep2Btn');
+      btn.disabled = loading;
+      btn.innerHTML = loading
+        ? '<i class="fa-solid fa-spinner fa-spin"></i>A verificar...'
+        : '<i class="fa-solid fa-check"></i>Confirmar e aceder';
+    }
+
+    // ─── Step 1: Request OTP ─────────────────────────────────────────────────
+    async function handleDocOtpRequest(event) {
+      event.preventDefault();
+      const errorDiv = document.getElementById('docStep1Error');
+      errorDiv.classList.add('hidden');
+
+      const memberCode = parseInt(document.getElementById('docMemberCode').value, 10);
+      const birthDateRaw = document.getElementById('docBirthDate').value.trim();
+      const email = document.getElementById('docEmail').value.trim();
+
+      if (!memberCode || !birthDateRaw || !email) {
+        errorDiv.textContent = 'Por favor, preencha todos os campos obrigatórios.';
+        errorDiv.classList.remove('hidden');
+        return;
+      }
+
+      // Convert DD/MM/YYYY → YYYY-MM-DD (ISO 8601) for the API
+      const dateParts = birthDateRaw.split('/');
+      if (dateParts.length !== 3 || dateParts[0].length !== 2 || dateParts[1].length !== 2 || dateParts[2].length !== 4) {
+        errorDiv.textContent = 'Data de nascimento inválida. Use o formato DD/MM/AAAA.';
+        errorDiv.classList.remove('hidden');
+        return;
+      }
+      const birthDate = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+
+      _setDocStep1BtnLoading(true);
+
+      try {
+        const res = await fetch(`${DOC_ACCESS_API_BASE}/documentaccess/request-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ memberCode, birthDate, email, document: _currentDocId })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          _currentDocEmail = email;
+          document.getElementById('docStep1').classList.add('hidden');
+          document.getElementById('docStep2').classList.remove('hidden');
+          setTimeout(() => document.getElementById('docOtpCode').focus(), 100);
+        } else {
+          errorDiv.textContent = data.errorMessage || 'Dados inválidos. Verifique os seus dados e tente novamente.';
+          errorDiv.classList.remove('hidden');
+        }
+      } catch (_) {
+        errorDiv.textContent = 'Erro de ligação. Verifique a sua ligação à internet e tente novamente.';
+        errorDiv.classList.remove('hidden');
+      } finally {
+        _setDocStep1BtnLoading(false);
+      }
+    }
+
+    // ─── Step 2: Validate OTP ────────────────────────────────────────────────
+    async function handleDocOtpValidate(event) {
+      event.preventDefault();
+      const errorDiv = document.getElementById('docStep2Error');
+      errorDiv.classList.add('hidden');
+
+      const otp = document.getElementById('docOtpCode').value.trim();
+
+      if (!/^\d{6}$/.test(otp)) {
+        errorDiv.textContent = 'O código deve ter exatamente 6 dígitos.';
+        errorDiv.classList.remove('hidden');
+        return;
+      }
+
+      _setDocStep2BtnLoading(true);
+
+      try {
+        const res = await fetch(`${DOC_ACCESS_API_BASE}/documentaccess/validate-otp`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: _currentDocEmail, otp })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          const docSlug = data.content && data.content.document;
+          const docInfo = PROTECTED_DOCUMENTS[docSlug] || PROTECTED_DOCUMENTS[_currentDocId];
+          if (!docInfo) {
+            errorDiv.textContent = 'Documento não encontrado. Por favor, contacte o clube.';
+            errorDiv.classList.remove('hidden');
+            return;
+          }
+          closeDocAccessModal();
+          openDocViewer(docInfo);
+        } else {
+          errorDiv.textContent = data.errorMessage || 'Código inválido ou expirado. Tente novamente.';
+          errorDiv.classList.remove('hidden');
+        }
+      } catch (_) {
+        errorDiv.textContent = 'Erro de ligação. Verifique a sua ligação à internet e tente novamente.';
+        errorDiv.classList.remove('hidden');
+      } finally {
+        _setDocStep2BtnLoading(false);
+      }
+    }
+
+    // ─── Document Viewer ─────────────────────────────────────────────────────
+    async function openDocViewer(docInfo) {
+      const modal = document.getElementById('docViewerModal');
+      const canvasContainer = document.getElementById('docViewerCanvas');
+      const loading = document.getElementById('docViewerLoading');
+
+      document.getElementById('docViewerTitle').textContent = docInfo.title;
+      canvasContainer.innerHTML = '';
+      loading.style.display = 'flex';
+      modal.style.display = 'flex';
+
+      try {
+        // Load PDF.js lazily from CDN
+        if (!window._pdfjsLib) {
+          const mod = await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.min.mjs');
+          mod.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.0.379/pdf.worker.min.mjs';
+          window._pdfjsLib = mod;
+        }
+        const pdfjsLib = window._pdfjsLib;
+
+        // Fetch PDF bytes (keeps source path opaque)
+        const response = await fetch(docInfo.cloudflareUrl);
+        if (!response.ok) throw new Error('fetch-failed');
+        const arrayBuffer = await response.arrayBuffer();
+
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        const containerWidth = canvasContainer.clientWidth - 32;
+        const dpr = window.devicePixelRatio || 1;
+
+        for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+          const page = await pdf.getPage(pageNum);
+          const baseViewport = page.getViewport({ scale: 1 });
+          const scale = containerWidth / baseViewport.width;
+          const viewport = page.getViewport({ scale });
+
+          const wrapper = document.createElement('div');
+          wrapper.style.cssText = `margin:0 auto 12px;box-shadow:0 2px 8px rgba(0,0,0,.5);width:${viewport.width}px;`;
+
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.floor(viewport.width * dpr);
+          canvas.height = Math.floor(viewport.height * dpr);
+          canvas.style.width = viewport.width + 'px';
+          canvas.style.height = viewport.height + 'px';
+          canvas.style.display = 'block';
+
+          const ctx = canvas.getContext('2d');
+          ctx.scale(dpr, dpr);
+
+          wrapper.appendChild(canvas);
+          canvasContainer.appendChild(wrapper);
+
+          await page.render({ canvasContext: ctx, viewport }).promise;
+        }
+
+        loading.style.display = 'none';
+      } catch (_) {
+        loading.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-4xl text-red-400"></i><p class="text-sm text-red-400 mt-2">Erro ao carregar o documento. Tente novamente.</p>';
+      }
+    }
+
+    function closeDocViewer() {
+      const modal = document.getElementById('docViewerModal');
+      document.getElementById('docViewerCanvas').innerHTML = '';
+      modal.style.display = 'none';
+    }
+
+    // Block save / print keyboard shortcuts while the document viewer is open
+    document.addEventListener('keydown', function (e) {
+      if (document.getElementById('docViewerModal').style.display !== 'flex') return;
+      const isModifier = e.metaKey || e.ctrlKey;
+      if (isModifier && (e.key === 's' || e.key === 'S' || e.key === 'p' || e.key === 'P')) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    }, true);
+
+    // Block print triggered from outside keyboard (e.g. browser menu)
+    window.addEventListener('beforeprint', function () {
+      if (document.getElementById('docViewerModal').style.display === 'flex') {
+        document.getElementById('docViewerCanvas').style.visibility = 'hidden';
+      }
+    });
+    window.addEventListener('afterprint', function () {
+      document.getElementById('docViewerCanvas').style.visibility = '';
+    });
+  </script>
 </body>
 </html>
