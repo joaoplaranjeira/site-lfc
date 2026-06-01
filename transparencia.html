@@ -809,15 +809,22 @@
     // Auto-format birth date field (DD/MM/AAAA) — inserts slashes automatically
     (function () {
       const birthInput = document.getElementById('docBirthDate');
-      birthInput.addEventListener('input', function () {
+      birthInput.addEventListener('input', function (e) {
+        const isDeleting = e.inputType && e.inputType.startsWith('delete');
         const cursorAtEnd = this.selectionStart === this.value.length;
         let digits = this.value.replace(/\D/g, '');
         if (digits.length > 8) digits = digits.slice(0, 8);
-        let formatted = digits;
+        let formatted;
         if (digits.length > 4) {
           formatted = digits.slice(0, 2) + '/' + digits.slice(2, 4) + '/' + digits.slice(4);
+        } else if (digits.length === 4 && !isDeleting) {
+          formatted = digits.slice(0, 2) + '/' + digits.slice(2, 4) + '/';
         } else if (digits.length > 2) {
           formatted = digits.slice(0, 2) + '/' + digits.slice(2);
+        } else if (digits.length === 2 && !isDeleting) {
+          formatted = digits + '/';
+        } else {
+          formatted = digits;
         }
         this.value = formatted;
         if (cursorAtEnd) {
