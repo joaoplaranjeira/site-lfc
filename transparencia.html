@@ -805,6 +805,26 @@
     window.addEventListener('afterprint', function () {
       document.getElementById('docViewerCanvas').style.visibility = '';
     });
+
+    // Auto-format birth date field (DD/MM/AAAA) — inserts slashes automatically
+    (function () {
+      const birthInput = document.getElementById('docBirthDate');
+      birthInput.addEventListener('input', function () {
+        const cursorAtEnd = this.selectionStart === this.value.length;
+        let digits = this.value.replace(/\D/g, '');
+        if (digits.length > 8) digits = digits.slice(0, 8);
+        let formatted = digits;
+        if (digits.length > 4) {
+          formatted = digits.slice(0, 2) + '/' + digits.slice(2, 4) + '/' + digits.slice(4);
+        } else if (digits.length > 2) {
+          formatted = digits.slice(0, 2) + '/' + digits.slice(2);
+        }
+        this.value = formatted;
+        if (cursorAtEnd) {
+          this.setSelectionRange(formatted.length, formatted.length);
+        }
+      });
+    })();
   </script>
 </body>
 </html>
