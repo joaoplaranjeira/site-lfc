@@ -134,6 +134,16 @@
         
         <h3 class="text-xl font-bold text-gray-900 mb-4">Orçamentos & Execução</h3>
         <div class="space-y-3 mb-6">
+          <button type="button" onclick="openDocumentAccess('orc-2026-2027', 'Plano de Atividades e Orçamento 2026-2027')" class="flex items-center gap-3 p-4 bg-amber-50 rounded-lg hover:bg-amber-100 transition w-full text-left border border-amber-200">
+            <i class="fa-solid fa-file-pdf text-2xl text-amber-600"></i>
+            <div class="flex-1">
+              <span class="font-semibold text-gray-900 block">Plano de Atividades e Orçamento 2026-2027</span>
+              <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
+                <i class="fa-solid fa-hourglass-half text-xs"></i>Em validação
+              </span>
+            </div>
+            <i class="fa-solid fa-lock text-amber-500 flex-shrink-0"></i>
+          </button>
           <a href="documents/budgets/orc_2025_2026.pdf" target="_blank" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
             <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
             <span class="font-semibold text-gray-900">Plano de Atividades e Orçamento 2025-2026</span>
@@ -570,6 +580,10 @@
       'novo-regulamento-interno': {
         title: 'Novo Regulamento Interno',
         cloudflareUrl: 'documents/oficial/lfc_regulamento_interno_em_validacao.pdf'
+      },
+      'orc-2026-2027': {
+        title: 'Plano de Atividades e Orçamento 2026-2027',
+        cloudflareUrl: 'documents/budgets/orc_2026_2027.pdf'
       }
     };
 
