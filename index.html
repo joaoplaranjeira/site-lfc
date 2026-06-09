@@ -147,22 +147,23 @@
     </div>
   </div>
 
-  <!-- POPUP DE COUNTDOWN -->
-  <div id="popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-[92%] mx-4 text-center">
-      <h2 class="text-2xl font-bold text-gray-900 mb-3">Redirecionamento automático</h2>
-      <p class="text-gray-600 mb-6">Sem ação, serás redirecionado para o <strong>site oficial</strong> em <span id="countdown" class="font-bold text-orange-600">10</span>s.</p>
-      <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden mb-6">
-        <div id="progress" class="h-3 rounded-full transition-all duration-1000" style="width:100%; background: linear-gradient(90deg, #f97316 0%, #ea580c 100%);"></div>
+  <!-- POPUP FINAL JAMOR -->
+  <div id="jamor-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-[92%] mx-4 text-center relative">
+      <button id="jamor-close" aria-label="Fechar" class="absolute top-3 right-4 text-gray-400 hover:text-gray-700 transition text-2xl leading-none font-light">&times;</button>
+      <div class="text-5xl mb-3">🏆</div>
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Final no Jamor!</h2>
+      <p class="text-lg font-bold mb-3" style="color:#034638;">No Jamor joga-se a história.<br>Garante o teu lugar nela.</p>
+      <p class="text-gray-600 mb-6">O Leça FC disputa amanhã uma final histórica.<br>Apoia o clube — torna-te sócio hoje!</p>
+      <a id="jamor-cta" href="https://members.lecafutebolclube.com/new-member" target="_blank" rel="noopener noreferrer"
+         class="block w-full px-6 py-3 rounded-full text-white font-bold text-lg shadow-lg hover:opacity-90 transition mb-5"
+         style="background: linear-gradient(135deg, #034638 0%, #056b57 100%);">
+        Tornar-me Sócio
+      </a>
+      <div class="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden mb-1">
+        <div id="jamor-progress" class="h-1.5 rounded-full" style="width:100%; background: linear-gradient(90deg, #056b57 0%, #034638 100%); transition: width 1s linear;"></div>
       </div>
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-        <button id="stayBtn" class="w-full sm:w-auto px-6 py-3 rounded-full border-2 border-emerald-700 text-emerald-700 font-semibold hover:bg-emerald-50 transition">
-          Ficar aqui
-        </button>
-        <a id="goBtn" href="https://lecafc.pt" class="w-full sm:w-auto px-6 py-3 rounded-full text-white font-semibold shadow-lg transition" style="background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);">
-          Ir já para o site
-        </a>
-      </div>
+      <p class="text-xs text-gray-400 mt-1">Fecha automaticamente em <span id="jamor-countdown">5</span>s</p>
     </div>
   </div>
 

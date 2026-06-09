@@ -34,7 +34,63 @@
   });
 })();
 
-// Popup disabled
+// Popup Final Jamor – Final no Jamor (10 Jun 2026)
+(function () {
+  // Mostrar apenas nos dias 9 e 10 de junho de 2026
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  var showFrom  = new Date('2026-06-09'); showFrom.setHours(0, 0, 0, 0);
+  var showUntil = new Date('2026-06-11'); showUntil.setHours(0, 0, 0, 0);
+
+  var popup    = document.getElementById('jamor-popup');
+  if (!popup) return;
+
+  if (today < showFrom || today >= showUntil) {
+    popup.classList.add('hidden');
+    return;
+  }
+
+  var closeBtn = document.getElementById('jamor-close');
+  var ctaBtn   = document.getElementById('jamor-cta');
+  var countEl  = document.getElementById('jamor-countdown');
+  var progEl   = document.getElementById('jamor-progress');
+
+  var DURATION   = 5;
+  var remaining  = DURATION;
+  var timer      = null;
+
+  function closePopup() {
+    clearInterval(timer);
+    popup.classList.add('hidden');
+  }
+
+  function tick() {
+    remaining--;
+    if (remaining <= 0) {
+      countEl.textContent = '0';
+      progEl.style.width  = '0%';
+      closePopup();
+      return;
+    }
+    countEl.textContent = remaining;
+    progEl.style.width  = (remaining / DURATION * 100) + '%';
+  }
+
+  timer = setInterval(tick, 1000);
+
+  closeBtn.addEventListener('click', closePopup);
+
+  ctaBtn.addEventListener('click', function () {
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'jamor_popup_cta_click', {
+        event_category: 'engagement',
+        event_label: 'Tornar-me Sócio – Final Jamor'
+      });
+    }
+    closePopup();
+  });
+})();
+
+// Old popup disabled
 /*
 (function(){
   const e="https://lecafc.pt",t=10;
