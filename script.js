@@ -54,7 +54,7 @@
   var countEl  = document.getElementById('jamor-countdown');
   var progEl   = document.getElementById('jamor-progress');
 
-  var DURATION   = 5;
+  var DURATION   = 20;
   var remaining  = DURATION;
   var timer      = null;
 

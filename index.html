@@ -13,29 +13,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Universo Leça FC</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            emerald: {
-              50: '#e6f2f0',
-              100: '#cce5e1',
-              200: '#99cbc3',
-              300: '#66b1a5',
-              400: '#339787',
-              500: '#056b57',
-              600: '#045a4a',
-              700: '#034638',
-              800: '#022e26',
-              900: '#011713'
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="tailwind.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="icon" type="image/png" href="images/leca.png" />
@@ -148,22 +126,133 @@
   </div>
 
   <!-- POPUP FINAL JAMOR -->
-  <div id="jamor-popup" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-[92%] mx-4 text-center relative">
-      <button id="jamor-close" aria-label="Fechar" class="absolute top-3 right-4 text-gray-400 hover:text-gray-700 transition text-2xl leading-none font-light">&times;</button>
-      <div class="text-5xl mb-3">🏆</div>
-      <h2 class="text-2xl font-bold text-gray-900 mb-2">Final no Jamor!</h2>
-      <p class="text-lg font-bold mb-3" style="color:#034638;">No Jamor joga-se a história.<br>Garante o teu lugar nela.</p>
-      <p class="text-gray-600 mb-6">O Leça FC disputa amanhã uma final histórica.<br>Apoia o clube — torna-te sócio hoje!</p>
-      <a id="jamor-cta" href="https://members.lecafutebolclube.com/new-member" target="_blank" rel="noopener noreferrer"
-         class="block w-full px-6 py-3 rounded-full text-white font-bold text-lg shadow-lg hover:opacity-90 transition mb-5"
-         style="background: linear-gradient(135deg, #034638 0%, #056b57 100%);">
-        Tornar-me Sócio
-      </a>
-      <div class="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden mb-1">
-        <div id="jamor-progress" class="h-1.5 rounded-full" style="width:100%; background: linear-gradient(90deg, #056b57 0%, #034638 100%); transition: width 1s linear;"></div>
+  <style>
+    #jamor-popup {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.65);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999; backdrop-filter: blur(6px);
+      animation: jfadeIn .35s ease;
+    }
+    #jamor-popup.hidden { display: none; }
+    @keyframes jfadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes jslideUp { from { opacity:0; transform: translateY(28px); } to { opacity:1; transform: translateY(0); } }
+
+    #jamor-card {
+      position: relative; width: 92%; max-width: 440px;
+      border-radius: 1.5rem; overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      box-shadow: 0 32px 80px rgba(0,0,0,.45);
+      animation: jslideUp .4s cubic-bezier(.22,.68,0,1.2);
+    }
+
+    /* Header com gradiente verde */
+    #jamor-header {
+      background: linear-gradient(135deg, #023327 0%, #045a4a 60%, #056b57 100%);
+      padding: 2rem 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+    #jamor-header::after {
+      content: '';
+      position: absolute; bottom: -1px; left: 0; right: 0; height: 32px;
+      background: #fff;
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+
+    #jamor-close {
+      position: absolute; top: .8rem; right: .9rem;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,.15); border: none;
+      color: #fff; font-size: 1.1rem; line-height: 1;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    #jamor-close:hover { background: rgba(255,255,255,.3); }
+
+    #jamor-logo {
+      width: 64px; height: 64px; object-fit: contain;
+      display: block; margin: 0 auto .9rem;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,.3));
+    }
+    #jamor-badge {
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      color: #fff; font-size: .65rem; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: .25rem .75rem; border-radius: 9999px;
+      margin-bottom: .6rem;
+    }
+    #jamor-header h2 {
+      font-size: 1.65rem; font-weight: 900; color: #fff;
+      margin: 0 0 2rem; line-height: 1.15;
+      text-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+
+    /* Body branco */
+    #jamor-body {
+      background: #fff;
+      padding: 1.5rem 2rem 1.75rem;
+      text-align: center;
+    }
+    #jamor-slogan {
+      font-size: 1rem; font-weight: 700; color: #034638;
+      margin: 0 0 .5rem; line-height: 1.5;
+    }
+    #jamor-desc { font-size: .88rem; color: #6b7280; margin: 0 0 1.25rem; line-height: 1.5; }
+    #jamor-cta {
+      display: block; width: 100%; padding: .85rem 1.5rem;
+      border-radius: 9999px; color: #fff; font-weight: 800; font-size: 1rem;
+      text-decoration: none; letter-spacing: .01em;
+      background: linear-gradient(135deg, #034638 0%, #06865f 100%);
+      box-shadow: 0 6px 20px rgba(3,70,56,.4);
+      transition: transform .15s, box-shadow .15s;
+      margin-bottom: 1.25rem;
+    }
+    #jamor-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(3,70,56,.45); }
+    #jamor-cta:active { transform: translateY(0); }
+
+    #jamor-bar-bg {
+      background: #e5e7eb; border-radius: 9999px;
+      height: 4px; overflow: hidden; margin-bottom: .45rem;
+    }
+    #jamor-progress {
+      height: 100%; border-radius: 9999px;
+      background: linear-gradient(90deg, #06865f, #034638);
+      transition: width 1s linear;
+    }
+    #jamor-timer { font-size: .72rem; color: #9ca3af; }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      #jamor-popup { align-items: flex-end; padding-bottom: env(safe-area-inset-bottom, 0); }
+      #jamor-card { width: 100%; max-width: 100%; border-radius: 1.25rem 1.25rem 0 0; }
+      #jamor-header { padding: 1.4rem 1.25rem 1.25rem; }
+      #jamor-logo { width: 52px; height: 52px; margin-bottom: .6rem; }
+      #jamor-header h2 { font-size: 1.35rem; margin-bottom: 1.5rem; }
+      #jamor-body { padding: 1.25rem 1.25rem 1.5rem; }
+      #jamor-slogan { font-size: .92rem; }
+      #jamor-desc { font-size: .82rem; }
+      #jamor-cta { font-size: .95rem; padding: .8rem 1.25rem; }
+    }
+  </style>
+  <div id="jamor-popup">
+    <div id="jamor-card">
+      <div id="jamor-header">
+        <button id="jamor-close" aria-label="Fechar">&times;</button>
+        <img id="jamor-logo" src="images/leca.png" alt="Leça FC" />
+        <div id="jamor-badge">🏆 Final Nacional</div>
+        <h2>Leça FC no Jamor!</h2>
       </div>
-      <p class="text-xs text-gray-400 mt-1">Fecha automaticamente em <span id="jamor-countdown">5</span>s</p>
+      <div id="jamor-body">
+        <p id="jamor-slogan">Do Universo Leça FC ao Jamor,<br>vai uma cidade cheia de amor!</p>
+        <p id="jamor-desc">Apoia o clube — torna-te sócio hoje!</p>
+        <a id="jamor-cta" href="https://members.lecafutebolclube.com/new-member" target="_blank" rel="noopener noreferrer">
+          Tornar-me Sócio
+        </a>
+        <div id="jamor-bar-bg"><div id="jamor-progress" style="width:100%;"></div></div>
+        <p id="jamor-timer">Fecha automaticamente em <span id="jamor-countdown">20</span>s</p>
+      </div>
     </div>
   </div>
 
