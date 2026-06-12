@@ -269,9 +269,55 @@ const eventsData = {
           message: "Os sócios com mais de 25 anos de associado devem atualizar o seu contacto e foto até dia 20 de Abril em www.lecafutebolclube.com ou através do número 913 467 588."
         }
       ]
+    },
+    {
+      id: 22,
+      title: "Sessão de Esclarecimento dos Novos Estatutos e Regulamento Interno",
+      date: "2026-06-18",
+      time: "21:00",
+      location: "Sala Concerto do Salão Paroquial de Leça da Palmeira",
+      description: "Sessão de esclarecimento dedicada aos novos Estatutos e Regulamento Interno do Leça Futebol Clube.",
+      type: "assembleia",
+      status: "upcoming",
+      image: null,
+      link: null
+    },
+    {
+      id: 23,
+      title: "Assembleia Geral Ordinária",
+      date: "2026-06-20",
+      time: "14:00",
+      location: "Salão Nobre da Junta de Freguesia de Leça da Palmeira",
+      description: "Assembleia Geral Ordinária do Leça Futebol Clube.",
+      type: "assembleia",
+      status: "upcoming",
+      image: null,
+      link: "documents/convocations/conv_ago_20062026.pdf"
+    },
+    {
+      id: 24,
+      title: "Assembleia Geral Extraordinária",
+      date: "2026-06-20",
+      time: "15:00",
+      location: "Salão Nobre da Junta de Freguesia de Leça da Palmeira",
+      description: "Assembleia Geral Extraordinária do Leça Futebol Clube.",
+      type: "assembleia",
+      status: "upcoming",
+      image: null,
+      link: "documents/convocations/conv_age_20062026.pdf"
     }
   ],
   institucionais: [
+    {
+      id: 25,
+      title: "Tarde Verde em Homenagem ao Leça Futebol Clube",
+      date: "2026-06-06",
+      time: "16:30", em Homenagem ao Leça Futebol Clube, organizada pela Associação de Amigos Aposentados de Leça da Palmeira.",
+      type: "default",
+      status: "completed",
+      image: null,
+      link: null
+    },
     {
       id: 20,
       title: "90º Aniversário do Rancho Típico da Amorosa",
