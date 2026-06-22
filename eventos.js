@@ -305,6 +305,21 @@ const eventsData = {
       status: "upcoming",
       image: null,
       link: "documents/convocations/conv_age_20062026.pdf"
+    },
+    {
+      id: 25,
+      title: "Visita Guiada ao Museu Custódio Antunes",
+      date: "2026-07-04",
+      time: "11:00 - 13:00",
+      location: "Museu Custódio Antunes (Pavilhão Custódio Antunes)",
+      description: "Mergulha na história do Leça FC! Junta-te a nós numa visita guiada ao Museu Custódio Antunes e descobre os momentos, figuras e conquistas que moldaram a identidade do nosso clube ao longo de mais de um século.",
+      type: "default",
+      status: "upcoming",
+      image: null,
+      link: null,
+      registration: {
+        eventCode: "EVT-003"
+      }
     }
   ],
   institucionais: [
