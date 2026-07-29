@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>Investor Room — Universo Leça</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="investor-room.css" />
+</head>
+<body class="ir-locked">
+  <div id="investor-access-gate" class="ir-access-gate">
+    <div class="ir-gate-card">
+      <div class="ir-gate-heading">
+        <img src="images/leca.png" alt="Leça FC" class="ir-gate-logo" />
+        <h1>Investor Room</h1>
+        <p>Introduz o teu código de acesso para entrar na área reservada do Universo Leça.</p>
+      </div>
+      <form id="investor-access-form" class="ir-access-form">
+        <label for="investor-code-input" class="hidden">Código de acesso</label>
+        <input
+          id="investor-code-input"
+          class="ir-code-input"
+          type="text"
+          maxlength="20"
+          placeholder="Código de acesso"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <div id="investor-access-error" class="ir-access-error hidden" role="alert">
+          <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+          <span id="investor-access-error-text">Código inválido. Por favor, tenta novamente.</span>
+        </div>
+        <button id="investor-access-submit" class="ir-gate-submit" type="submit">
+          <i class="fa-solid fa-unlock" aria-hidden="true"></i>
+          Entrar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="investor-content" class="ir-shell hidden">
+    <header class="ir-topbar">
+      <a href="investor-room.html" class="ir-brand" aria-label="Investor Room — início">
+        <img src="images/leca.png" alt="" />
+        <span class="ir-brand-copy">
+          <strong>Investor Room</strong>
+          <span>Universo Leça</span>
+        </span>
+      </a>
+      <nav class="ir-nav" aria-label="Navegação principal">
+        <a href="#projects">Projetos</a>
+        <a href="#contact">Contacto</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="ir-dashboard-hero">
+        <div class="ir-hero-inner ir-reveal">
+          <p class="ir-eyebrow">Universo Leça · Área reservada</p>
+          <h1>Ideias com visão.<br><span>Projetos com futuro.</span></h1>
+          <p class="ir-lead">
+            Um espaço reservado para conhecer os projetos estratégicos que estão
+            a construir o próximo capítulo do Universo Leça.
+          </p>
+        </div>
+      </section>
+
+      <section id="projects" class="ir-dashboard-content">
+        <div class="ir-section-heading ir-reveal">
+          <div>
+            <p class="ir-eyebrow">Portefólio estratégico</p>
+            <h2>Projetos disponíveis</h2>
+          </div>
+          <p>Explora cada projeto através de uma experiência imersiva, concebida para revelar progressivamente a visão, a estrutura e a oportunidade.</p>
+        </div>
+
+        <div class="ir-project-grid">
+          <a href="investor-cycling.html" class="ir-project-card ir-reveal">
+            <img src="images/investor-room/cycling-hero.png" alt="Ciclista profissional numa estrada costeira" />
+            <div class="ir-card-content">
+              <span class="ir-badge"><i class="fa-solid fa-bicycle" aria-hidden="true"></i> Projeto disponível</span>
+              <h3>Leça Cycling<br>Project</h3>
+              <p>Uma nova visão para transformar uma estrutura profissional de ciclismo numa organização desportiva de referência.</p>
+              <span class="ir-card-link">Entrar no projeto <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+            </div>
+          </a>
+
+          <aside class="ir-coming-card ir-reveal">
+            <i class="fa-solid fa-plus ir-symbol" aria-hidden="true"></i>
+            <div>
+              <span class="ir-badge">Em preparação</span>
+              <h3>Novos projetos</h3>
+              <p>O Investor Room crescerá com novas iniciativas estratégicas do Universo Leça.</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer id="contact" class="ir-footer">
+      <span>© <span data-year></span> Leça Futebol Clube · Investor Room</span>
+      <a href="mailto:geral@lecafc.pt">geral@lecafc.pt</a>
+    </footer>
+  </div>
+
+  <script src="investor-room.js"></script>
+</body>
+</html>

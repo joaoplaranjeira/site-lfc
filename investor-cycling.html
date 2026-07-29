@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>Leça Cycling Project — Investor Room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&amp;display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="investor-room.css" />
+</head>
+<body class="ir-locked">
+  <div id="investor-access-gate" class="ir-access-gate">
+    <div class="ir-gate-card">
+      <div class="ir-gate-heading">
+        <img src="images/leca.png" alt="Leça FC" class="ir-gate-logo" />
+        <h1>Investor Room</h1>
+        <p>Introduz o teu código de acesso para entrar na área reservada do Universo Leça.</p>
+      </div>
+      <form id="investor-access-form" class="ir-access-form">
+        <label for="investor-code-input" class="hidden">Código de acesso</label>
+        <input id="investor-code-input" class="ir-code-input" type="text" maxlength="20" placeholder="Código de acesso" autocomplete="off" spellcheck="false" />
+        <div id="investor-access-error" class="ir-access-error hidden" role="alert">
+          <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+          <span id="investor-access-error-text">Código inválido. Por favor, tenta novamente.</span>
+        </div>
+        <button id="investor-access-submit" class="ir-gate-submit" type="submit">
+          <i class="fa-solid fa-unlock" aria-hidden="true"></i>
+          Entrar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div id="investor-content" class="ir-shell hidden">
+    <div class="ir-progress" aria-hidden="true"><span></span></div>
+    <header class="ir-topbar">
+      <a href="investor-room.html" class="ir-brand">
+        <img src="images/leca.png" alt="" />
+        <span class="ir-brand-copy">
+          <strong>Leça Cycling</strong>
+          <span>Investor Room</span>
+        </span>
+      </a>
+      <nav class="ir-nav" aria-label="Navegação do projeto">
+        <a href="investor-room.html" class="ir-back"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Investor Room</a>
+      </nav>
+    </header>
+
+    <nav class="ir-chapter-nav" aria-label="Capítulos">
+      <a href="#inicio" class="active" aria-label="Início"></a>
+      <a href="#ponto-partida" aria-label="Ponto de partida"></a>
+      <a href="#visao" aria-label="Visão"></a>
+      <a href="#ecossistema" aria-label="Ecossistema"></a>
+      <a href="#aceleracao" aria-label="Aceleração"></a>
+      <a href="#futuro" aria-label="Futuro"></a>
+    </nav>
+
+    <main>
+      <section id="inicio" class="ir-project-hero" data-chapter>
+        <img class="ir-project-hero-bg" src="images/investor-room/cycling-hero.png" alt="Ciclista profissional numa estrada costeira ao amanhecer" />
+        <div class="ir-project-intro ir-reveal">
+          <p class="ir-eyebrow">Universo Leça · Projeto estratégico</p>
+          <h1>Leça<br><span>Cycling Project</span></h1>
+          <p class="ir-lead">Uma visão integrada para performance, formação, tecnologia e projeção internacional.</p>
+          <div class="ir-hero-meta">
+            <span>Desporto de alto rendimento</span>
+            <span>Tecnologia</span>
+            <span>Desenvolvimento territorial</span>
+          </div>
+        </div>
+        <div class="ir-scroll-cue"><span>Descobrir o projeto</span><i class="ir-scroll-line"></i></div>
+      </section>
+
+      <section id="ponto-partida" class="ir-story-section" data-chapter>
+        <div class="ir-story-inner ir-story-grid">
+          <div class="ir-reveal">
+            <span class="ir-section-index">01 · Ponto de partida</span>
+            <h2>Uma estrutura real. Uma nova ambição.</h2>
+            <p class="ir-copy">O projeto parte de uma estrutura profissional de ciclismo já existente. A oportunidade está em acelerar a sua evolução e construir uma organização desportiva mais integrada, inovadora e reconhecida.</p>
+          </div>
+          <div class="ir-stat-stage ir-reveal">
+            <span class="ir-stat-value">850k€</span>
+            <span class="ir-stat-label">Orçamento anual aproximado da estrutura profissional existente.</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="visao" class="ir-story-section" data-chapter>
+        <div class="ir-story-inner ir-reveal">
+          <span class="ir-section-index">02 · Visão</span>
+          <h2>Mais do que uma equipa.</h2>
+          <p class="ir-copy">Uma plataforma desportiva capaz de ligar competição, talento, ciência, dados, comunicação e território sob a identidade do Leça Futebol Clube.</p>
+          <div class="ir-pillars">
+            <article class="ir-pillar"><i class="fa-solid fa-flag-checkered"></i><h3>Equipa<br>Profissional</h3></article>
+            <article class="ir-pillar"><i class="fa-solid fa-seedling"></i><h3>Academia</h3></article>
+            <article class="ir-pillar"><i class="fa-solid fa-heart-pulse"></i><h3>Performance<br>Lab</h3></article>
+            <article class="ir-pillar"><i class="fa-solid fa-microchip"></i><h3>Tecnologia</h3></article>
+            <article class="ir-pillar"><i class="fa-solid fa-brain"></i><h3>Inteligência<br>Artificial</h3></article>
+            <article class="ir-pillar"><i class="fa-solid fa-bullhorn"></i><h3>Comunicação</h3></article>
+            <article class="ir-pillar"><i class="fa-solid fa-map-location-dot"></i><h3>Desenvolvimento<br>Territorial</h3></article>
+            <article class="ir-pillar"><i class="fa-solid fa-earth-europe"></i><h3>Promoção<br>Internacional</h3></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="ecossistema" class="ir-story-section" data-chapter>
+        <div class="ir-story-inner ir-story-grid">
+          <div class="ir-stat-stage ir-reveal">
+            <span class="ir-stat-value">8</span>
+            <span class="ir-stat-label">Pilares interligados num único ecossistema de desenvolvimento e performance.</span>
+          </div>
+          <div class="ir-reveal">
+            <span class="ir-section-index">03 · Ecossistema</span>
+            <h2>O valor está nas ligações.</h2>
+            <p class="ir-copy">Cada pilar reforça os restantes. A academia alimenta talento, o laboratório gera conhecimento, a tecnologia transforma dados em decisões e a comunicação amplia o alcance da organização.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="aceleracao" class="ir-story-section" data-chapter>
+        <div class="ir-story-inner ir-reveal">
+          <span class="ir-section-index">04 · Aceleração</span>
+          <h2>Uma ronda para acelerar a transformação.</h2>
+          <p class="ir-copy">A ronda de investimento destina-se a antecipar capacidades estratégicas e posicionar o projeto para uma nova fase de crescimento.</p>
+          <div class="ir-story-grid" style="margin-top:3rem">
+            <div class="ir-stat-stage">
+              <span class="ir-stat-value">150k€</span>
+              <span class="ir-stat-label">Ronda de investimento para aceleração do projeto.</span>
+            </div>
+            <div class="ir-allocation">
+              <div><span>01</span><strong>Nova identidade</strong></div>
+              <div><span>02</span><strong>Academia</strong></div>
+              <div><span>03</span><strong>Tecnologia</strong></div>
+              <div><span>04</span><strong>Comunicação</strong></div>
+              <div><span>05</span><strong>Posicionamento internacional</strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="futuro" class="ir-story-section ir-closing" data-chapter>
+        <div class="ir-story-inner ir-reveal">
+          <span class="ir-section-index">05 · Próximo capítulo</span>
+          <h2>Construir hoje a organização desportiva de amanhã.</h2>
+          <p class="ir-copy">O Leça Cycling Project propõe uma visão de longo prazo assente em performance, conhecimento, inovação e identidade.</p>
+          <a href="mailto:geral@lecafc.pt?subject=Leça%20Cycling%20Project" class="ir-button">
+            Falar sobre o projeto <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="ir-footer">
+      <span>© <span data-year></span> Leça Futebol Clube · Investor Room</span>
+      <a href="investor-room.html">Regressar aos projetos</a>
+    </footer>
+  </div>
+
+  <script src="investor-room.js"></script>
+</body>
+</html>
