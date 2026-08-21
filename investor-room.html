@@ -10,9 +10,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="design-system.css" />
   <link rel="stylesheet" href="investor-room.css" />
 </head>
-<body class="ir-locked">
+<body class="ir-locked" data-design-mode="immersive" data-investor-context-id="2" data-investor-context-label="Investor Room">
   <div id="investor-access-gate" class="ir-access-gate">
     <div class="ir-gate-card">
       <div class="ir-gate-heading">
@@ -80,7 +81,7 @@
         </div>
 
         <div class="ir-project-grid">
-          <a href="investor-cycling.html" class="ir-project-card ir-reveal">
+          <a href="investor-cycling.html" class="ir-project-card ir-project-card--featured ir-reveal">
             <img src="images/investor-room/cycling-hero.png" alt="Ciclista profissional numa estrada costeira" />
             <div class="ir-card-content">
               <span class="ir-badge"><i class="fa-solid fa-bicycle" aria-hidden="true"></i> Projeto disponível</span>
@@ -90,21 +91,62 @@
             </div>
           </a>
 
-          <aside class="ir-coming-card ir-reveal">
-            <i class="fa-solid fa-plus ir-symbol" aria-hidden="true"></i>
-            <div>
-              <span class="ir-badge">Em preparação</span>
-              <h3>Novos projetos</h3>
-              <p>O Investor Room crescerá com novas iniciativas estratégicas do Universo Leça.</p>
+          <a href="investor-pavilhao.html" class="ir-project-card ir-project-card--compact ir-project-card--graphic ir-reveal">
+            <i class="fa-solid fa-building-columns ir-card-symbol" aria-hidden="true"></i>
+            <div class="ir-card-content">
+              <span class="ir-badge">Projeto e patrocínio</span>
+              <h3>Pavilhão</h3>
+              <p>Infraestrutura, comunidade e presença diária com inventário físico de publicidade.</p>
+              <span class="ir-card-link">Explorar oportunidade <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
             </div>
-          </aside>
+          </a>
+
+          <a href="investor-formacao-futebol.html" class="ir-project-card ir-project-card--compact ir-project-card--graphic ir-reveal">
+            <i class="fa-solid fa-people-group ir-card-symbol" aria-hidden="true"></i>
+            <div class="ir-card-content">
+              <span class="ir-badge">Projeto e patrocínio</span>
+              <h3>Formação<br>Futebol</h3>
+              <p>Talento, valores e exposição de marca no equipamento oficial da formação.</p>
+              <span class="ir-card-link">Explorar oportunidade <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+            </div>
+          </a>
+
+          <a href="investor-masters-futebol.html" class="ir-project-card ir-project-card--compact ir-project-card--graphic ir-reveal">
+            <i class="fa-solid fa-trophy ir-card-symbol" aria-hidden="true"></i>
+            <div class="ir-card-content">
+              <span class="ir-badge">Projeto e patrocínio</span>
+              <h3>Masters<br>Futebol</h3>
+              <p>Identidade, memória e soluções de ativação construídas à medida do parceiro.</p>
+              <span class="ir-card-link">Explorar oportunidade <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+            </div>
+          </a>
+
+          <a href="investor-atletismo.html" class="ir-project-card ir-project-card--compact ir-project-card--graphic ir-reveal">
+            <i class="fa-solid fa-person-running ir-card-symbol" aria-hidden="true"></i>
+            <div class="ir-card-content">
+              <span class="ir-badge">Projeto e patrocínio</span>
+              <h3>Atletismo</h3>
+              <p>Competição, performance e visibilidade no equipamento oficial da modalidade.</p>
+              <span class="ir-card-link">Explorar oportunidade <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+            </div>
+          </a>
+
+          <a href="investor-bilhar.html" class="ir-project-card ir-project-card--compact ir-project-card--graphic ir-reveal">
+            <i class="fa-solid fa-circle-dot ir-card-symbol" aria-hidden="true"></i>
+            <div class="ir-card-content">
+              <span class="ir-badge">Projeto e patrocínio</span>
+              <h3>Bilhar</h3>
+              <p>Excelência competitiva, projeção internacional e exposição televisiva para patrocinadores.</p>
+              <span class="ir-card-link">Explorar oportunidade <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+            </div>
+          </a>
         </div>
       </section>
     </main>
 
     <footer id="contact" class="ir-footer">
       <span>© <span data-year></span> Leça Futebol Clube · Investor Room</span>
-      <a href="mailto:geral@lecafc.pt">geral@lecafc.pt</a>
+      <a href="mailto:marketing@lecafc.pt">marketing@lecafc.pt</a>
     </footer>
   </div>
 

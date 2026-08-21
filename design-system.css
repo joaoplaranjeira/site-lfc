@@ -1,0 +1,461 @@
+/*
+ * Universo Leça Design System
+ * Two visual modes, one shared brand:
+ * - institutional: clarity, information and frequent tasks
+ * - immersive: storytelling, heritage and strategic experiences
+ */
+
+:root {
+  --ul-green-950: #010f0c;
+  --ul-green-900: #011713;
+  --ul-green-800: #022e26;
+  --ul-green-700: #034638;
+  --ul-green-600: #045a4a;
+  --ul-green-500: #056b57;
+  --ul-green-400: #339787;
+  --ul-mint: #5ecfb1;
+  --ul-mint-soft: #a7e6d4;
+
+  --ul-white: #ffffff;
+  --ul-canvas: #f3f7f5;
+  --ul-surface: #ffffff;
+  --ul-ink: #10211c;
+  --ul-muted: #60716b;
+  --ul-line: rgba(3, 70, 56, 0.12);
+  --ul-line-dark: rgba(255, 255, 255, 0.09);
+
+  --ul-radius-sm: 0.75rem;
+  --ul-radius-md: 1rem;
+  --ul-radius-lg: 1.5rem;
+  --ul-radius-pill: 999px;
+
+  --ul-shadow-sm: 0 8px 24px rgba(1, 23, 19, 0.08);
+  --ul-shadow-md: 0 18px 55px rgba(1, 23, 19, 0.14);
+  --ul-shadow-dark: 0 24px 70px rgba(0, 0, 0, 0.38);
+
+  --ul-space-1: 0.25rem;
+  --ul-space-2: 0.5rem;
+  --ul-space-3: 0.75rem;
+  --ul-space-4: 1rem;
+  --ul-space-6: 1.5rem;
+  --ul-space-8: 2rem;
+  --ul-space-12: 3rem;
+  --ul-space-16: 4rem;
+
+  --ul-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--ul-green-950);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--ul-mint) !important;
+  outline-offset: 3px !important;
+}
+
+::selection {
+  background: var(--ul-mint);
+  color: var(--ul-green-950);
+}
+
+/* Institutional mode */
+body[data-design-mode="institutional"] {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 82% 10%, rgba(5, 107, 87, 0.34), transparent 32rem),
+    radial-gradient(circle at 8% 48%, rgba(94, 207, 177, 0.09), transparent 34rem),
+    linear-gradient(145deg, #010907 0%, var(--ul-green-950) 48%, var(--ul-green-900) 100%);
+  background-attachment: fixed;
+}
+
+body[data-design-mode="institutional"]::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, #000, transparent 70%);
+}
+
+body[data-design-mode="institutional"] > .min-h-screen {
+  position: relative;
+  width: 100%;
+  padding-top: clamp(1.5rem, 4vw, 3rem) !important;
+  padding-bottom: clamp(3rem, 7vw, 6rem) !important;
+}
+
+body[data-design-mode="institutional"]:not([data-page="home"]) > .min-h-screen > a:first-child {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem) !important;
+  padding: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition:
+    transform 0.25s var(--ul-ease),
+    background 0.25s,
+    border-color 0.25s;
+}
+
+body[data-design-mode="institutional"]:not([data-page="home"]) > .min-h-screen > a:first-child:hover {
+  transform: translateY(-2px);
+  border-color: rgba(94, 207, 177, 0.28);
+  background: rgba(255, 255, 255, 0.065);
+}
+
+body[data-design-mode="institutional"] > .min-h-screen > a:first-child img,
+body[data-design-mode="institutional"] > .min-h-screen > img:first-child {
+  width: clamp(4rem, 7vw, 5.5rem) !important;
+  height: clamp(4rem, 7vw, 5.5rem) !important;
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.24));
+  transition: transform 0.35s var(--ul-ease);
+}
+
+body[data-design-mode="institutional"] > .min-h-screen > a:first-child:hover img {
+  transform: translateY(-2px);
+}
+
+body[data-design-mode="institutional"] > .min-h-screen > h1 {
+  max-width: 1100px;
+  margin-inline: auto;
+  font-size: clamp(2.4rem, 6.3vw, 5.5rem) !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.045em !important;
+  text-wrap: balance;
+  text-shadow: 0 10px 34px rgba(0, 0, 0, 0.18);
+}
+
+body[data-design-mode="institutional"] > .min-h-screen > h1 + p {
+  color: rgba(255, 255, 255, 0.72) !important;
+  line-height: 1.7;
+  text-wrap: balance;
+}
+
+body[data-design-mode="institutional"]:not([data-page="home"]) > .min-h-screen > h1 + p {
+  margin-bottom: clamp(2.25rem, 5vw, 3.5rem) !important;
+}
+
+body[data-page="transparency"] > .min-h-screen > h1 + p {
+  margin-bottom: 0.5rem !important;
+}
+
+body[data-page="transparency"] > .min-h-screen > h1 + p + p {
+  margin-bottom: clamp(2.25rem, 5vw, 3.5rem) !important;
+}
+
+body[data-design-mode="institutional"] .card {
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.965);
+  box-shadow: var(--ul-shadow-sm);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+body[data-design-mode="institutional"] .card:hover {
+  transform: none;
+  box-shadow: var(--ul-shadow-sm);
+}
+
+body[data-design-mode="institutional"] a.card {
+  text-decoration: none;
+  transition:
+    transform 0.3s var(--ul-ease),
+    box-shadow 0.3s var(--ul-ease),
+    border-color 0.3s ease;
+}
+
+body[data-design-mode="institutional"] a.card:hover {
+  transform: translateY(-5px) !important;
+  border-color: rgba(94, 207, 177, 0.72);
+  box-shadow: var(--ul-shadow-md);
+}
+
+body[data-design-mode="institutional"] .card h2,
+body[data-design-mode="institutional"] .card h3 {
+  color: var(--ul-ink);
+  letter-spacing: -0.025em;
+}
+
+body[data-design-mode="institutional"] .card > :first-child > i,
+body[data-design-mode="institutional"] .card > i:first-child {
+  filter: drop-shadow(0 5px 12px rgba(5, 107, 87, 0.14));
+}
+
+body[data-design-mode="institutional"] .icon-circle {
+  width: 4.5rem;
+  height: 4.5rem;
+  background:
+    radial-gradient(circle at 35% 20%, rgba(94, 207, 177, 0.32), transparent 35%),
+    linear-gradient(145deg, var(--ul-green-700), var(--ul-green-500));
+  box-shadow: 0 13px 28px rgba(3, 70, 56, 0.25);
+  transition: transform 0.3s var(--ul-ease);
+}
+
+body[data-design-mode="institutional"] a.card:hover .icon-circle {
+  transform: translateY(-2px) scale(1.03);
+}
+
+body[data-design-mode="institutional"] :where(input, select, textarea) {
+  min-height: 2.75rem;
+  border-color: rgba(3, 70, 56, 0.18) !important;
+  border-radius: var(--ul-radius-sm) !important;
+  background-color: #fff;
+  color: var(--ul-ink);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+body[data-design-mode="institutional"] :where(input, select, textarea):focus {
+  border-color: var(--ul-green-500) !important;
+  box-shadow: 0 0 0 4px rgba(5, 107, 87, 0.12) !important;
+}
+
+body[data-design-mode="institutional"] :where(button, a)[class*="rounded-full"] {
+  letter-spacing: -0.01em;
+  transition:
+    transform 0.2s var(--ul-ease),
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+body[data-design-mode="institutional"] :where(button, a)[class*="rounded-full"]:hover {
+  transform: translateY(-2px);
+}
+
+body[data-design-mode="institutional"] :where(.tab-button, .tab-btn) {
+  min-height: 2.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: none;
+}
+
+body[data-design-mode="institutional"] :where(.tab-button, .tab-btn).active {
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 10px 28px rgba(1, 23, 19, 0.18);
+}
+
+body[data-design-mode="institutional"] table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+body[data-design-mode="institutional"] table thead th:first-child {
+  border-top-left-radius: var(--ul-radius-sm);
+}
+
+body[data-design-mode="institutional"] table thead th:last-child {
+  border-top-right-radius: var(--ul-radius-sm);
+}
+
+body[data-design-mode="institutional"] footer {
+  color: rgba(255, 255, 255, 0.62) !important;
+}
+
+body[data-design-mode="institutional"] footer a {
+  text-underline-offset: 0.2em;
+}
+
+/* Homepage: bridge between institutional and immersive areas */
+body[data-page="home"] {
+  background:
+    radial-gradient(circle at 78% 18%, rgba(5, 107, 87, 0.38), transparent 31rem),
+    radial-gradient(circle at 12% 92%, rgba(94, 207, 177, 0.11), transparent 28rem),
+    linear-gradient(145deg, #010907 0%, var(--ul-green-950) 48%, var(--ul-green-900) 100%);
+}
+
+body[data-page="home"] .card {
+  position: relative;
+  overflow: hidden;
+  border-color: var(--ul-line-dark);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035));
+  box-shadow: var(--ul-shadow-dark);
+}
+
+body[data-page="home"] .card::after {
+  content: '';
+  position: absolute;
+  inset: auto -25% -55% 35%;
+  height: 75%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: rgba(5, 107, 87, 0.14);
+  filter: blur(28px);
+}
+
+body[data-page="home"] .card h3 {
+  position: relative;
+  z-index: 1;
+  color: var(--ul-white) !important;
+}
+
+body[data-page="home"] .card p {
+  position: relative;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.52) !important;
+}
+
+body[data-page="home"] a.card:hover {
+  border-color: rgba(94, 207, 177, 0.4);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(94, 207, 177, 0.055));
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.44);
+}
+
+/* Transparency navigation mirrors the dark cards on the homepage. */
+body[data-page="transparency"] > .min-h-screen > .grid a.card {
+  border-color: var(--ul-line-dark);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035));
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
+}
+
+body[data-page="transparency"] > .min-h-screen > .grid a.card h3 {
+  color: #fff !important;
+}
+
+body[data-page="transparency"] > .min-h-screen > .grid a.card i {
+  color: var(--ul-mint) !important;
+}
+
+body[data-page="transparency"] > .min-h-screen > .grid a.card:hover {
+  border-color: rgba(94, 207, 177, 0.38);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(94, 207, 177, 0.055));
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.3);
+}
+
+/* Tabs become a consistent dark navigation surface before light content. */
+body[data-design-mode="institutional"] :where(.tab-button, .tab-btn):not(.active) {
+  background: rgba(255, 255, 255, 0.065) !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+body[data-design-mode="institutional"] :where(.tab-button, .tab-btn):not(.active):hover {
+  background: rgba(255, 255, 255, 0.11) !important;
+  color: #fff !important;
+  border-color: rgba(94, 207, 177, 0.28);
+}
+
+body[data-design-mode="institutional"] :where(.tab-button, .tab-btn).active {
+  background: #fff !important;
+  color: var(--ul-green-700) !important;
+}
+
+/* Light content surfaces enter from the dark shell without a hard colour cut. */
+body[data-design-mode="institutional"] .max-w-6xl > .card,
+body[data-design-mode="institutional"] .max-w-5xl > .card,
+body[data-design-mode="institutional"] .max-w-4xl .card,
+body[data-design-mode="institutional"] .max-w-3xl > .card {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 24px 65px rgba(0, 0, 0, 0.2);
+}
+
+/* Immersive mode: shared interaction and accessibility layer */
+body[data-design-mode="immersive"] {
+  background: var(--ul-green-950);
+}
+
+body[data-design-mode="immersive"] :where(a, button) {
+  transition-timing-function: var(--ul-ease);
+}
+
+body[data-design-mode="immersive"] :where(header, nav)[style*="backdrop-filter"] {
+  border-color: var(--ul-line-dark) !important;
+}
+
+body[data-design-mode="immersive"] footer {
+  border-color: var(--ul-line-dark);
+}
+
+/* Museum video is a content page inside the immersive family. */
+body[data-page="museum-video"] {
+  background:
+    radial-gradient(circle at 80% 10%, rgba(5, 107, 87, 0.24), transparent 32rem),
+    linear-gradient(145deg, #010907, var(--ul-green-950) 55%, var(--ul-green-900));
+}
+
+body[data-page="museum-video"] .card {
+  border: 1px solid var(--ul-line-dark);
+  background: rgba(255, 255, 255, 0.055);
+  color: #fff;
+  box-shadow: var(--ul-shadow-dark);
+}
+
+body[data-page="museum-video"] .card :where(h2, p) {
+  color: inherit !important;
+}
+
+body[data-page="museum-video"] .card p {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+body[data-page="museum-video"] .card video {
+  background: #000;
+}
+
+@media (max-width: 640px) {
+  body[data-design-mode="institutional"] > .min-h-screen {
+    padding-inline: 1rem !important;
+  }
+
+  body[data-design-mode="institutional"] .card {
+    border-radius: var(--ul-radius-md) !important;
+  }
+
+  body[data-design-mode="institutional"] .card[class*="p-8"] {
+    padding: 1.25rem !important;
+  }
+
+  body[data-design-mode="institutional"] > .min-h-screen > h1 {
+    font-size: clamp(2.1rem, 11vw, 3.4rem) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  body[data-design-mode="institutional"] {
+    background: #fff !important;
+  }
+
+  body[data-design-mode="institutional"]::before {
+    display: none;
+  }
+}

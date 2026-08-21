@@ -33,68 +33,152 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  background: linear-gradient(135deg, #034638 0%, #056b57 100%);
+  padding: clamp(1rem, 4vw, 4rem);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 78% 20%, rgba(94, 207, 177, .18), transparent 26%),
+    radial-gradient(circle at 12% 88%, rgba(5, 107, 87, .22), transparent 32%),
+    linear-gradient(145deg, #010806 0%, #021a15 52%, #010f0c 100%);
+}
+.ir-access-gate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: .28;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 68px 68px;
+  mask-image: linear-gradient(135deg, black, transparent 82%);
+}
+.ir-access-gate::after {
+  content: 'INVESTOR ROOM';
+  position: absolute;
+  right: -1.5vw;
+  bottom: -3.2vw;
+  color: rgba(255,255,255,.018);
+  font-size: clamp(5rem, 15vw, 14rem);
+  font-weight: 900;
+  line-height: .8;
+  letter-spacing: -.07em;
+  white-space: nowrap;
 }
 .ir-gate-card {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, .85fr);
+  align-items: stretch;
   width: 100%;
-  max-width: 28rem;
-  padding: 2rem;
-  border-radius: 1rem;
-  background: #fff;
-  color: #111827;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+  max-width: 68rem;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 1.5rem;
+  background: rgba(6, 24, 20, .72);
+  color: var(--ir-white);
+  box-shadow: 0 40px 120px rgba(0, 0, 0, .58);
+  backdrop-filter: blur(24px);
   transition: transform .3s ease, box-shadow .3s ease;
 }
 .ir-gate-heading {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: .75rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-.ir-gate-logo { width: 4rem; height: 4rem; object-fit: contain; }
-.ir-gate-heading h1 {
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 1rem;
+  min-height: 31rem;
   margin: 0;
-  color: #034638;
-  font-size: 1.5rem;
+  padding: clamp(2rem, 5vw, 4.5rem);
+  text-align: left;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(94,207,177,.14), transparent 26%),
+    linear-gradient(145deg, rgba(5,107,87,.35), rgba(1,15,12,.18));
+}
+.ir-gate-heading::before {
+  content: 'Universo Leça · Acesso reservado';
+  order: 1;
+  color: var(--ir-mint);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.ir-gate-logo {
+  order: 0;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-bottom: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 28px rgba(0,0,0,.3));
+}
+.ir-gate-heading h1 {
+  order: 2;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2.6rem, 5vw, 5rem);
   font-weight: 900;
+  line-height: .92;
+  letter-spacing: -.055em;
 }
 .ir-gate-heading p {
+  order: 3;
+  max-width: 36rem;
   margin: 0;
-  color: #4b5563;
-  font-size: .875rem;
-  line-height: 1.6;
+  color: var(--ir-muted);
+  font-size: .85rem;
+  line-height: 1.75;
 }
-.ir-access-form { display: flex; flex-direction: column; gap: 1rem; }
+.ir-access-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  padding: clamp(2rem, 5vw, 4rem);
+  border-left: 1px solid rgba(255,255,255,.08);
+  background: rgba(1, 9, 7, .28);
+}
+.ir-access-form::before {
+  content: 'Código de acesso';
+  margin-bottom: .2rem;
+  color: rgba(255,255,255,.48);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
 .ir-code-input {
   width: 100%;
-  padding: .75rem 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: .75rem;
+  min-height: 3.7rem;
+  padding: .9rem 1rem;
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: .8rem;
   outline: none;
-  color: #111827;
+  background: rgba(255,255,255,.05);
+  color: #fff;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: .18em;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 1.05rem;
-  transition: border-color .2s, box-shadow .2s;
+  caret-color: var(--ir-mint);
+  transition: border-color .2s, box-shadow .2s, background .2s;
 }
+.ir-code-input::placeholder { color: rgba(255,255,255,.25); }
 .ir-code-input:focus {
-  border-color: #056b57;
-  box-shadow: 0 0 0 3px rgba(5, 107, 87, .12);
+  border-color: rgba(94,207,177,.7);
+  background: rgba(255,255,255,.07);
+  box-shadow: 0 0 0 3px rgba(94,207,177,.1);
 }
 .ir-access-error {
   display: flex;
   align-items: flex-start;
   gap: .5rem;
   padding: .75rem 1rem;
-  border: 1px solid #99cbc3;
+  border: 1px solid rgba(94,207,177,.26);
   border-radius: .75rem;
-  background: #e6f2f0;
-  color: #034638;
+  background: rgba(5,107,87,.2);
+  color: #baf2e2;
   font-size: .8rem;
   line-height: 1.45;
 }
@@ -104,16 +188,18 @@ a { color: inherit; }
   justify-content: center;
   gap: .55rem;
   width: 100%;
+  min-height: 3.5rem;
   padding: .8rem 1rem;
   border: 0;
   border-radius: .75rem;
-  background: #034638;
-  color: #fff;
+  background: var(--ir-mint);
+  color: #02130f;
   font-weight: 700;
   cursor: pointer;
-  transition: background .2s, opacity .2s;
+  box-shadow: 0 12px 34px rgba(5,107,87,.26);
+  transition: background .2s, opacity .2s, transform .2s;
 }
-.ir-gate-submit:hover { background: #056b57; }
+.ir-gate-submit:hover { background: #7be2c6; transform: translateY(-2px); }
 .ir-gate-submit:disabled { opacity: .7; cursor: wait; }
 
 .ir-shell { min-height: 100vh; background: var(--ir-bg); }
@@ -229,7 +315,7 @@ a { color: inherit; }
 }
 .ir-section-heading h2 { margin: .35rem 0 0; font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: -.035em; }
 .ir-section-heading p { max-width: 460px; margin: 0; color: var(--ir-faint); font-size: .83rem; line-height: 1.65; }
-.ir-project-grid { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(260px, .75fr); gap: 1.25rem; }
+.ir-project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
 .ir-project-card {
   position: relative;
   display: flex;
@@ -241,6 +327,57 @@ a { color: inherit; }
   text-decoration: none;
   isolation: isolate;
   transition: transform .35s ease, border-color .35s, box-shadow .35s;
+}
+.ir-project-card--featured { grid-column: span 2; }
+.ir-project-card--compact { min-height: 390px; }
+.ir-project-card--compact .ir-card-content {
+  display: grid;
+  grid-template-rows: auto 5.2rem 5rem auto;
+  align-content: end;
+  height: 100%;
+}
+.ir-project-card--compact .ir-badge {
+  align-self: end;
+  justify-self: start;
+  margin-bottom: 1rem;
+}
+.ir-project-card--compact .ir-card-content h3 {
+  align-self: start;
+  margin: 0;
+  font-size: clamp(1.6rem, 2.8vw, 2.45rem);
+}
+.ir-project-card--compact .ir-card-content p {
+  align-self: start;
+  overflow: hidden;
+  padding-top: .7rem;
+  font-size: .78rem;
+}
+.ir-project-card--compact .ir-card-link {
+  align-self: end;
+  margin-top: 1rem;
+}
+.ir-project-card--graphic {
+  background:
+    radial-gradient(circle at 78% 18%, rgba(94,207,177,.2), transparent 24%),
+    linear-gradient(145deg, #0b2e26 0%, #031410 72%);
+}
+.ir-project-card--graphic::before {
+  content: '';
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 7.5rem;
+  height: 7.5rem;
+  border: 1px solid rgba(94,207,177,.18);
+  border-radius: 50%;
+  background: rgba(94,207,177,.035);
+}
+.ir-project-card--graphic .ir-card-symbol {
+  position: absolute;
+  top: 4.15rem;
+  right: 4.15rem;
+  color: rgba(94,207,177,.75);
+  font-size: 3rem;
 }
 .ir-project-card:hover { transform: translateY(-5px); border-color: rgba(94,207,177,.35); box-shadow: 0 32px 90px rgba(0,0,0,.6); }
 .ir-project-card img {
@@ -305,6 +442,145 @@ a { color: inherit; }
 }
 .ir-footer a { text-decoration: none; }
 
+.ir-offer-hero {
+  background:
+    radial-gradient(circle at 78% 23%, rgba(94,207,177,.2), transparent 26%),
+    linear-gradient(145deg, #031d17 0%, #010907 75%);
+}
+.ir-offer-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .22;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 70px 70px;
+  mask-image: linear-gradient(to bottom, black, transparent 90%);
+}
+.ir-offer-symbol {
+  position: absolute;
+  top: 50%;
+  right: clamp(2rem, 9vw, 10rem);
+  z-index: -1;
+  color: rgba(94,207,177,.12);
+  font-size: clamp(10rem, 25vw, 25rem);
+  transform: translateY(-48%);
+}
+.ir-kicker {
+  margin: 0 0 1rem;
+  color: var(--ir-mint);
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+.ir-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .8rem;
+  margin-top: 2.5rem;
+}
+.ir-metric-card {
+  min-height: 170px;
+  padding: 1.4rem;
+  border: 1px solid var(--ir-line);
+  border-radius: 1rem;
+  background: rgba(255,255,255,.025);
+}
+.ir-metric-card strong {
+  display: block;
+  color: #fff;
+  font-size: clamp(1.7rem, 4vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: -.05em;
+}
+.ir-metric-card span {
+  display: block;
+  margin-top: 1rem;
+  color: var(--ir-muted);
+  font-size: .75rem;
+  line-height: 1.55;
+}
+.ir-offer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .8rem;
+  margin-top: 2.5rem;
+}
+.ir-offer-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 250px;
+  padding: 1.5rem;
+  border: 1px solid var(--ir-line);
+  border-radius: 1.1rem;
+  background: linear-gradient(150deg, rgba(94,207,177,.07), rgba(255,255,255,.015));
+}
+.ir-offer-card .ir-offer-label {
+  color: var(--ir-mint);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.ir-offer-card h3 { margin: .9rem 0 .6rem; font-size: 1.05rem; line-height: 1.35; }
+.ir-offer-card p { margin: 0; color: var(--ir-muted); font-size: .76rem; line-height: 1.65; }
+.ir-offer-card .ir-price {
+  display: block;
+  margin-top: auto;
+  padding-top: 1.5rem;
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.ir-inventory {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .8rem;
+  margin-top: 2.5rem;
+}
+.ir-inventory-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  min-height: 92px;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--ir-line);
+  border-radius: .9rem;
+  background: rgba(255,255,255,.025);
+}
+.ir-inventory-index {
+  color: var(--ir-mint);
+  font-size: .62rem;
+  font-weight: 700;
+}
+.ir-inventory-copy strong { display: block; font-size: .82rem; }
+.ir-inventory-copy span { display: block; margin-top: .25rem; color: var(--ir-faint); font-size: .68rem; line-height: 1.45; }
+.ir-inventory-price { color: #fff; font-size: .82rem; font-weight: 700; white-space: nowrap; }
+.ir-note {
+  margin: 1rem 0 0;
+  color: var(--ir-faint);
+  font-size: .65rem;
+  line-height: 1.55;
+}
+.ir-channel-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .8rem;
+  margin-top: 2.5rem;
+}
+.ir-channel {
+  padding: 1.25rem;
+  border-top: 1px solid rgba(94,207,177,.35);
+  background: rgba(255,255,255,.02);
+}
+.ir-channel i { color: var(--ir-mint); }
+.ir-channel strong { display: block; margin-top: 1.4rem; font-size: .8rem; }
+.ir-channel span { display: block; margin-top: .45rem; color: var(--ir-faint); font-size: .68rem; line-height: 1.5; }
+
 .ir-project-hero {
   position: relative;
   display: flex;
@@ -349,6 +625,49 @@ a { color: inherit; }
   background: rgba(255,255,255,.06);
 }
 .ir-progress span { display: block; width: 0; height: 100%; background: var(--ir-mint); }
+.ir-project-actions {
+  position: fixed;
+  right: clamp(1rem, 2.5vw, 2rem);
+  bottom: clamp(1rem, 2.5vw, 2rem);
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+}
+.ir-project-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3rem;
+  min-height: 3rem;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 999px;
+  background: rgba(1,15,12,.78);
+  color: rgba(255,255,255,.75);
+  box-shadow: 0 12px 38px rgba(0,0,0,.35);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color .2s, border-color .2s, background .2s, opacity .25s, transform .25s;
+}
+.ir-project-action:hover {
+  border-color: rgba(94,207,177,.4);
+  background: rgba(5,107,87,.9);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.ir-project-action--top {
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(.65rem);
+}
+.ir-project-action--top.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+.ir-project-action--top.visible:hover { transform: translateY(-2px); }
 .ir-chapter-nav {
   position: fixed;
   right: 1.25rem;
@@ -428,8 +747,16 @@ a { color: inherit; }
 @keyframes irPulse { 0%,100% { opacity: .3; transform: scaleX(.7); } 50% { opacity: 1; transform: scaleX(1); } }
 
 @media (max-width: 900px) {
+  .ir-gate-card { grid-template-columns: 1fr; max-width: 34rem; }
+  .ir-gate-heading { min-height: 20rem; padding: 2rem; }
+  .ir-gate-logo { width: 3.5rem; height: 3.5rem; }
+  .ir-access-form { padding: 2rem; border-top: 1px solid rgba(255,255,255,.08); border-left: 0; }
   .ir-project-grid, .ir-story-grid { grid-template-columns: 1fr; }
+  .ir-project-card--featured { grid-column: auto; }
   .ir-project-card, .ir-coming-card { min-height: 420px; }
+  .ir-offer-grid, .ir-metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ir-inventory { grid-template-columns: 1fr; }
+  .ir-channel-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ir-pillars { grid-template-columns: repeat(2, 1fr); }
   .ir-allocation { grid-template-columns: repeat(2, 1fr); }
   .ir-allocation div:last-child { grid-column: span 2; }
@@ -437,6 +764,13 @@ a { color: inherit; }
   .ir-section-heading { align-items: flex-start; flex-direction: column; gap: .75rem; }
 }
 @media (max-width: 640px) {
+  .ir-access-gate { align-items: stretch; padding: .75rem; overflow-y: auto; }
+  .ir-gate-card { align-self: center; border-radius: 1.15rem; }
+  .ir-gate-heading { min-height: 15rem; padding: 1.5rem; }
+  .ir-gate-logo { width: 3rem; height: 3rem; margin-bottom: 1rem; }
+  .ir-gate-heading h1 { font-size: 2.5rem; }
+  .ir-gate-heading p { font-size: .76rem; }
+  .ir-access-form { padding: 1.5rem; }
   .ir-topbar { height: 4rem; padding: 0 1rem; }
   .ir-brand-copy span { display: none; }
   .ir-nav a:not(.ir-back), .ir-nav button { display: none; }
@@ -445,7 +779,13 @@ a { color: inherit; }
   .ir-project-hero { padding: 7rem 1.25rem 5rem; }
   .ir-project-hero::after { background: linear-gradient(to bottom, rgba(1,9,7,.4), rgba(1,9,7,.5) 35%, rgba(1,15,12,.98) 100%); }
   .ir-scroll-cue { display: none; }
+  .ir-project-actions { right: .85rem; bottom: .85rem; }
+  .ir-project-action { min-width: 2.75rem; min-height: 2.75rem; }
   .ir-story-section { min-height: auto; padding: 6rem 1.25rem; }
+  .ir-offer-symbol { opacity: .55; }
+  .ir-offer-grid, .ir-metric-grid, .ir-channel-list { grid-template-columns: 1fr; }
+  .ir-inventory-item { grid-template-columns: auto 1fr; }
+  .ir-inventory-price { grid-column: 2; }
   .ir-pillars { grid-template-columns: 1fr 1fr; }
   .ir-allocation { grid-template-columns: 1fr; }
   .ir-allocation div:last-child { grid-column: auto; }

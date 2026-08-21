@@ -208,6 +208,7 @@ animações fazem parte do produto premium.
 
 ### Experiência de projeto
 
+- **Access gate específico do projeto**
 - **Capa / entrada do projeto**
 - **Prólogo**
 - **Capítulos narrativos**
@@ -395,6 +396,8 @@ Investor Room.
 4. Guardar a confirmação de acesso, segundo o padrão do Museu.
 5. Remover o access gate.
 6. Mostrar o dashboard completo.
+7. Ao abrir um projeto, validar o código específico desse projeto caso ainda
+   não tenha sido validado na visita atual.
 
 ### Comportamentos importantes
 
@@ -404,7 +407,10 @@ Investor Room.
 - apresentar mensagens amigáveis para código inválido, revogado, expirado ou
   sem utilizações disponíveis;
 - um erro de rede permite tentar novamente;
-- uma visita já validada reabre diretamente o Investor Room, tal como no Museu.
+- uma visita já validada reabre diretamente o Investor Room, tal como no Museu;
+- a validação do dashboard não concede acesso automático aos projetos;
+- cada grupo de acesso persiste a sua confirmação apenas durante a visita do
+  browser.
 
 ## 3.4 Primeira entrada
 
@@ -484,8 +490,9 @@ Não deve terminar apenas com um rodapé institucional.
 Não existe perfil, gestão de sessão ou ação de logout na interface. O utilizador
 pode regressar ao website Universo Leça através de uma ligação discreta. O
 comportamento de acesso ao voltar ao Investor Room é igual ao Museu: enquanto a
-confirmação de acesso existir na visita do browser, o gate não volta a ser
-apresentado.
+confirmação de acesso existir na visita do browser, o gate do dashboard não
+volta a ser apresentado. O Cycling mantém uma confirmação própria e os projetos
+de patrocínio partilham uma confirmação comum.
 
 ---
 
@@ -1519,11 +1526,26 @@ necessidade real.
 Os códigos são geridos no backoffice existente. Para este website, o contrato
 funcional é simples:
 
-- o frontend envia o código e o contexto do Investor Room;
+- o frontend envia o código e o contexto da área que está a ser aberta;
 - a API devolve sucesso ou erro;
-- qualquer código válido abre todo o conteúdo;
+- o contexto `InvestorRoom / 2` abre apenas o dashboard;
+- o Cycling usa um contexto exclusivo e os projetos de patrocínio partilham um
+  contexto comum dentro de `InvestorRoom`;
+- um código válido abre apenas o contexto para o qual foi gerado;
 - o frontend apresenta mensagens equivalentes às do Museu;
-- não existem variações de conteúdo associadas ao código.
+- não existem roles nem variações de conteúdo dentro do mesmo contexto.
+
+Contextos atualmente convencionados:
+
+| Área | `contextType` | `contextId` |
+|---|---|---:|
+| Dashboard Investor Room | `InvestorRoom` | `2` |
+| Leça Cycling Project | `InvestorRoom` | `3` |
+| Pavilhão | `InvestorRoom` | `4` |
+| Formação Futebol | `InvestorRoom` | `4` |
+| Masters Futebol | `InvestorRoom` | `4` |
+| Atletismo | `InvestorRoom` | `4` |
+| Bilhar | `InvestorRoom` | `4` |
 
 ## 12.4 Modelo de estados de projeto
 
@@ -1559,7 +1581,8 @@ Requisitos arquiteturais:
 - replicar o fluxo de acesso de `museu.html`;
 - validar o código na API existente;
 - não mostrar o conteúdo do Investor Room antes de uma validação bem-sucedida;
-- guardar no browser a confirmação de acesso segundo o padrão do Museu;
+- guardar no browser uma confirmação independente por `contextId`, segundo o
+  padrão do Museu;
 - não criar contas, perfis ou sessões visíveis;
 - proteção contra indexação;
 - Content Security Policy;

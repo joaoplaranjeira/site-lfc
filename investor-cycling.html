@@ -10,9 +10,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&amp;display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="design-system.css" />
   <link rel="stylesheet" href="investor-room.css" />
 </head>
-<body class="ir-locked">
+<body class="ir-locked" data-design-mode="immersive" data-investor-context-id="3" data-investor-context-label="Leça Cycling">
   <div id="investor-access-gate" class="ir-access-gate">
     <div class="ir-gate-card">
       <div class="ir-gate-heading">
@@ -49,6 +50,12 @@
         <a href="investor-room.html" class="ir-back"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Investor Room</a>
       </nav>
     </header>
+
+    <div class="ir-project-actions" aria-label="Ações rápidas">
+      <button type="button" class="ir-project-action ir-project-action--top" data-scroll-top aria-label="Voltar ao topo">
+        <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+      </button>
+    </div>
 
     <nav class="ir-chapter-nav" aria-label="Capítulos">
       <a href="#inicio" class="active" aria-label="Início"></a>

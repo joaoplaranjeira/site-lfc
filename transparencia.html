@@ -38,13 +38,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="icon" type="image/png" href="images/leca.png" />
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="design-system.css" />
   <style>
     @media print {
       #docViewerModal, #docAccessModal { display: none !important; }
     }
   </style>
 </head>
-<body>
+<body data-design-mode="institutional" data-page="transparency">
   <div class="min-h-screen flex flex-col px-4 py-12">
     <!-- Logo -->
     <a href="index.html" class="mb-6 text-center">
@@ -134,15 +135,12 @@
         
         <h3 class="text-xl font-bold text-gray-900 mb-4">Orçamentos & Execução</h3>
         <div class="space-y-3 mb-6">
-          <button type="button" onclick="openDocumentAccess('orc-2026-2027', 'Plano de Atividades e Orçamento 2026-2027')" class="flex items-center gap-3 p-4 bg-amber-50 rounded-lg hover:bg-amber-100 transition w-full text-left border border-amber-200">
-            <i class="fa-solid fa-file-pdf text-2xl text-amber-600"></i>
+          <button type="button" onclick="openDocumentAccess('orc-2026-2027', 'Plano de Atividades e Orçamento 2026-2027')" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition w-full text-left border border-emerald-200">
+            <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
             <div class="flex-1">
               <span class="font-semibold text-gray-900 block">Plano de Atividades e Orçamento 2026-2027</span>
-              <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
-                <i class="fa-solid fa-hourglass-half text-xs"></i>Em validação
-              </span>
             </div>
-            <i class="fa-solid fa-lock text-amber-500 flex-shrink-0"></i>
+            <i class="fa-solid fa-lock text-emerald-600 flex-shrink-0" aria-label="Acesso mediante validação OTP"></i>
           </button>
           <a href="documents/budgets/orc_2025_2026.pdf" target="_blank" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
             <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
@@ -176,11 +174,11 @@
             <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
             <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2021-2022</span>
           </a>
-          <a href="documents/reports/report_20_21.pdf" target="_blank" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+          <a href="documents/reports/report_20_21.PDF" target="_blank" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
             <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
             <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2020-2021</span>
           </a>
-          <a href="documents/reports/report_19_20.pdf" target="_blank" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+          <a href="documents/reports/report_19_20.PDF" target="_blank" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
             <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
             <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2019-2020</span>
           </a>
@@ -242,11 +240,11 @@
                 <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
                 <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2021-2022</span>
               </a>
-              <a href="documents/reports/report_20_21.pdf" target="_blank" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+              <a href="documents/reports/report_20_21.PDF" target="_blank" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
                 <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
                 <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2020-2021</span>
               </a>
-              <a href="documents/reports/report_19_20.pdf" target="_blank" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
+              <a href="documents/reports/report_19_20.PDF" target="_blank" class="flex items-center gap-3 p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition">
                 <i class="fa-solid fa-file-pdf text-2xl text-emerald-700"></i>
                 <span class="font-semibold text-gray-900">Relatório de Atividades e Contas 2019-2020</span>
               </a>
@@ -307,7 +305,7 @@
                 <div class="flex-1">
                   <span class="font-semibold text-gray-900 block">Novos Estatutos</span>
                   <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
-                    <i class="fa-solid fa-hourglass-half text-xs"></i>Em validação
+                    <i class="fa-solid fa-file-signature text-xs"></i>A aguardar escritura
                   </span>
                 </div>
                 <i class="fa-solid fa-lock text-amber-500 flex-shrink-0"></i>
@@ -317,7 +315,7 @@
                 <div class="flex-1">
                   <span class="font-semibold text-gray-900 block">Novo Regulamento Interno</span>
                   <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-semibold rounded-full">
-                    <i class="fa-solid fa-hourglass-half text-xs"></i>Em validação
+                    <i class="fa-solid fa-file-signature text-xs"></i>A aguardar escritura
                   </span>
                 </div>
                 <i class="fa-solid fa-lock text-amber-500 flex-shrink-0"></i>
@@ -464,7 +462,7 @@
           <i class="fa-solid fa-lock text-2xl"></i>
           <div>
             <h3 class="text-xl font-bold" id="docAccessTitle">Aceder ao documento</h3>
-            <span class="text-sm text-emerald-200">Em validação pelos sócios</span>
+            <span class="text-sm text-emerald-200">Acesso reservado a sócios</span>
           </div>
         </div>
         <button type="button" onclick="closeDocAccessModal()" class="text-white hover:text-gray-200 transition" aria-label="Fechar">
@@ -475,7 +473,7 @@
       <!-- Step 1: Credentials -->
       <div id="docStep1" class="p-6">
         <p class="text-gray-600 mb-6 text-sm">
-          Este documento encontra-se em fase de validação pelos sócios. Para o consultar, confirme a sua identidade como sócio do Leça FC.
+          Para consultar este documento, confirme a sua identidade como sócio do Leça FC.
         </p>
         <form id="docRequestForm" class="space-y-4" onsubmit="handleDocOtpRequest(event)" novalidate>
           <div>
@@ -545,12 +543,12 @@
       <div class="flex items-center gap-3 min-w-0">
         <i class="fa-solid fa-file-pdf text-xl flex-shrink-0"></i>
         <span class="font-bold truncate" id="docViewerTitle"></span>
-        <span class="hidden sm:inline-flex items-center gap-1 ml-1 px-2 py-0.5 bg-amber-400 text-amber-900 text-xs font-semibold rounded-full flex-shrink-0">
-          <i class="fa-solid fa-hourglass-half text-xs"></i>Em validação
+        <span class="hidden sm:inline-flex items-center gap-1 ml-1 px-2 py-0.5 bg-emerald-300 text-emerald-950 text-xs font-semibold rounded-full flex-shrink-0">
+          <i class="fa-solid fa-shield-halved text-xs"></i>Acesso validado
         </span>
       </div>
       <div class="flex items-center gap-4 flex-shrink-0 ml-3">
-        <span class="hidden md:block text-sm text-emerald-300 italic">Apenas leitura — documento em análise</span>
+        <span class="hidden md:block text-sm text-emerald-300 italic">Apenas leitura</span>
         <button type="button" onclick="closeDocViewer()" class="text-white hover:text-gray-200 transition" aria-label="Fechar visualizador">
           <i class="fa-solid fa-times text-2xl"></i>
         </button>
@@ -586,6 +584,54 @@
         cloudflareUrl: 'documents/budgets/orc_2026_2027.pdf'
       }
     };
+
+    // All document links on this page use the same OTP validation flow.
+    function createDocumentId(documentUrl) {
+      return decodeURIComponent(documentUrl)
+        .replace(/^documents\//i, '')
+        .replace(/\.[^.]+$/, '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-zA-Z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .toLowerCase();
+    }
+
+    function registerProtectedDocumentLinks() {
+      document.querySelectorAll('a[href^="documents/"]').forEach((link) => {
+        const documentUrl = link.getAttribute('href');
+        const documentId = createDocumentId(documentUrl);
+        const documentTitle = link.textContent.replace(/\s+/g, ' ').trim() || 'Documento';
+
+        PROTECTED_DOCUMENTS[documentId] = {
+          title: documentTitle,
+          cloudflareUrl: documentUrl
+        };
+
+        link.removeAttribute('href');
+        link.removeAttribute('target');
+        link.setAttribute('role', 'button');
+        link.setAttribute('tabindex', '0');
+        link.setAttribute('aria-label', `${documentTitle} — validar acesso por OTP`);
+        link.style.cursor = 'pointer';
+
+        if (link.classList.contains('flex') && !link.querySelector('.fa-lock')) {
+          const lockIcon = document.createElement('i');
+          lockIcon.className = 'fa-solid fa-lock text-emerald-600 flex-shrink-0 ml-auto';
+          lockIcon.setAttribute('aria-hidden', 'true');
+          link.appendChild(lockIcon);
+        }
+
+        const openProtectedDocument = () => openDocumentAccess(documentId, documentTitle);
+        link.addEventListener('click', openProtectedDocument);
+        link.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openProtectedDocument();
+          }
+        });
+      });
+    }
 
     // ─── State ───────────────────────────────────────────────────────────────
     let _currentDocId = null;
@@ -846,6 +892,8 @@
         }
       });
     })();
+
+    registerProtectedDocumentLinks();
   </script>
 </body>
 </html>

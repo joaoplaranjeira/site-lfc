@@ -1,7 +1,8 @@
 const INVESTOR_ACCESS_API_BASE = 'https://otw-clevvo-api-authentication-67bd3c9de3ba.herokuapp.com';
 const INVESTOR_CONTEXT_TYPE = 'InvestorRoom';
-const INVESTOR_CONTEXT_ID = '2';
-const INVESTOR_SESSION_KEY = 'investor_room_access_granted';
+const INVESTOR_CONTEXT_ID = document.body.dataset.investorContextId || '2';
+const INVESTOR_CONTEXT_LABEL = document.body.dataset.investorContextLabel || 'Investor Room';
+const INVESTOR_SESSION_KEY = `investor_room_access_granted_${INVESTOR_CONTEXT_ID}`;
 
 const INVESTOR_ERROR_MESSAGES = {
   'invalid access code': 'Código inválido. Por favor, tenta novamente.',
@@ -56,6 +57,13 @@ function initInvestorGate() {
   const submit = document.getElementById('investor-access-submit');
   if (!form || !input || !error || !errorText || !submit) return;
 
+  const gateTitle = document.querySelector('.ir-gate-heading h1');
+  const gateDescription = document.querySelector('.ir-gate-heading p');
+  if (gateTitle) gateTitle.textContent = INVESTOR_CONTEXT_LABEL;
+  if (gateDescription && INVESTOR_CONTEXT_ID !== '2') {
+    gateDescription.textContent = 'Introduz o código específico deste projeto para consultar a apresentação reservada.';
+  }
+
   input.focus();
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -88,11 +96,13 @@ function initInvestorGate() {
 function initInvestorInterface() {
   const topbar = document.querySelector('.ir-topbar');
   const progress = document.querySelector('.ir-progress span');
+  const scrollTopButton = document.querySelector('[data-scroll-top]');
   const sections = Array.from(document.querySelectorAll('[data-chapter]'));
   const navLinks = Array.from(document.querySelectorAll('.ir-chapter-nav a'));
 
   function updateScrollState() {
     topbar?.classList.toggle('scrolled', window.scrollY > 24);
+    scrollTopButton?.classList.toggle('visible', window.scrollY > window.innerHeight * .65);
     if (progress) {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       progress.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
@@ -120,6 +130,10 @@ function initInvestorInterface() {
   }
 
   window.addEventListener('scroll', updateScrollState, { passive: true });
+  scrollTopButton?.addEventListener('click', () => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
   updateScrollState();
 
   document.querySelectorAll('[data-year]').forEach((element) => {
