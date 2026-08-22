@@ -44,14 +44,15 @@
 </head>
 <body data-design-mode="immersive">
   <!-- Access Gate -->
-  <div id="access-gate" class="fixed inset-0 z-50 flex items-center justify-center px-4" style="background: var(--bg-gradient, linear-gradient(135deg, #034638 0%, #056b57 100%))">
-    <div class="card p-8 rounded-2xl w-full max-w-md">
-      <div class="flex flex-col items-center gap-3 mb-6">
-        <img src="images/leca.png" alt="Leça FC" class="w-16 h-16" />
-        <h2 class="text-2xl font-black text-emerald-700 text-center">Área Reservada</h2>
-        <p class="text-gray-600 text-sm text-center">Introduz o teu código de acesso para entrar no Museu Digital do Leça Futebol Clube.</p>
-      </div>
-      <form id="access-form" class="flex flex-col gap-4">
+  <div id="access-gate" class="access-gate">
+    <div class="access-gate-backdrop"></div>
+    <div class="access-gate-card">
+      <div class="access-gate-eyebrow">Museu Digital · Área reservada</div>
+      <img src="images/leca.png" alt="Leça FC" class="access-gate-logo" />
+      <h2 class="access-gate-title">Entrar no Museu</h2>
+      <p class="access-gate-copy">Introduz o teu código de acesso para abrir a experiência imersiva do Museu Digital do Leça Futebol Clube.</p>
+      <form id="access-form" class="access-gate-form">
+        <label for="access-code-input" class="sr-only">Código de acesso</label>
         <input
           id="access-code-input"
           type="text"
@@ -59,21 +60,22 @@
           placeholder="Código de acesso"
           autocomplete="off"
           spellcheck="false"
-          class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-emerald-500 outline-none text-gray-900 font-mono text-lg text-center tracking-widest uppercase transition-colors"
+          class="access-gate-input"
         />
-        <div id="access-error" class="hidden items-center gap-2 px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm">
-          <i class="fa-solid fa-circle-exclamation flex-shrink-0"></i>
+        <div id="access-error" class="access-gate-error hidden" role="alert">
+          <i class="fa-solid fa-circle-exclamation flex-shrink-0" aria-hidden="true"></i>
           <span id="access-error-text">Código inválido. Por favor, tenta novamente.</span>
         </div>
         <button
           type="submit"
           id="access-submit"
-          class="w-full py-3 bg-emerald-700 hover:bg-emerald-600 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2"
+          class="access-gate-submit"
         >
-          <i class="fa-solid fa-unlock"></i>
+          <i class="fa-solid fa-unlock" aria-hidden="true"></i>
           Entrar
         </button>
       </form>
+      <p class="access-gate-footnote">Se não tiveres código, contacta o clube para acesso autorizado.</p>
     </div>
   </div>
 
@@ -83,6 +85,196 @@
       background: #010f0c;
       color: #fff;
       font-family: 'Poppins', sans-serif;
+    }
+
+    .access-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(94, 207, 177, 0.16), transparent 26rem),
+        radial-gradient(circle at 80% 10%, rgba(5, 107, 87, 0.24), transparent 28rem),
+        linear-gradient(145deg, #010907 0%, #011713 48%, #010f0c 100%);
+    }
+
+    .access-gate-backdrop {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 72px 72px;
+      opacity: 0.18;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95), transparent 82%);
+      pointer-events: none;
+    }
+
+    .access-gate::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 18%, rgba(0, 0, 0, 0.36) 100%);
+      pointer-events: none;
+    }
+
+    .access-gate-card {
+      position: relative;
+      width: min(100%, 31rem);
+      padding: 2rem 1.5rem 1.5rem;
+      border-radius: 1.75rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.48);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      text-align: center;
+    }
+
+    .access-gate-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #5ecfb1;
+    }
+
+    .access-gate-eyebrow::before,
+    .access-gate-eyebrow::after {
+      content: '';
+      width: 1.25rem;
+      height: 1px;
+      background: currentColor;
+      opacity: 0.45;
+    }
+
+    .access-gate-logo {
+      width: 4.75rem;
+      height: 4.75rem;
+      margin: 0 auto 1rem;
+      filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.55));
+    }
+
+    .access-gate-title {
+      margin: 0 0 0.65rem;
+      font-size: clamp(1.8rem, 4.5vw, 2.35rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .access-gate-copy {
+      margin: 0 auto 1.5rem;
+      max-width: 24rem;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.68);
+    }
+
+    .access-gate-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .access-gate-input {
+      width: 100%;
+      padding: 0.95rem 1rem;
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(1, 15, 12, 0.78);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.24em;
+      text-align: center;
+      text-transform: uppercase;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+
+    .access-gate-input::placeholder {
+      color: rgba(255, 255, 255, 0.34);
+      letter-spacing: 0.08em;
+    }
+
+    .access-gate-input:focus {
+      border-color: rgba(94, 207, 177, 0.7);
+      box-shadow: 0 0 0 4px rgba(94, 207, 177, 0.14);
+      background: rgba(1, 15, 12, 0.94);
+      transform: translateY(-1px);
+    }
+
+    .access-gate-error {
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.85rem 1rem;
+      border-radius: 0.95rem;
+      background: rgba(94, 207, 177, 0.12);
+      border: 1px solid rgba(94, 207, 177, 0.22);
+      color: #b8f2e1;
+      font-size: 0.84rem;
+      line-height: 1.45;
+      text-align: left;
+    }
+
+    .access-gate-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      width: 100%;
+      padding: 0.85rem 1.1rem;
+      border: none;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, #056b57, #034638);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.86rem;
+      cursor: pointer;
+      box-shadow: 0 14px 34px rgba(5, 107, 87, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    .access-gate-submit:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(5, 107, 87, 0.44);
+      filter: brightness(1.05);
+    }
+
+    .access-gate-submit:disabled {
+      cursor: wait;
+      opacity: 0.85;
+    }
+
+    .access-gate-footnote {
+      margin: 1rem 0 0;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.38);
+    }
+
+    @media (max-width: 640px) {
+      .access-gate-card {
+        padding: 1.5rem 1.15rem 1.25rem;
+        border-radius: 1.35rem;
+      }
+
+      .access-gate-logo {
+        width: 4rem;
+        height: 4rem;
+      }
     }
 
     /* ── Hero ── */

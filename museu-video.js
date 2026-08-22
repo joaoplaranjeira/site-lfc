@@ -13,6 +13,13 @@ const museumVideos = {
     videoSrc: 'videos/constantino.mp4',
     poster: 'videos/constantino.jpg'
   },
+  vladan: {
+    title: 'Entrevista Vladan',
+    intro: 'Vladan revisita os anos em que defendeu a baliza do Leça FC, entre a década de 90 e o início dos anos 2000.',
+    description: 'Um retrato de um guarda-redes de referência, integrado no grupo restrito de jogadores com mais jogos na Primeira Liga pelo clube, ao lado de nomes como Constantino e Nando.',
+    videoSrc: 'videos/vladan.mp4',
+    poster: 'videos/vladan.jpg'
+  },
   socio: {
     title: 'Entrevista Leonardo Soares',
     intro: 'Uma conversa única com Leonardo Soares, o segundo sócio mais antigo do Leça FC.',
@@ -39,5 +46,10 @@ document.getElementById('video-title').textContent = selected.title;
 document.getElementById('intro-text').textContent = selected.intro;
 document.getElementById('video-description').textContent = selected.description;
 const video = document.getElementById('video-frame');
+const note = document.getElementById('video-note');
 video.src = selected.videoSrc;
 if (selected.poster) video.poster = selected.poster;
+
+video.addEventListener('error', () => {
+  note.textContent = 'Este vídeo ainda não está disponível neste momento.';
+});
