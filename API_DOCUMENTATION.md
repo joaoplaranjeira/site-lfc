@@ -8,7 +8,7 @@ Update the `API_CONFIG` object in `competicoes.html`:
 
 ```javascript
 const API_CONFIG = {
-  baseUrl: 'https://api.lecafc.pt', // Replace with your actual API URL
+  baseUrl: 'https://otw-clevvo-api-competitions-cb45ebb65abc.herokuapp.com/api',
   endpoints: {
     calendar: '/competitions/calendar',
     classification: '/competitions/classification',
@@ -165,6 +165,37 @@ const API_CONFIG = {
 
 ---
 
+### 4. Plantel
+
+**Endpoint:** `GET /public/scouting/players`
+
+**Query parameters:**
+- `competitionId`: identificador da competição (`idCompetition`), recebido pelos serviços de calendário, classificação ou resultados.
+- `idClub`: valor de `ContextClubId` recebido pelo mesmo contexto. Nos jogos, o portal usa o `ContextClubId` associado à equipa de casa ou fora (ou compara o valor de contexto com o ID da equipa) e apresenta o acesso ao plantel apenas na equipa correspondente.
+
+**Description:** Returns the players available for the selected team. The portal
+uses `knownName` as the preferred display name and supports the following
+fields when they are present: `id`, `name`, `fullName`, `knownName`, `birthDate`,
+`nationality` and `nationalities`,
+`currentClubId`, `currentClubName`, `position`, `secondaryPosition`,
+`preferredFoot`, `isActiveInCompetitions`, `isConfiguredClubPlayer` and
+`photoUrl`.
+
+The API response may be an array or an object containing `content.items`
+(the current response format), `content` or `players`. Every public player
+also exposes `playerId`, used to retrieve their public statistics. The player
+card is still displayed when optional details or a photo are unavailable.
+
+### 5. Estatísticas públicas do jogador
+
+**Endpoint:** `GET /public/scouting/players/{playerId}/statistics`
+
+The player card loads this endpoint on opening and highlights the most relevant
+season totals for the player's position. A missing value is displayed as
+unavailable, while zero is kept as zero.
+
+---
+
 ## Error Handling
 
 All endpoints should return appropriate HTTP status codes:
@@ -221,7 +252,6 @@ container.innerHTML = sampleMatches.map(match => renderMatchCard(match)).join(''
 Possible additions to the API:
 1. Match details endpoint (`/competitions/matches/{id}`)
 2. Team statistics endpoint
-3. Player statistics endpoint
 4. Live match updates (WebSocket)
 5. Filtering by competition/team
 6. Pagination for large datasets

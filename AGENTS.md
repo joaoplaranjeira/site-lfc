@@ -5,7 +5,7 @@
 Este repositório contém o site público multipágina do Leça Futebol Clube. É uma
 aplicação estática em HTML, CSS e JavaScript sem framework, bundler ou gestor de
 pacotes. Em desenvolvimento, o Nginx serve os ficheiros na porta `8081` e
-encaminha `/api/` para `host.docker.internal:5004`.
+encaminha `/api/` para `host.docker.internal:5003`.
 
 ## Mapa do código
 

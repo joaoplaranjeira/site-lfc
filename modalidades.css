@@ -1,0 +1,215 @@
+.modalities-page {
+  width: 100%;
+  padding: clamp(1.5rem, 4vw, 3rem) 1rem clamp(3rem, 7vw, 5rem);
+}
+
+.modalities-page__brand {
+  display: flex;
+  width: fit-content;
+  margin: 0 auto clamp(1.75rem, 4vw, 2.75rem);
+  padding: 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.modalities-page__brand img {
+  display: block;
+  width: clamp(4rem, 7vw, 5.5rem);
+  height: clamp(4rem, 7vw, 5.5rem);
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.24));
+}
+
+.modalities-hero {
+  max-width: 46rem;
+  margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+  text-align: center;
+}
+
+.modalities-hero__eyebrow,
+.modality-card__number {
+  margin: 0;
+  color: #5ecfb1;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.modalities-hero h1 {
+  margin: 0.35rem 0 0.8rem;
+  color: #fff;
+  font-size: clamp(2.8rem, 7vw, 5.6rem);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.95;
+}
+
+.modalities-hero > p:last-child {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  line-height: 1.7;
+}
+
+.modality-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  width: min(100%, 72rem);
+  margin: 0 auto;
+}
+
+.modality-card {
+  position: relative;
+  display: flex;
+  min-height: 20rem;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 1.5rem;
+  border: 1px solid rgba(3, 70, 56, 0.1);
+  border-radius: 1.5rem;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(236, 246, 242, 0.96));
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.13);
+}
+
+.modality-card::after {
+  position: absolute;
+  right: -1.4rem;
+  bottom: -2.6rem;
+  color: rgba(3, 70, 56, 0.055);
+  font-size: 11rem;
+  font-weight: 900;
+  line-height: 1;
+  content: attr(data-number);
+}
+
+.modality-card__icon {
+  display: flex;
+  width: 3.75rem;
+  height: 3.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.15rem;
+  background: #034638;
+  color: #fff;
+  font-size: 1.65rem;
+  box-shadow: 0 12px 25px rgba(3, 70, 56, 0.23);
+}
+
+.modality-card__icon--cue span {
+  display: block;
+  width: 2.5rem;
+  height: 0.3rem;
+  border-radius: 999px;
+  background: #fff;
+  transform: rotate(-43deg);
+}
+
+.modality-card__icon--handball span {
+  position: relative;
+  display: block;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0.16rem solid currentColor;
+  border-radius: 50%;
+}
+
+.modality-card__icon--handball span::before,
+.modality-card__icon--handball span::after {
+  position: absolute;
+  display: block;
+  width: 1.15rem;
+  height: 0.16rem;
+  border-radius: 999px;
+  background: currentColor;
+  content: '';
+}
+
+.modality-card__icon--handball span::before {
+  top: 0.38rem;
+  left: -0.15rem;
+  transform: rotate(42deg);
+}
+
+.modality-card__icon--handball span::after {
+  right: -0.15rem;
+  bottom: 0.38rem;
+  transform: rotate(42deg);
+}
+
+.modality-card__content {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+}
+
+.modality-card h2 {
+  margin: 0.35rem 0 0.55rem;
+  color: #10211c;
+  font-size: 1.42rem;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.modality-card__content > p:last-child {
+  max-width: 18rem;
+  margin: 0;
+  color: #60716b;
+  font-size: 0.87rem;
+  line-height: 1.58;
+}
+
+.modality-card__status,
+.modality-card__action {
+  position: relative;
+  z-index: 1;
+  align-self: flex-start;
+  margin-top: 1.25rem;
+  padding: 0.4rem 0.72rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.modality-card__status {
+  border: 1px solid rgba(3, 70, 56, 0.1);
+  background: rgba(255, 255, 255, 0.72);
+  color: #60716b;
+}
+
+.modality-card--active {
+  border-color: rgba(94, 207, 177, 0.45);
+  background: linear-gradient(145deg, #034638, #022e26);
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.modality-card--active::after { color: rgba(255, 255, 255, 0.07); }
+.modality-card--active .modality-card__icon { background: #5ecfb1; color: #022e26; }
+.modality-card--active .modality-card__number { color: #a7e6d4; }
+.modality-card--active h2 { color: #fff; }
+.modality-card--active .modality-card__content > p:last-child { color: rgba(255, 255, 255, 0.7); }
+
+.modality-card__action {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  background: #fff;
+  color: #034638;
+}
+
+.modality-card--active:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 46px rgba(0, 0, 0, 0.3);
+}
+
+.modalities-page__footer { margin-top: clamp(2.5rem, 5vw, 4rem); text-align: center; }
+.modalities-page__footer a { color: rgba(255, 255, 255, 0.86); font-size: 0.9rem; font-weight: 700; text-decoration: none; }
+.modalities-page__footer i { margin-right: 0.5rem; }
+.modalities-page__footer a:hover { color: #a7e6d4; }
+
+@media (max-width: 850px) { .modality-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .modality-grid { grid-template-columns: 1fr; } .modality-card { min-height: 17.5rem; } }

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9ZCGD46H8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-P9ZCGD46H8');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atletismo — Universo Leça FC</title>
+  <link rel="stylesheet" href="tailwind.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="design-system.css" />
+  <link rel="stylesheet" href="atletismo.css?v=20260904-consents2" />
+</head>
+<body data-design-mode="institutional" data-page="athletics">
+  <main class="min-h-screen flex flex-col px-4 py-12">
+    <a href="index.html" class="mb-6 text-center" aria-label="Voltar à página inicial">
+      <img src="images/leca.png" alt="Leça FC" class="w-24 h-24 md:w-32 md:h-32 mx-auto" />
+    </a>
+
+    <h1 class="text-3xl md:text-5xl font-black text-white text-center mb-4 tracking-tight">LEÇA ATLETISMO</h1>
+    <p class="text-lg text-white/90 text-center mb-10 max-w-3xl mx-auto">Junta-te a uma modalidade em movimento, dedicada ao treino, à competição e à performance.</p>
+
+    <section class="max-w-4xl w-full mx-auto" aria-labelledby="registration-title">
+      <div class="card p-6 md:p-8 rounded-2xl">
+        <div class="flex items-start gap-4 mb-8 pb-6 border-b border-gray-200">
+          <div class="w-12 h-12 rounded-full bg-emerald-700 text-white flex items-center justify-center text-xl flex-shrink-0"><i class="fa-solid fa-person-running"></i></div>
+          <div>
+            <h2 id="registration-title" class="text-2xl font-black text-gray-900">Inscrição de atletas</h2>
+            <p class="text-gray-600 mt-1 text-sm leading-relaxed">Preenche os dados, pede o código enviado por email e confirma a inscrição. A inscrição fica pendente de aprovação pelo clube.</p>
+            <p class="text-xs text-gray-500 mt-3"><span class="required-label">Campos obrigatórios</span></p>
+          </div>
+        </div>
+
+        <div id="registration-loading" class="text-center py-10">
+          <i class="fa-solid fa-spinner fa-spin text-4xl text-emerald-700 mb-3"></i>
+          <p class="text-gray-600">A preparar o formulário...</p>
+        </div>
+
+        <div id="registration-error" class="hidden text-center py-8" role="alert">
+          <i class="fa-solid fa-circle-exclamation text-4xl text-red-500 mb-3"></i>
+          <p id="registration-error-text" class="text-red-600 font-semibold"></p>
+        </div>
+
+        <div id="registration-content" class="hidden">
+          <form id="athlete-registration-form" class="space-y-6" novalidate>
+            <fieldset>
+              <legend class="text-lg font-bold text-gray-900 mb-4">Dados do atleta</legend>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="md:col-span-2"><label for="fullName" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Nome completo</label><input id="fullName" type="text" maxlength="200" required autocomplete="name" class="form-input" /></div>
+                <div><label for="birthDate" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Data de nascimento</label><input id="birthDate" type="date" required autocomplete="bday" class="form-input" /><p id="birth-date-error" class="hidden field-validation-error" role="alert">A inscrição é válida apenas para atletas com idade superior a 5 anos.</p></div>
+                <div><label for="mobilePhone" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Telemóvel</label><input id="mobilePhone" type="tel" maxlength="30" required autocomplete="tel" class="form-input" /></div>
+                <div><label for="email" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Email</label><input id="email" type="email" maxlength="200" required autocomplete="email" class="form-input" /></div>
+                <div><label for="taxNumber" class="block text-sm font-semibold text-gray-700 mb-1 required-label">NIF</label><input id="taxNumber" type="text" inputmode="numeric" pattern="[0-9]{9}" maxlength="9" required class="form-input" /></div>
+                <div class="md:col-span-2"><label for="citizenCardNumber" class="block text-sm font-semibold text-gray-700 mb-1 required-label">N.º do Cartão de Cidadão</label><input id="citizenCardNumber" type="text" maxlength="30" required class="form-input" /></div>
+              </div>
+            </fieldset>
+
+            <fieldset class="pt-5 border-t border-gray-200">
+              <legend class="text-lg font-bold text-gray-900 mb-4">Morada</legend>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="md:col-span-2"><label for="address" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Morada</label><input id="address" type="text" maxlength="300" required autocomplete="street-address" class="form-input" /></div>
+                <div><label for="postalCode" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Código postal</label><input id="postalCode" type="text" inputmode="numeric" pattern="[0-9]{4}-[0-9]{3}" placeholder="0000-000" maxlength="8" required autocomplete="postal-code" class="form-input" /></div>
+                <div><label for="locality" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Localidade</label><input id="locality" type="text" maxlength="120" required autocomplete="address-level2" class="form-input" /></div>
+                <div><label for="districtId" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Distrito</label><select id="districtId" required class="form-input"><option value="">Seleciona o distrito</option></select></div>
+                <div><label for="municipalityId" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Concelho</label><select id="municipalityId" required disabled class="form-input"><option value="">Seleciona primeiro o distrito</option></select></div>
+              </div>
+            </fieldset>
+
+            <fieldset class="pt-5 border-t border-gray-200">
+              <legend class="text-lg font-bold text-gray-900 mb-2">Modalidade e documento</legend>
+              <p class="text-sm text-gray-600 mb-4">Esta inscrição é para Atletismo.</p>
+              <div><label for="citizenCardDocument" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Cartão de Cidadão</label><input id="citizenCardDocument" type="file" accept="image/png,image/jpeg,application/pdf" required class="block w-full text-sm text-gray-700 file:mr-4 file:rounded-lg file:border-0 file:bg-emerald-50 file:px-4 file:py-2 file:font-semibold file:text-emerald-800 hover:file:bg-emerald-100" /><p class="text-xs text-gray-500 mt-2">PDF, JPG ou PNG até 10 MB.</p></div>
+            </fieldset>
+
+            <fieldset id="guardian-section" class="hidden pt-5 border-t border-gray-200">
+              <legend class="text-lg font-bold text-gray-900 mb-2">Encarregado de educação</legend>
+              <p class="text-sm text-gray-600 mb-4">Por o atleta ser menor de idade, indica os dados do encarregado de educação.</p>
+              <div id="guardian-fields" class="grid md:grid-cols-2 gap-4">
+                <div class="md:col-span-2"><label for="guardianFullName" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Nome completo</label><input id="guardianFullName" type="text" maxlength="200" disabled class="form-input" /></div>
+                <div class="md:col-span-2"><div class="field-label-row"><label for="guardianAddress" class="required-label">Morada</label><button type="button" id="guardian-address-import" class="guardian-import">Usar morada do atleta</button></div><input id="guardianAddress" type="text" maxlength="300" disabled class="form-input" /></div>
+                <div><label for="guardianPostalCode" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Código postal</label><input id="guardianPostalCode" type="text" inputmode="numeric" pattern="[0-9]{4}-[0-9]{3}" maxlength="8" disabled class="form-input" /></div>
+                <div><label for="guardianLocality" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Localidade</label><input id="guardianLocality" type="text" maxlength="120" disabled class="form-input" /></div>
+                <div><label for="guardianDistrictId" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Distrito</label><select id="guardianDistrictId" disabled class="form-input"><option value="">Seleciona o distrito</option></select></div>
+                <div><label for="guardianMunicipalityId" class="block text-sm font-semibold text-gray-700 mb-1 required-label">Concelho</label><select id="guardianMunicipalityId" disabled class="form-input"><option value="">Seleciona primeiro o distrito</option></select></div>
+                <div><div class="field-label-row"><label for="guardianMobilePhone" class="required-label">Telemóvel</label><button type="button" class="guardian-import" data-source="mobilePhone" data-target="guardianMobilePhone">Usar dados do atleta</button></div><input id="guardianMobilePhone" type="tel" maxlength="30" disabled class="form-input" /></div>
+                <div><div class="field-label-row"><label for="guardianEmail" class="required-label">Email</label><button type="button" class="guardian-import" data-source="email" data-target="guardianEmail">Usar dados do atleta</button></div><input id="guardianEmail" type="email" maxlength="200" disabled class="form-input" /></div>
+                <div class="md:col-span-2"><label for="guardianCitizenCardNumber" class="block text-sm font-semibold text-gray-700 mb-1 required-label">N.º do Cartão de Cidadão</label><input id="guardianCitizenCardNumber" type="text" maxlength="30" disabled class="form-input" /></div>
+              </div>
+            </fieldset>
+
+            <fieldset class="registration-consents pt-5 border-t border-gray-200">
+              <legend class="text-lg font-bold text-gray-900 mb-4">Consentimentos</legend>
+
+              <fieldset class="registration-choice registration-choice--required">
+                <legend>Confirmas que os dados indicados são corretos e autorizas o seu tratamento para a gestão desta inscrição?</legend>
+                <div class="registration-choice__options">
+                  <label><input type="radio" name="confirmsDataAccuracy" value="true" required /> Sim</label>
+                  <label><input type="radio" name="confirmsDataAccuracy" value="false" /> Não</label>
+                </div>
+                <p id="data-accuracy-message" class="registration-choice__message hidden" role="alert">Para avançar com a inscrição tens de confirmar a veracidade dos dados e autorizar o seu tratamento.</p>
+              </fieldset>
+
+              <fieldset class="registration-choice registration-choice--required">
+                <legend><strong>Li e aceito o Regulamento Interno da Secção de Atletismo.</strong> <a href="#" class="regulation-link" aria-disabled="true" title="Documento disponível brevemente">Consultar regulamento</a></legend>
+                <div class="registration-choice__options">
+                  <label><input type="radio" name="acceptsAthleticsRegulation" value="true" required /> Sim</label>
+                  <label><input type="radio" name="acceptsAthleticsRegulation" value="false" /> Não</label>
+                </div>
+                <p id="regulation-message" class="registration-choice__message hidden" role="alert">A aceitação do regulamento é necessária para avançar com a inscrição.</p>
+              </fieldset>
+
+              <fieldset class="registration-choice registration-choice--required">
+                <legend>Autorizas o tratamento da tua imagem para campanhas exclusivas do clube?</legend>
+                <div class="registration-choice__options">
+                  <label><input type="radio" name="acceptsImageUsage" value="true" required /> Sim</label>
+                  <label><input type="radio" name="acceptsImageUsage" value="false" /> Não</label>
+                </div>
+              </fieldset>
+
+              <fieldset class="registration-choice registration-choice--required">
+                <legend>Autorizas a utilização dos teus dados para comunicações internas do clube?</legend>
+                <div class="registration-choice__options">
+                  <label><input type="radio" name="acceptsInternalCommunications" value="true" required /> Sim</label>
+                  <label><input type="radio" name="acceptsInternalCommunications" value="false" /> Não</label>
+                </div>
+              </fieldset>
+            </fieldset>
+            <div id="step1-error" class="hidden p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm" role="alert"></div>
+            <div class="flex justify-end"><button id="request-otp-btn" type="submit" disabled class="inline-flex items-center gap-2 px-6 py-3 bg-emerald-700 text-white font-bold rounded-lg hover:bg-emerald-800 transition disabled:opacity-50 disabled:cursor-not-allowed"><i class="fa-solid fa-arrow-right"></i>Avançar com a inscrição</button></div>
+          </form>
+
+          <div id="registration-success" class="hidden mt-8 p-5 rounded-xl bg-emerald-50 border border-emerald-200" role="status">
+            <div class="flex items-start gap-3"><i class="fa-solid fa-circle-check text-2xl text-emerald-600 mt-1"></i><div><h3 class="text-lg font-bold text-emerald-900 mb-1">Inscrição submetida</h3><p class="text-emerald-800">A tua inscrição de atleta foi enviada e encontra-se pendente de aprovação pelo clube.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="text-center mt-10"><a href="index.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105"><i class="fa-solid fa-arrow-left"></i>Voltar ao Universo Leça FC</a></div>
+  </main>
+
+  <div id="otp-modal" class="otp-modal hidden" role="dialog" aria-modal="true" aria-labelledby="otp-modal-title" aria-describedby="otp-info">
+    <div class="otp-modal__backdrop" data-close-otp-modal></div>
+    <form id="otp-form" class="otp-modal__card">
+      <button type="button" class="otp-modal__close" data-close-otp-modal aria-label="Fechar validação OTP"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      <div class="otp-modal__icon"><i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i></div>
+      <h3 id="otp-modal-title">Valida o teu email</h3>
+      <p id="otp-info">Enviámos um código para o email indicado.</p>
+      <div><label for="otpCode">Código de 6 dígitos</label><input id="otpCode" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required autocomplete="one-time-code" class="form-input tracking-widest" /></div>
+      <div id="step2-error" class="hidden p-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm" role="alert"></div>
+      <button id="confirm-otp-btn" type="submit" class="otp-modal__confirm"><i class="fa-solid fa-check" aria-hidden="true"></i>Confirmar inscrição</button>
+      <button type="button" class="otp-modal__cancel" data-close-otp-modal>Voltar ao formulário</button>
+    </form>
+  </div>
+  <script src="atletismo.js"></script>
+</body>
+</html>

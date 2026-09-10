@@ -11,34 +11,13 @@
     <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Portal das Competições - Universo Leça FC</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            emerald: {
-              50: '#e6f2f0',
-              100: '#cce5e1',
-              200: '#99cbc3',
-              300: '#66b1a5',
-              400: '#339787',
-              500: '#056b57',
-              600: '#045a4a',
-              700: '#034638',
-              800: '#022e26',
-              900: '#011713'
-            }
-          }
-        }
-      }
-    }
-  </script>
+  <link rel="stylesheet" href="tailwind.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="icon" type="image/png" href="images/leca.png" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="design-system.css" />
+  <link rel="stylesheet" href="competicoes.css?v=20260901-2" />
 </head>
 <body data-design-mode="institutional" data-page="competitions">
   <div class="min-h-screen flex flex-col px-4 py-12">
@@ -58,7 +37,7 @@
     
     <!-- Tab Navigation -->
     <div class="max-w-6xl w-full mx-auto mb-8">
-      <div class="flex flex-wrap gap-3 justify-center">
+      <div class="competition-tabs flex flex-wrap gap-3 justify-center" role="tablist" aria-label="Informação das competições">
         <button onclick="showTab('calendario')" id="tab-calendario" class="tab-button active px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
           <i class="fa-solid fa-calendar-days mr-2"></i>
           Calendário
@@ -78,7 +57,7 @@
     <div class="max-w-6xl w-full mx-auto">
       
       <!-- Calendário Tab -->
-      <div id="content-calendario" class="tab-content">
+      <div id="content-calendario" class="tab-content" role="tabpanel" aria-labelledby="tab-calendario">
         <div class="card p-8 rounded-2xl">
           <div class="flex items-center gap-3 mb-6">
             <i class="fa-solid fa-calendar-days text-3xl text-emerald-700"></i>
@@ -86,7 +65,7 @@
           </div>
           
           <p class="text-gray-600 mb-6">
-            Próximos jogos agendados para todas as equipas do Leça Futebol Clube
+            Próximos jogos agendados para todas as equipas do Universo Leça Futebol Clube
           </p>
           
           <!-- Dynamic Match Cards Container -->
@@ -101,7 +80,7 @@
       </div>
       
       <!-- Classificação Tab -->
-      <div id="content-classificacao" class="tab-content hidden">
+      <div id="content-classificacao" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-classificacao">
         <div class="card p-8 rounded-2xl">
           <div class="flex items-center gap-3 mb-6">
             <i class="fa-solid fa-trophy text-3xl text-emerald-700"></i>
@@ -109,7 +88,7 @@
           </div>
           
           <p class="text-gray-600 mb-6">
-            Tabela de classificação atual do campeonato
+            Tabelas de Classificação das várias competições
           </p>
           
           <!-- Classification Tables Container -->
@@ -118,7 +97,7 @@
       </div>
       
       <!-- Resultados Tab -->
-      <div id="content-resultados" class="tab-content hidden">
+      <div id="content-resultados" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-resultados">
         <div class="card p-8 rounded-2xl">
           <div class="flex items-center gap-3 mb-6">
             <i class="fa-solid fa-futbol text-3xl text-emerald-700"></i>
@@ -153,6 +132,6 @@
     </footer>
     </div>
 
-    <script src="competicoes.js"></script>
+    <script src="competicoes.js?v=20260901-2"></script>
   </body>
 </html>

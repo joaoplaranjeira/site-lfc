@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalhes do Jogo - Universo Leça FC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="design-system.css" />
+  <link rel="stylesheet" href="jogo.css?v=20260901-2" />
+</head>
+<body data-design-mode="institutional" data-page="match-details">
+  <main class="match-page">
+    <a class="match-logo" href="index.html"><img src="images/leca.png" alt="Leça FC" /></a>
+    <a id="match-back" class="match-back" href="competicoes.html"><i class="fa-solid fa-arrow-left"></i> Voltar</a>
+    <div id="match-details" aria-live="polite"></div>
+  </main>
+
+  <div id="match-player-modal" class="match-player-modal" hidden role="dialog" aria-modal="true" aria-labelledby="match-player-name">
+    <div class="match-player-modal__backdrop" data-close-player-modal></div>
+    <article class="match-player-modal__card" tabindex="-1">
+      <button type="button" class="match-player-modal__close" aria-label="Fechar carta do jogador" data-close-player-modal><i class="fa-solid fa-xmark"></i></button>
+      <div id="match-player-content"></div>
+    </article>
+  </div>
+  <script src="jogo.js?v=20260907-3"></script>
+</body>
+</html>

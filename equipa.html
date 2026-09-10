@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plantel - Universo Leça FC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="design-system.css" />
+  <link rel="stylesheet" href="plantel.css?v=20260901-2" />
+</head>
+<body data-design-mode="institutional" data-page="squad">
+  <main class="squad-page">
+    <a class="squad-logo" href="index.html"><img src="images/leca.png" alt="Leça FC" /></a>
+    <a id="back-link" class="squad-back" href="competicoes.html"><i class="fa-solid fa-arrow-left"></i> Voltar às competições</a>
+    <header class="squad-hero">
+      <p class="squad-kicker"><i class="fa-solid fa-futbol"></i> DETALHES EQUIPA</p>
+      <h1><span id="squad-title">Plantel</span><span id="squad-category" class="squad-category" hidden></span></h1>
+      <p id="squad-subtitle">Conhece os atletas e acompanha todos os jogos desta equipa.</p>
+    </header>
+    <nav class="squad-tabs" aria-label="Informação da equipa" role="tablist">
+      <button id="tab-players" class="squad-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="panel-players"><i class="fa-solid fa-users"></i> Plantel</button>
+      <button id="tab-calendar" class="squad-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-calendar"><i class="fa-solid fa-calendar-days"></i> Calendário</button>
+      <button id="tab-rankings" class="squad-tab" type="button" role="tab" aria-selected="false" aria-controls="panel-rankings"><i class="fa-solid fa-trophy"></i> Classificação</button>
+    </nav>
+    <section id="panel-players" role="tabpanel" aria-labelledby="tab-players">
+      <div id="players" class="players-grid" aria-live="polite"></div>
+    </section>
+    <section id="panel-calendar" class="squad-panel" role="tabpanel" aria-labelledby="tab-calendar" hidden>
+      <div class="schedule-heading"><div><p class="squad-kicker"><i class="fa-solid fa-trophy"></i> Todas as provas</p><h2>Calendário da equipa</h2><p>Jogos da equipa por competição</p></div></div>
+      <div id="team-calendar" class="team-calendar" aria-live="polite"></div>
+    </section>
+    <section id="panel-rankings" class="squad-panel" role="tabpanel" aria-labelledby="tab-rankings" hidden>
+      <div class="schedule-heading"><div><p class="squad-kicker"><i class="fa-solid fa-trophy"></i> Posição atual</p><h2>Classificação da equipa</h2><p>Classificação equipa por competição</p></div></div>
+      <div id="team-rankings" class="team-rankings" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <div id="player-modal" class="player-modal" hidden role="dialog" aria-modal="true" aria-labelledby="card-player-name">
+    <div class="player-modal__backdrop" data-close-modal></div>
+    <article class="player-card-modal" tabindex="-1">
+      <button class="player-modal__close" type="button" aria-label="Fechar carta do jogador" data-close-modal><i class="fa-solid fa-xmark"></i></button>
+      <div id="player-card-content"></div>
+    </article>
+  </div>
+
+  <script src="plantel.js?v=20260901-2"></script>
+</body>
+</html>

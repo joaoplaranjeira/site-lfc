@@ -19,6 +19,7 @@
   <link rel="icon" type="image/png" href="images/leca.png" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="design-system.css" />
+  <link rel="stylesheet" href="pavilhao.css?v=20260831-1" />
 </head>
 <body data-design-mode="institutional" data-page="pavilion">
   <div class="min-h-screen flex flex-col px-4 py-12">
@@ -37,16 +38,16 @@
     </p>
 
     <div class="max-w-6xl w-full mx-auto mb-8">
-      <div class="flex flex-wrap justify-center gap-3">
-        <button type="button" class="tab-button px-5 py-3 rounded-full font-bold transition-all shadow-lg bg-white text-emerald-700 hover:shadow-xl" data-pavilion-tab="historia" id="tab-historia">História</button>
-        <button type="button" class="tab-button px-5 py-3 rounded-full font-bold transition-all bg-white/15 text-white hover:bg-white/25" data-pavilion-tab="pavilhao" id="tab-pavilhao">Reconstrução</button>
-        <button type="button" class="tab-button px-5 py-3 rounded-full font-bold transition-all bg-white/15 text-white hover:bg-white/25" data-pavilion-tab="reservas" id="tab-reservas">Reservas</button>
+      <div class="pavilion-tabs flex flex-wrap justify-center gap-3" role="tablist" aria-label="Informação do pavilhão">
+        <button type="button" class="tab-button active px-5 py-3 rounded-full font-bold transition-all shadow-lg bg-white text-emerald-700 hover:shadow-xl" data-pavilion-tab="historia" id="tab-historia" role="tab" aria-selected="true" aria-controls="panel-historia"><i class="fa-solid fa-landmark" aria-hidden="true"></i> História</button>
+        <button type="button" class="tab-button px-5 py-3 rounded-full font-bold transition-all bg-white/15 text-white hover:bg-white/25" data-pavilion-tab="reconstrucao" id="tab-reconstrucao" role="tab" aria-selected="false" aria-controls="panel-reconstrucao"><i class="fa-solid fa-building" aria-hidden="true"></i> Reconstrução</button>
+        <button type="button" class="tab-button px-5 py-3 rounded-full font-bold transition-all bg-white/15 text-white hover:bg-white/25" data-pavilion-tab="reservas" id="tab-reservas" role="tab" aria-selected="false" aria-controls="panel-reservas"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i> Reservas</button>
       </div>
     </div>
 
     <!-- Content -->
     <div class="max-w-6xl w-full mx-auto space-y-8">
-      <section id="panel-historia" class="pavilion-panel space-y-8">
+      <section id="panel-historia" class="pavilion-panel space-y-8" role="tabpanel" aria-labelledby="tab-historia">
         <section class="card p-8 rounded-2xl">
           <div class="flex items-center gap-3 mb-6">
             <i class="fa-solid fa-landmark text-3xl text-emerald-700"></i>
@@ -90,7 +91,7 @@
         </section>
       </section>
 
-      <section id="panel-pavilhao" class="pavilion-panel hidden space-y-8">
+      <section id="panel-reconstrucao" class="pavilion-panel hidden space-y-8" role="tabpanel" aria-labelledby="tab-reconstrucao">
         <section class="card p-8 rounded-2xl">
           <div class="flex items-center gap-3 mb-6">
             <i class="fa-solid fa-building text-3xl text-emerald-700"></i>
@@ -184,7 +185,7 @@
         </section>
       </section>
 
-      <section id="panel-reservas" class="pavilion-panel hidden space-y-8">
+      <section id="panel-reservas" class="pavilion-panel hidden space-y-8" role="tabpanel" aria-labelledby="tab-reservas">
         <section class="card p-8 rounded-2xl">
           <div class="flex items-center gap-3 mb-6">
             <i class="fa-solid fa-circle-info text-3xl text-emerald-700"></i>
@@ -425,7 +426,7 @@
   <script src="reconstrucao-reservas.js?v=20260825b"></script>
   <script>
     function showPavilionTab(tabName) {
-      const tabs = ['historia', 'pavilhao', 'reservas'];
+      const tabs = ['historia', 'reconstrucao', 'reservas'];
 
       tabs.forEach((name) => {
         const panel = document.getElementById(`panel-${name}`);
@@ -437,11 +438,13 @@
         }
 
         if (button) {
+          button.classList.toggle('active', active);
           button.classList.toggle('bg-white', active);
           button.classList.toggle('text-emerald-700', active);
           button.classList.toggle('shadow-lg', active);
           button.classList.toggle('bg-white/15', !active);
           button.classList.toggle('text-white', !active);
+          button.setAttribute('aria-selected', active ? 'true' : 'false');
         }
       });
 
@@ -476,7 +479,7 @@
     });
 
     document.addEventListener('DOMContentLoaded', () => {
-      const initialTab = ['historia', 'pavilhao', 'reservas'].includes(window.location.hash.replace('#', ''))
+      const initialTab = ['historia', 'reconstrucao', 'reservas'].includes(window.location.hash.replace('#', ''))
         ? window.location.hash.replace('#', '')
         : 'historia';
 

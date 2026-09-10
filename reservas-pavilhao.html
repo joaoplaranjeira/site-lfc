@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9ZCGD46H8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-P9ZCGD46H8');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reservas do Pavilhão Custódio Antunes - Universo Leça FC</title>
+  <link rel="stylesheet" href="tailwind.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="design-system.css" />
+</head>
+<body data-design-mode="institutional" data-page="reservations">
+  <div class="min-h-screen flex flex-col px-4 py-12">
+    <a href="pavilhao.html" class="mb-6 text-center">
+      <img src="images/leca.png" alt="Leça FC" class="w-24 h-24 md:w-32 md:h-32 mx-auto" />
+    </a>
+
+    <div class="max-w-6xl w-full mx-auto space-y-8">
+      <section class="card p-8 rounded-2xl overflow-hidden">
+        <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-center">
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-700 mb-3">Pavilhão Custódio Antunes · Reservas</p>
+            <h1 class="text-3xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight mb-4">
+              Reservas do Pavilhão
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 leading-relaxed max-w-3xl">
+              O Pavilhão Custódio Antunes é a casa das modalidades do Leça Futebol Clube, mas também está disponível para aluguer a equipas, empresas ou particulares, sempre que existam períodos livres na agenda.
+            </p>
+          </div>
+
+          <div class="grid gap-4">
+            <div class="p-5 rounded-2xl bg-emerald-50 border border-emerald-100">
+              <div class="flex items-center gap-3 mb-2">
+                <i class="fa-solid fa-people-group text-emerald-700"></i>
+                <h2 class="text-lg font-black text-gray-900">Uso do clube</h2>
+              </div>
+              <p class="text-sm text-gray-700 leading-relaxed">
+                A prioridade é dada às modalidades do Leça FC, às suas atividades regulares e às ações institucionais do clube.
+              </p>
+            </div>
+            <div class="p-5 rounded-2xl bg-emerald-50 border border-emerald-100">
+              <div class="flex items-center gap-3 mb-2">
+                <i class="fa-solid fa-handshake text-emerald-700"></i>
+                <h2 class="text-lg font-black text-gray-900">Alugueres externos</h2>
+              </div>
+              <p class="text-sm text-gray-700 leading-relaxed">
+                Equipas, empresas e particulares podem pedir reserva para eventos, treinos, ações corporativas ou iniciativas pontuais.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="reservationModal" data-reservation-view="page" class="w-full bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-600 text-white p-6 md:p-8">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <p class="text-sm uppercase tracking-[0.24em] text-emerald-100/90 mb-2">Separador de Reservas</p>
+              <h2 class="text-2xl md:text-4xl font-black">Pedido de Reserva</h2>
+              <p class="mt-2 text-white/90 max-w-3xl">
+                Consulta a disponibilidade em tempo real e escolhe apenas um período livre. Os horários já ocupados ficam automaticamente indisponíveis.
+              </p>
+            </div>
+            <a href="pavilhao.html" class="shrink-0 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 transition inline-flex items-center justify-center" aria-label="Voltar ao pavilhão">
+              <i class="fa-solid fa-arrow-left text-xl"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="p-6 md:p-8">
+          <div id="reservation-loading" class="py-16 text-center">
+            <i class="fa-solid fa-spinner fa-spin text-4xl text-emerald-700 mb-3"></i>
+            <p class="text-gray-600">A carregar disponibilidade...</p>
+          </div>
+
+          <div id="reservation-error" class="hidden mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-semibold"></div>
+
+          <div id="reservation-content" class="hidden">
+            <div class="grid xl:grid-cols-[1.35fr_0.9fr] gap-6">
+              <section class="rounded-2xl border border-gray-200 bg-gray-50 p-5 md:p-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
+                  <div>
+                    <p class="text-sm font-semibold text-emerald-700 uppercase tracking-wide mb-1">Calendário de disponibilidade</p>
+                    <h3 id="reservation-month-label" class="text-2xl font-black text-gray-900"></h3>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <button type="button" id="reservation-prev-month" class="w-11 h-11 rounded-full border border-gray-300 bg-white text-gray-700 hover:border-emerald-500 hover:text-emerald-700 transition" aria-label="Mês anterior">
+                      <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button type="button" id="reservation-next-month" class="w-11 h-11 rounded-full border border-gray-300 bg-white text-gray-700 hover:border-emerald-500 hover:text-emerald-700 transition" aria-label="Mês seguinte">
+                      <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">
+                  <span>Seg</span>
+                  <span>Ter</span>
+                  <span>Qua</span>
+                  <span>Qui</span>
+                  <span>Sex</span>
+                  <span>Sáb</span>
+                  <span>Dom</span>
+                </div>
+
+                <div id="reservation-calendar-grid" class="grid grid-cols-7 gap-2"></div>
+
+                <div class="mt-4 flex flex-wrap gap-3 text-xs text-gray-600">
+                  <span class="inline-flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-600"></span> Disponível</span>
+                  <span class="inline-flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-gray-300"></span> Sem disponibilidade</span>
+                  <span class="inline-flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-500"></span> Selecionado</span>
+                </div>
+              </section>
+
+              <aside class="space-y-6">
+                <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 shadow-sm">
+                  <p class="text-sm font-semibold text-emerald-700 uppercase tracking-wide mb-1">Slots de 1 hora</p>
+                  <h3 id="reservation-day-label" class="text-xl font-black text-gray-900 mb-3">Seleciona um dia</h3>
+                  <div id="reservation-slot-list" class="space-y-3"></div>
+                  <p id="reservation-slot-empty" class="text-sm text-gray-500">
+                    Escolhe um dia com disponibilidade para ver os slots de 1 hora. Só são apresentados horários a partir de 6 horas de antecedência.
+                  </p>
+                </section>
+
+                <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 shadow-sm">
+                  <p class="text-sm font-semibold text-emerald-700 uppercase tracking-wide mb-1">Pedido</p>
+                  <h3 class="text-xl font-black text-gray-900 mb-4">Dados do requerente</h3>
+
+                  <div id="reservation-summary" class="mb-4 hidden rounded-xl bg-emerald-50 border border-emerald-100 p-4 text-sm text-emerald-900"></div>
+
+                  <form id="reservation-request-form" class="space-y-4">
+                    <div>
+                      <label for="reservation-name" class="block text-sm font-semibold text-gray-700 mb-1">Nome *</label>
+                      <input id="reservation-name" type="text" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600" />
+                    </div>
+
+                    <div>
+                      <label for="reservation-email" class="block text-sm font-semibold text-gray-700 mb-1">Email *</label>
+                      <input id="reservation-email" type="email" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600" />
+                    </div>
+
+                    <div>
+                      <label for="reservation-participants" class="block text-sm font-semibold text-gray-700 mb-1">Número de participantes *</label>
+                      <input id="reservation-participants" type="number" min="1" step="1" value="1" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600" />
+                    </div>
+
+                    <div>
+                      <label for="reservation-purpose" class="block text-sm font-semibold text-gray-700 mb-1">Finalidade *</label>
+                      <textarea id="reservation-purpose" rows="3" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 resize-none" placeholder="Treino, reunião, evento, atividade desportiva..."></textarea>
+                    </div>
+
+                    <div id="reservation-step1-error" class="hidden p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-semibold"></div>
+
+                    <button id="reservation-request-otp-btn" type="submit" disabled class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-emerald-700 text-white font-bold rounded-xl shadow-sm hover:bg-emerald-800 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                      <i class="fa-solid fa-paper-plane"></i>
+                      Pedir código OTP
+                    </button>
+                  </form>
+
+                  <form id="reservation-otp-form" class="hidden mt-6 pt-6 border-t border-gray-200 space-y-4">
+                    <div>
+                      <h4 class="text-lg font-black text-gray-900 mb-2">Confirmar OTP</h4>
+                      <p id="reservation-otp-info" class="text-sm text-gray-600"></p>
+                    </div>
+
+                    <div>
+                      <label for="reservation-otp-code" class="block text-sm font-semibold text-gray-700 mb-1">Código de 6 dígitos *</label>
+                      <input id="reservation-otp-code" type="text" inputmode="numeric" maxlength="6" autocomplete="one-time-code" required class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm tracking-[0.35em] text-center focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600" />
+                    </div>
+
+                    <div id="reservation-step2-error" class="hidden p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm font-semibold"></div>
+
+                    <button id="reservation-confirm-otp-btn" type="submit" class="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-emerald-700 text-white font-bold rounded-xl shadow-sm hover:bg-emerald-800 transition">
+                      <i class="fa-solid fa-circle-check"></i>
+                      Confirmar pedido
+                    </button>
+                  </form>
+
+                  <div id="reservation-success" class="hidden mt-6 rounded-2xl bg-emerald-50 border border-emerald-200 p-5">
+                    <div class="flex items-start gap-3">
+                      <i class="fa-solid fa-circle-check text-2xl text-emerald-700 mt-1"></i>
+                      <div>
+                        <h4 class="text-lg font-black text-emerald-900 mb-1">Pedido submetido com sucesso</h4>
+                        <p id="reservation-success-text" class="text-emerald-800 text-sm leading-relaxed"></p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="text-center">
+        <a href="pavilhao.html" class="inline-flex items-center gap-2 px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
+          <i class="fa-solid fa-arrow-left"></i>
+          Voltar ao pavilhão
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="reconstrucao-reservas.js?v=20260825b"></script>
+</body>
+</html>
