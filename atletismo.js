@@ -53,12 +53,15 @@
     var form = byId('athlete-registration-form');
     var dataAccepted = selectedValue('confirmsDataAccuracy') === 'true';
     var regulationAccepted = selectedValue('acceptsAthleticsRegulation') === 'true';
+    var seasonConditionsAccepted = selectedValue('acceptsSeasonConditions') === 'true';
     var dataDeclined = selectedValue('confirmsDataAccuracy') === 'false';
     var regulationDeclined = selectedValue('acceptsAthleticsRegulation') === 'false';
+    var seasonConditionsDeclined = selectedValue('acceptsSeasonConditions') === 'false';
 
     byId('data-accuracy-message').classList.toggle('hidden', !dataDeclined);
     byId('regulation-message').classList.toggle('hidden', !regulationDeclined);
-    byId('request-otp-btn').disabled = !form.checkValidity() || !dataAccepted || !regulationAccepted;
+    byId('season-conditions-message').classList.toggle('hidden', !seasonConditionsDeclined);
+    byId('request-otp-btn').disabled = !form.checkValidity() || !dataAccepted || !regulationAccepted || !seasonConditionsAccepted;
   }
 
   function getErrorMessage(payload, fallback) {
@@ -319,9 +322,6 @@
       });
     });
     byId('guardian-address-import').addEventListener('click', importGuardianAddress);
-    document.querySelectorAll('.regulation-link[aria-disabled="true"]').forEach(function (link) {
-      link.addEventListener('click', function (event) { event.preventDefault(); });
-    });
     byId('citizenCardDocument').addEventListener('change', function () { state.document = null; });
     byId('athlete-registration-form').addEventListener('submit', handleRequestOtp);
     byId('otp-form').addEventListener('submit', handleConfirmOtp);

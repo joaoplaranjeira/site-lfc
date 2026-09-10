@@ -100,7 +100,7 @@
               <legend class="text-lg font-bold text-gray-900 mb-4">Consentimentos</legend>
 
               <fieldset class="registration-choice registration-choice--required">
-                <legend>Confirmas que os dados indicados são corretos e autorizas o seu tratamento para a gestão desta inscrição?</legend>
+                <legend><strong>Confirmas que os dados indicados são corretos e autorizas o tratamento dos mesmos?</strong></legend>
                 <div class="registration-choice__options">
                   <label><input type="radio" name="confirmsDataAccuracy" value="true" required /> Sim</label>
                   <label><input type="radio" name="confirmsDataAccuracy" value="false" /> Não</label>
@@ -109,7 +109,7 @@
               </fieldset>
 
               <fieldset class="registration-choice registration-choice--required">
-                <legend><strong>Li e aceito o Regulamento Interno da Secção de Atletismo.</strong> <a href="#" class="regulation-link" aria-disabled="true" title="Documento disponível brevemente">Consultar regulamento</a></legend>
+                <legend><strong>Li e aceito o Regulamento Interno da Secção de Atletismo.</strong> <a href="documents/oficial/athletics/20270905%20-%20Regulamento%20Interno%20Atletismo.pdf" class="regulation-link" target="_blank" rel="noopener">Consultar regulamento</a></legend>
                 <div class="registration-choice__options">
                   <label><input type="radio" name="acceptsAthleticsRegulation" value="true" required /> Sim</label>
                   <label><input type="radio" name="acceptsAthleticsRegulation" value="false" /> Não</label>
@@ -118,7 +118,16 @@
               </fieldset>
 
               <fieldset class="registration-choice registration-choice--required">
-                <legend>Autorizas o tratamento da tua imagem para campanhas exclusivas do clube?</legend>
+                <legend><strong>Aceitas as condições da época desportiva 2026/2027?</strong> <a href="documents/oficial/athletics/20270905%20-%20Anexo%20I%20-%20CONDICOES%20EPOCA%20DESPORTIVA%202627.pdf" class="regulation-link" target="_blank" rel="noopener">Consultar condições da época</a></legend>
+                <div class="registration-choice__options">
+                  <label><input type="radio" name="acceptsSeasonConditions" value="true" required /> Sim</label>
+                  <label><input type="radio" name="acceptsSeasonConditions" value="false" /> Não</label>
+                </div>
+                <p id="season-conditions-message" class="registration-choice__message hidden" role="alert">A aceitação das condições da época desportiva é necessária para avançar com a inscrição.</p>
+              </fieldset>
+
+              <fieldset class="registration-choice registration-choice--required">
+                <legend>Autorizas o tratamento da tua imagem para campanhas exclusivas do clube? <a href="documents/oficial/athletics/20270905%20-%20Anexo%20II%20-%20AUTORIZAÇÃO%20DE%20IMAGEM%20.pdf" class="regulation-link" target="_blank" rel="noopener">Consultar autorização de imagem</a></legend>
                 <div class="registration-choice__options">
                   <label><input type="radio" name="acceptsImageUsage" value="true" required /> Sim</label>
                   <label><input type="radio" name="acceptsImageUsage" value="false" /> Não</label>
