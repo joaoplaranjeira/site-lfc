@@ -1,0 +1,181 @@
+.ir-confidential-mark {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  margin-bottom: 1.6rem;
+  color: var(--ir-mint);
+  font-size: .61rem;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.ir-confidential-mark span:last-child { color: rgba(255,255,255,.52); }
+.ir-hero-headline {
+  max-width: 820px;
+  margin: 1.7rem 0 .8rem;
+  color: #fff;
+  font-size: clamp(1.25rem, 2.4vw, 2.15rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.025em;
+}
+.ir-scroll-cue { text-decoration: none; }
+.ir-act-intro {
+  display: grid;
+  min-height: 72vh;
+  padding: 7rem 1.25rem;
+  place-items: center;
+  text-align: center;
+  background: radial-gradient(circle at center, rgba(5,107,87,.14), transparent 38%), var(--ir-bg-deep);
+}
+.ir-act-intro span, .ir-blueprint-intro > span {
+  color: var(--ir-mint);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+.ir-act-intro h2, .ir-blueprint-intro h2 {
+  margin: .8rem 0 1rem;
+  font-size: clamp(2.8rem, 8vw, 7rem);
+  line-height: .95;
+  letter-spacing: -.055em;
+  text-transform: uppercase;
+}
+.ir-act-intro p { max-width: 650px; margin: 0; color: var(--ir-muted); line-height: 1.8; }
+.ir-narrative-copy { max-width: 850px; }
+.ir-statement {
+  max-width: 820px;
+  margin: 2rem 0 0;
+  font-size: clamp(1.05rem, 2vw, 1.5rem);
+  line-height: 1.6;
+}
+.ir-statement strong, .ir-chapter-close strong, .ir-transition-copy strong, .ir-investment-statement strong { color: var(--ir-mint); }
+.ir-budget-stage { max-width: 980px; margin: clamp(3rem, 7vw, 6rem) auto 0; text-align: center; }
+.ir-budget-stage .ir-stat-value, .ir-acceleration-stat .ir-stat-value { font-size: clamp(4rem, 12vw, 10rem); }
+.ir-budget-stage .ir-stat-label, .ir-acceleration-stat .ir-stat-label {
+  color: var(--ir-mint);
+  font-weight: 700;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+.ir-budget-stage p { max-width: 650px; margin: 1.4rem auto 0; color: var(--ir-muted); font-size: .8rem; line-height: 1.7; }
+.ir-foundations { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 4rem; background: var(--ir-line); }
+.ir-foundations div { padding: 2rem; background: var(--ir-bg); }
+.ir-foundations strong { display: block; color: var(--ir-mint); font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; }
+.ir-foundations span { display: block; margin-top: .8rem; color: var(--ir-muted); font-size: .8rem; line-height: 1.65; }
+.ir-chapter-close { margin: clamp(4rem, 9vw, 8rem) auto 0; font-size: clamp(1.5rem, 3.8vw, 3.25rem); line-height: 1.3; letter-spacing: -.035em; text-align: center; }
+.ir-transition-copy { margin: 0 0 clamp(5rem, 10vw, 9rem); color: var(--ir-muted); font-size: clamp(1.2rem, 2.7vw, 2.25rem); line-height: 1.5; }
+.ir-vision-lines { display: grid; gap: .5rem; margin: 2rem 0 0; font-size: clamp(1rem, 1.7vw, 1.3rem); line-height: 1.55; }
+.ir-vision-lines span:last-child { color: var(--ir-mint); }
+.ir-pillar span { color: var(--ir-mint); font-size: .58rem; letter-spacing: .13em; }
+.ir-pillar h3 { text-transform: uppercase; letter-spacing: .04em; }
+.ir-pillar p { margin: .7rem 0 0; color: var(--ir-muted); font-size: .7rem; line-height: 1.55; }
+.ir-ecosystem { position: relative; height: 690px; max-width: 1100px; margin: 3rem auto 0; }
+.ir-ecosystem-lines { position: absolute; inset: 30px 3%; width: 94%; height: 620px; }
+.ir-ecosystem-lines line { stroke: rgba(94,207,177,.2); stroke-width: 1; stroke-dasharray: 5 8; }
+.ir-ecosystem-core {
+  position: absolute;
+  top: 50%; left: 50%;
+  display: grid;
+  width: 190px; height: 190px;
+  padding: 1.5rem;
+  border: 1px solid rgba(94,207,177,.48);
+  border-radius: 50%;
+  place-content: center;
+  text-align: center;
+  background: radial-gradient(circle, rgba(5,107,87,.56), rgba(1,15,12,.94) 70%);
+  box-shadow: 0 0 70px rgba(5,107,87,.18);
+  transform: translate(-50%, -50%);
+}
+.ir-ecosystem-core span { color: var(--ir-mint); font-size: .65rem; letter-spacing: .2em; text-transform: uppercase; }
+.ir-ecosystem-core strong { margin-top: .35rem; font-size: 1.15rem; line-height: 1.15; text-transform: uppercase; }
+.ir-ecosystem-node {
+  position: absolute;
+  width: 190px;
+  padding: .85rem 1rem;
+  border: 1px solid var(--ir-line);
+  border-radius: .8rem;
+  background: rgba(7,26,22,.9);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .25s, background .25s, transform .25s;
+}
+.ir-ecosystem-node:hover, .ir-ecosystem-node:focus-visible, .ir-ecosystem-node.active { border-color: var(--ir-mint); background: rgba(5,107,87,.34); outline: none; }
+.ir-ecosystem-node strong { display: block; color: var(--ir-mint); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+.ir-ecosystem-node span { display: block; margin-top: .3rem; color: var(--ir-muted); font-size: .61rem; line-height: 1.45; }
+.node-1 { top: 0; left: calc(50% - 95px); }.node-2 { top: 12%; right: 3%; }.node-3 { top: 42%; right: 0; }
+.node-4 { right: 3%; bottom: 10%; }.node-5 { bottom: 0; left: calc(50% - 95px); }.node-6 { bottom: 10%; left: 3%; }
+.node-7 { top: 42%; left: 0; }.node-8 { top: 12%; left: 3%; }
+.ir-ecosystem-detail { position: absolute; bottom: 4.8rem; left: 50%; width: min(440px, 45%); margin: 0; color: var(--ir-muted); font-size: .72rem; line-height: 1.6; text-align: center; transform: translateX(-50%); }
+.ir-acceleration-stat { max-width: 980px; margin: 3.5rem auto 0; text-align: center; }
+.ir-investment-statement { max-width: 930px; margin: 4rem auto; font-size: clamp(1.35rem, 3.2vw, 2.7rem); line-height: 1.42; letter-spacing: -.035em; text-align: center; }
+.ir-allocation div { min-height: 235px; }
+.ir-allocation strong { margin-top: 1.6rem; text-transform: uppercase; }
+.ir-allocation p { margin: .65rem 0 0; color: var(--ir-muted); font-size: .67rem; line-height: 1.55; }
+.ir-founding-note { max-width: 720px; margin: 4rem auto 0; padding: 2rem; border-top: 1px solid rgba(94,207,177,.36); text-align: center; }
+.ir-founding-note span { color: var(--ir-mint); font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+.ir-founding-note p { margin: .8rem 0 0; color: var(--ir-muted); line-height: 1.7; }
+.ir-act-change { min-height: 115vh; }
+.ir-act-line { margin: 1rem 0; color: var(--ir-muted); font-size: clamp(1.2rem, 2.7vw, 2.2rem); }
+.ir-act-line:nth-of-type(2) { color: #fff; }
+.ir-blueprint-title { margin-top: clamp(4rem, 10vw, 9rem) !important; color: var(--ir-mint); text-transform: uppercase; }
+.ir-blueprint-support { margin: 1.4rem 0 0; font-size: 1.1rem; }
+.ir-blueprint-skeleton { padding: 9rem clamp(1.25rem, 8vw, 9rem); background: #010b09; }
+.ir-blueprint-intro { max-width: 1180px; margin: 0 auto 8rem; }
+.ir-blueprint-intro p { color: var(--ir-muted); }
+.ir-blueprint-placeholder {
+  display: grid;
+  grid-template-columns: minmax(70px, .22fr) 1fr;
+  align-items: center;
+  min-height: 55vh;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 5rem 0;
+  border-top: 1px solid var(--ir-line);
+  scroll-margin-top: 4.5rem;
+}
+.ir-blueprint-placeholder > span { color: var(--ir-mint); font-size: .7rem; font-weight: 700; letter-spacing: .16em; }
+.ir-blueprint-placeholder h2 { margin: 0; font-size: clamp(2.3rem, 6vw, 5.5rem); line-height: 1; letter-spacing: -.05em; text-transform: uppercase; }
+.ir-blueprint-placeholder p { margin: 1rem 0 0; color: var(--ir-muted); font-size: clamp(.95rem, 1.7vw, 1.25rem); }
+.ir-blueprint-nav { gap: .27rem; right: .7rem; }
+.ir-blueprint-nav a {
+  display: grid;
+  width: 1.7rem; height: 1.05rem;
+  border: 0; border-radius: .3rem;
+  color: rgba(255,255,255,.35);
+  font-size: .49rem;
+  place-items: center;
+  text-decoration: none;
+}
+.ir-blueprint-nav a.active { color: #02130f; transform: none; }
+.ir-nav-divider { width: 1px; height: .8rem; margin: .12rem auto; background: rgba(255,255,255,.22); }
+
+@media (max-width: 900px) {
+  .ir-blueprint-nav { display: flex; top: auto; right: 4.2rem; bottom: 1.65rem; transform: none; }
+  .ir-blueprint-nav a, .ir-blueprint-nav .ir-nav-divider { display: none; }
+  .ir-blueprint-nav a.active { display: grid; width: 2.75rem; height: 2.75rem; border: 1px solid rgba(94,207,177,.38); border-radius: 50%; background: rgba(1,15,12,.9); color: var(--ir-mint); font-size: .65rem; }
+  .ir-blueprint-nav a.active::after { content: '/18'; margin-left: .1rem; color: var(--ir-faint); font-size: .45rem; }
+  .ir-foundations { grid-template-columns: 1fr; }
+  .ir-ecosystem { height: auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: .65rem; }
+  .ir-ecosystem-lines { display: none; }
+  .ir-ecosystem-core { position: relative; top: auto; left: auto; grid-column: span 2; width: 160px; height: 160px; margin: 0 auto 1rem; transform: none; }
+  .ir-ecosystem-node { position: static; width: auto; min-height: 86px; }
+  .ir-ecosystem-detail { position: static; grid-column: span 2; width: auto; padding: 1rem; transform: none; }
+}
+@media (max-width: 640px) {
+  .ir-project-hero { min-height: 100svh; }
+  .ir-project-hero h1 { font-size: clamp(2.8rem, 14vw, 4.6rem); }
+  .ir-confidential-mark { margin-bottom: 1rem; }
+  .ir-act-intro { min-height: 65vh; }
+  .ir-foundations div { padding: 1.5rem 1rem; }
+  .ir-pillars { grid-template-columns: 1fr; }
+  .ir-ecosystem { grid-template-columns: 1fr; }
+  .ir-ecosystem-core, .ir-ecosystem-detail { grid-column: auto; }
+  .ir-allocation div { min-height: 180px; }
+  .ir-blueprint-skeleton { padding: 7rem 1.25rem; }
+  .ir-blueprint-intro { margin-bottom: 5rem; }
+  .ir-blueprint-placeholder { grid-template-columns: 2.5rem 1fr; min-height: 45vh; padding: 4rem 0; }
+  .ir-blueprint-placeholder h2 { overflow-wrap: anywhere; }
+}
