@@ -276,6 +276,330 @@
     observer.observe(map);
   }
 
+  function initRoadmapTimeline() {
+    const roadmap = document.querySelector('[data-roadmap]');
+    const buttons = Array.from(roadmap?.querySelectorAll('[data-roadmap-target]') || []);
+    const periods = Array.from(roadmap?.querySelectorAll('[data-roadmap-period]') || []);
+    if (!roadmap || !buttons.length || !periods.length) return;
+
+    function selectPeriod(periodId) {
+      buttons.forEach((button) => {
+        const active = button.dataset.roadmapTarget === periodId;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const period = document.getElementById(button.dataset.roadmapTarget || '');
+        if (!period) return;
+        selectPeriod(period.id);
+        period.scrollIntoView({
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+          block: 'start'
+        });
+      });
+    });
+
+    if (!('IntersectionObserver' in window)) return;
+    const observer = new IntersectionObserver((entries) => {
+      const visiblePeriod = entries.find((entry) => entry.isIntersecting);
+      if (visiblePeriod) selectPeriod(visiblePeriod.target.dataset.roadmapPeriod || '');
+    }, { rootMargin: '-38% 0px -48% 0px', threshold: 0 });
+    periods.forEach((period) => observer.observe(period));
+  }
+
+  function initPartnerGoals() {
+    const component = document.querySelector('[data-partner-goals]');
+    const buttons = Array.from(component?.querySelectorAll('[data-partner-goal]') || []);
+    const result = component?.querySelector('[data-partner-goal-result]');
+    if (!component || !buttons.length || !result) return;
+
+    function selectGoal(button) {
+      buttons.forEach((item) => {
+        const active = item === button;
+        item.classList.toggle('active', active);
+        item.setAttribute('aria-pressed', String(active));
+      });
+      const opportunities = (button.dataset.partnerOpportunities || '').split('|').filter(Boolean);
+      result.replaceChildren(...opportunities.map((opportunity) => {
+        const item = document.createElement('strong');
+        item.textContent = opportunity;
+        return item;
+      }));
+    }
+
+    buttons.forEach((button) => button.addEventListener('click', () => selectGoal(button)));
+  }
+
+  function initPartnershipUniverse() {
+    const component = document.querySelector('[data-partnership-universe]');
+    const detail = component?.querySelector('[data-partnership-detail]');
+    const buttons = Array.from(component?.querySelectorAll('[data-partnership-area]') || []);
+    if (!component || !detail || !buttons.length) return;
+
+    function selectArea(button) {
+      buttons.forEach((item) => {
+        const active = item === button;
+        item.classList.toggle('active', active);
+        item.setAttribute('aria-pressed', String(active));
+      });
+      detail.textContent = button.dataset.partnershipCopy || '';
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => selectArea(button));
+      button.addEventListener('focus', () => selectArea(button));
+      button.addEventListener('mouseenter', () => selectArea(button));
+    });
+  }
+
+  function initPartnershipBuilder() {
+    const builder = document.querySelector('[data-partnership-builder]');
+    const options = Array.from(builder?.querySelectorAll('[data-builder-goal]') || []);
+    const explore = builder?.querySelector('[data-builder-explore]');
+    const result = builder?.querySelector('[data-builder-result]');
+    const status = builder?.querySelector('[data-builder-status]');
+    if (!builder || !options.length || !explore || !result || !status) return;
+
+    function selectedOptions() {
+      return options.filter((option) => option.classList.contains('active'));
+    }
+    function updateSelection(option) {
+      const selected = selectedOptions();
+      const isActive = option.classList.contains('active');
+      if (!isActive && selected.length >= 3) {
+        status.textContent = 'Pode selecionar no máximo três objetivos.';
+        return;
+      }
+      option.classList.toggle('active', !isActive);
+      option.setAttribute('aria-pressed', String(!isActive));
+      const count = selectedOptions().length;
+      explore.disabled = count === 0;
+      status.textContent = count ? `${count} ${count === 1 ? 'objetivo selecionado' : 'objetivos selecionados'}.` : 'Experiência conceptual, sem preços ou proposta comercial.';
+    }
+    function exploreCombination() {
+      const areas = selectedOptions().flatMap((option) => (option.dataset.builderAreas || '').split('|')).filter(Boolean);
+      const uniqueAreas = Array.from(new Set(areas)).slice(0, 6);
+      result.replaceChildren(...uniqueAreas.map((area) => {
+        const item = document.createElement('strong');
+        item.textContent = area;
+        return item;
+      }));
+      status.textContent = 'Combinação conceptual para exploração. Não constitui uma proposta comercial.';
+    }
+
+    options.forEach((option) => option.addEventListener('click', () => updateSelection(option)));
+    explore.addEventListener('click', exploreCombination);
+  }
+
+  function initInvestmentUnlocks() {
+    const component = document.querySelector('[data-investment-unlocks]');
+    const buttons = Array.from(component?.querySelectorAll('[data-unlock]') || []);
+    const before = component?.querySelector('[data-unlock-before-output]');
+    const after = component?.querySelector('[data-unlock-after-output]');
+    const note = component?.querySelector('[data-unlock-note-output]');
+    if (!component || !buttons.length || !before || !after || !note) return;
+
+    function selectUnlock(button) {
+      buttons.forEach((item) => {
+        const active = item === button;
+        item.classList.toggle('active', active);
+        item.setAttribute('aria-pressed', String(active));
+      });
+      before.textContent = button.dataset.unlockBefore || '';
+      after.textContent = button.dataset.unlockAfter || '';
+      note.textContent = button.dataset.unlockNote || '';
+    }
+
+    buttons.forEach((button) => button.addEventListener('click', () => selectUnlock(button)));
+  }
+
+  function initFoundingBuild() {
+    const component = document.querySelector('[data-founding-build]');
+    const options = Array.from(component?.querySelectorAll('[data-founding-build-option]') || []);
+    const output = component?.querySelector('[data-founding-build-output]');
+    if (!component || !options.length || !output) return;
+
+    function selectDimension(option) {
+      options.forEach((item) => {
+        const active = item === option;
+        item.classList.toggle('active', active);
+        item.setAttribute('aria-pressed', String(active));
+      });
+      output.textContent = option.dataset.foundingBuildCopy || '';
+    }
+
+    options.forEach((option) => option.addEventListener('click', () => selectDimension(option)));
+  }
+
+  function initFoundingConversation() {
+    const component = document.querySelector('[data-founding-conversation]');
+    const areas = Array.from(component?.querySelectorAll('[data-founding-area]') || []);
+    const output = component?.querySelector('[data-founding-area-output]');
+    if (!component || !areas.length || !output) return;
+
+    function updateSelection(area) {
+      const active = !area.classList.contains('active');
+      area.classList.toggle('active', active);
+      area.setAttribute('aria-pressed', String(active));
+      const selected = areas.filter((item) => item.classList.contains('active')).map((item) => item.textContent.trim());
+      output.textContent = selected.length ? selected.join(' · ') : 'Nenhuma área selecionada.';
+    }
+
+    areas.forEach((area) => area.addEventListener('click', () => updateSelection(area)));
+  }
+
+  function emitCyclingEvent(name, detail) {
+    document.dispatchEvent(new CustomEvent('leca:investor-event', {
+      detail: { name, ...detail }
+    }));
+  }
+
+  function initPartnershipIntake() {
+    const intake = document.querySelector('[data-partnership-intake]');
+    const brief = document.querySelector('[data-partnership-brief]');
+    if (!intake || !brief) return;
+    const groups = Array.from(intake.querySelectorAll('[data-profile-group]'));
+    const output = {
+      areas: brief.querySelector('[data-brief-areas]'),
+      objectives: brief.querySelector('[data-brief-objectives]'),
+      contributionTypes: brief.querySelector('[data-brief-contributions]'),
+      connections: brief.querySelector('[data-brief-connections]'),
+      state: brief.querySelector('[data-brief-state]')
+    };
+    if (Object.values(output).some((element) => !element)) return;
+
+    const partnershipProfile = {
+      project: 'leca-cycling',
+      areas: [],
+      objectives: [],
+      contributionTypes: []
+    };
+    function selectedValues(group) {
+      return Array.from(group.querySelectorAll('[data-profile-option].active')).map((option) => option.dataset.profileValue || option.textContent.trim());
+    }
+    function unique(values) {
+      return Array.from(new Set(values.filter(Boolean)));
+    }
+    function updateBrief() {
+      groups.forEach((group) => {
+        const key = group.dataset.profileGroup;
+        if (Object.prototype.hasOwnProperty.call(partnershipProfile, key)) partnershipProfile[key] = selectedValues(group);
+      });
+      const earlierAreas = [
+        ...Array.from(document.querySelectorAll('[data-builder-goal].active')).map((item) => item.textContent.trim()),
+        ...Array.from(document.querySelectorAll('[data-founding-area].active')).map((item) => item.textContent.trim())
+      ];
+      const combinedAreas = unique([...earlierAreas, ...partnershipProfile.areas]);
+      partnershipProfile.areas = combinedAreas;
+      const activeAreaOptions = Array.from(intake.querySelectorAll('[data-profile-group="areas"] [data-profile-option].active'));
+      const connections = unique(activeAreaOptions.flatMap((option) => (option.dataset.profileConnections || '').split('|'))).slice(0, 5);
+      output.areas.textContent = combinedAreas.length ? combinedAreas.join(' + ') : 'Por selecionar';
+      output.objectives.textContent = partnershipProfile.objectives.length ? partnershipProfile.objectives.join(' + ') : 'Por selecionar';
+      output.contributionTypes.textContent = partnershipProfile.contributionTypes.length ? partnershipProfile.contributionTypes.join(' + ') : 'Opcional';
+      output.connections.textContent = connections.length ? connections.join(' + ') : 'Selecione uma ou mais dimensões para revelar ligações possíveis.';
+      output.state.textContent = combinedAreas.length || partnershipProfile.objectives.length ? 'Resumo atualizado' : 'Pronto para explorar';
+      emitCyclingEvent('partnership_brief_generated', { profile: { ...partnershipProfile } });
+    }
+
+    groups.forEach((group) => {
+      const eventName = group.dataset.profileGroup === 'areas' ? 'interest_selected' : group.dataset.profileGroup === 'objectives' ? 'objective_selected' : 'contribution_selected';
+      group.querySelectorAll('[data-profile-option]').forEach((option) => option.addEventListener('click', () => {
+        const active = !option.classList.contains('active');
+        option.classList.toggle('active', active);
+        option.setAttribute('aria-pressed', String(active));
+        updateBrief();
+        emitCyclingEvent(eventName, { value: option.dataset.profileValue || '', selected: active });
+      }));
+    });
+    document.querySelectorAll('[data-builder-goal],[data-founding-area]').forEach((option) => option.addEventListener('click', () => window.setTimeout(updateBrief, 0)));
+    updateBrief();
+    return partnershipProfile;
+  }
+
+  function initJoinContact(partnershipProfile) {
+    const form = document.querySelector('[data-join-contact]');
+    const status = form?.querySelector('[data-contact-status]');
+    const finalConversation = document.querySelector('[data-final-conversation]');
+    const finalThanks = document.querySelector('[data-final-thanks]');
+    if (!form || !status) return;
+    let contactStarted = false;
+
+    form.addEventListener('focusin', () => {
+      if (contactStarted) return;
+      contactStarted = true;
+      emitCyclingEvent('contact_started', { project: 'leca-cycling' });
+    });
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const fields = new FormData(form);
+      const contactData = {
+        name: String(fields.get('name') || '').trim(),
+        organization: String(fields.get('organization') || '').trim(),
+        role: String(fields.get('role') || '').trim(),
+        email: String(fields.get('email') || '').trim(),
+        phone: String(fields.get('phone') || '').trim(),
+        message: String(fields.get('message') || '').trim()
+      };
+      const profile = partnershipProfile || { project: 'leca-cycling', areas: [], objectives: [], contributionTypes: [] };
+      const lines = [
+        'Manifestação de interesse — Leça Cycling Project',
+        '',
+        `Nome: ${contactData.name}`,
+        `Organização: ${contactData.organization}`,
+        contactData.role ? `Cargo: ${contactData.role}` : '',
+        `Email: ${contactData.email}`,
+        contactData.phone ? `Telefone: ${contactData.phone}` : '',
+        '',
+        `Interesse: ${profile.areas.length ? profile.areas.join(', ') : 'Não especificado'}`,
+        `Objetivos: ${profile.objectives.length ? profile.objectives.join(', ') : 'Não especificado'}`,
+        `Contributo: ${profile.contributionTypes.length ? profile.contributionTypes.join(', ') : 'Não especificado'}`,
+        contactData.message ? `\nMensagem:\n${contactData.message}` : ''
+      ].filter(Boolean);
+      const mailto = `mailto:marketing@lecafc.pt?subject=${encodeURIComponent('Interesse no Leça Cycling Project')}&body=${encodeURIComponent(lines.join('\n'))}`;
+      status.textContent = 'Obrigado. Preparámos a mensagem na sua aplicação de email; conclua aí o envio para iniciar a conversa.';
+      finalConversation?.classList.add('hidden');
+      finalThanks?.classList.remove('hidden');
+      emitCyclingEvent('contact_submitted', { project: 'leca-cycling', delivery: 'email-client' });
+      window.location.href = mailto;
+    });
+  }
+
+  function initJoinReturnMap() {
+    const map = document.querySelector('[data-join-return-map]');
+    if (!map || !renderGeographicMap(map)) return;
+    const svg = map.querySelector('[data-geographic-map]');
+    const labels = Array.from(map.querySelectorAll('[data-join-scale]'));
+    const originPoint = map.querySelector('[data-map-point="origin"]');
+    if (!svg || !labels.length || !originPoint) return;
+    const views = {
+      europe: [0, 0, 1000, 680],
+      iberia: [110, 345, 430, 292],
+      portugal: [145, 435, 260, 177],
+      matosinhos: [205, 483, 120, 82],
+      origin: [221, 510, 32, 22]
+    };
+    function selectScale(scale) {
+      labels.forEach((label) => label.classList.toggle('active', label.dataset.joinScale === scale));
+      originPoint.classList.toggle('active', scale === 'origin');
+      animateMapView(svg, views[scale]);
+    }
+    selectScale('europe');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      selectScale('origin');
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      ['iberia', 'portugal', 'matosinhos', 'origin'].forEach((scale, index) => window.setTimeout(() => selectScale(scale), 650 + (index * 950)));
+      observer.disconnect();
+    }, { threshold: .35 });
+    observer.observe(map);
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initEcosystem();
     initRaceMap();
@@ -283,5 +607,16 @@
     initAiAssistant();
     initMediaOriginMap();
     initTerritoryMap();
+    initRoadmapTimeline();
+    initPartnerGoals();
+    initPartnershipUniverse();
+    initPartnershipBuilder();
+    initInvestmentUnlocks();
+    initFoundingBuild();
+    initFoundingConversation();
+    const partnershipProfile = initPartnershipIntake();
+    initJoinContact(partnershipProfile);
+    initJoinReturnMap();
+    if (document.querySelector('#join-project')) emitCyclingEvent('chapter_18_viewed', { project: 'leca-cycling' });
   });
 }());
