@@ -91,8 +91,8 @@ const INVESTOR_SPONSORSHIP_PROJECTS = {
     inventoryCopy: 'As posições comerciais foram definidas na camisola oficial para equilibrar leitura, recorrência e diferentes níveis de investimento.',
     inventory: [
       ['Frente', 'Patrocinador principal · maior destaque da camisola', '2.500 €/ano'],
-      ['Ombro direito', 'Área de destaque no ombro', '750 €/ano'],
-      ['Ombro esquerdo', 'Área de destaque no ombro', '750 €/ano'],
+      ['Peito direito', 'Área de destaque no peito', '750 €/ano'],
+      ['Peito esquerdo', 'Área de destaque no peito', '750 €/ano'],
       ['Costas superiores', 'Logótipo na parte superior das costas', '1.500 €/ano'],
       ['Costas inferiores', 'Logótipo na parte inferior das costas', '1.250 €/ano']
     ],
