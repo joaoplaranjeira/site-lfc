@@ -1545,6 +1545,7 @@ Contextos atualmente convencionados:
 | Formação Futebol | `InvestorRoom` | `4` |
 | Masters Futebol | `InvestorRoom` | `4` |
 | Atletismo | `InvestorRoom` | `4` |
+| Corta-Mato Matosinhos | `InvestorRoom` | `4` |
 | Bilhar | `InvestorRoom` | `4` |
 
 ## 12.4 Modelo de estados de projeto
