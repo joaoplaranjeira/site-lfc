@@ -16,6 +16,14 @@ Garantir que **a inscrição só é gravada na base de dados após validação d
 
 ## Endpoints
 
+### Listar eventos publicados
+
+`GET /api/Event/public`
+
+Não requer autenticação. Devolve os eventos com estado `Published`, ordenados pela data de início. A página `eventos.html` combina esta lista com o histórico estático e elimina duplicados pelo código ou por nome/data.
+
+Depois de este endpoint estar publicado, um evento criado no backoffice aparece automaticamente na área “Eventos do Clube”. Os campos `acceptsRegistrations` e `isVotingActive` determinam quais as ações apresentadas no cartão.
+
 ### 0) Obter evento público por código
 
 `GET /api/Event/public/code/{code}`
@@ -40,6 +48,10 @@ Este endpoint devolve os dados públicos do evento, o número de inscrições j�
     "location": "Estádio do Leça FC",
     "capacityMax": 250,
     "allowsNonMembers": true,
+    "acceptsRegistrations": true,
+    "isVotingActive": false,
+    "votingStartDateTime": null,
+    "votingEndDateTime": null,
     "registrationsCount": 87,
     "registrationTypes": [
       {
@@ -69,6 +81,52 @@ Este endpoint devolve os dados públicos do evento, o número de inscrições j�
 ```
 
 `registrationsCount` representa o número total de inscrições já criadas para o evento até ao momento (inclui todos os estados de inscrição).
+
+`acceptsRegistrations` controla explicitamente a apresentação e utilização do fluxo de inscrição. Quando é `false`, o site oculta o formulário e a API devolve `registrationTypes: []`, mesmo que o evento esteja publicado.
+
+`isVotingActive`, `votingStartDateTime` e `votingEndDateTime` controlam a votação pública. Quando a votação está ativa e dentro do período configurado, a listagem pode encaminhar o utilizador para `evento-votacao.html?code={code}`. Um evento pode aceitar votação sem aceitar inscrições.
+
+Para associar um evento da listagem estática apenas à votação, indicar o código no objeto do evento:
+
+```js
+voting: {
+  eventCode: "GALA-2026"
+}
+```
+
+Se o evento já tiver `registration.eventCode`, o mesmo código é reutilizado automaticamente para detetar uma votação ativa.
+
+## Votação pública por OTP
+
+### Obter categorias e nomeados
+
+`GET /api/EventVoting/public/event/{eventCode}`
+
+### Pedir OTP para o voto
+
+`POST /api/EventVoting/public/request-otp`
+
+```json
+{
+  "eventCode": "GALA-2026",
+  "categoryId": "uuid-categoria",
+  "nomineeId": "uuid-nomeado",
+  "email": "pessoa@example.com"
+}
+```
+
+### Confirmar OTP e registar voto
+
+`POST /api/EventVoting/public/confirm-otp`
+
+```json
+{
+  "otpRequestId": "valor-do-pedido",
+  "otpCode": "123456"
+}
+```
+
+Cada email pode votar uma vez por categoria. A página pública mantém localmente as categorias já confirmadas e avança para a categoria seguinte.
 
 ---
 

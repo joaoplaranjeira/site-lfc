@@ -20,8 +20,8 @@
  *   ]
  * }
  *
- * URL de acesso a uma galeria: galeria.html?id=<chave>
- * Exemplo: galeria.html?id=jogo-estrelas-2026
+ * URL de acesso a uma galeria: /galeria?id=<chave>
+ * Exemplo: /galeria?id=jogo-estrelas-2026
  */
 
 const galeriasData = {

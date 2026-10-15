@@ -5,8 +5,10 @@ const state = {
   otpExpiresInMinutes: 10
 };
 
-// URL base da API (sempre usado)
-const API_BASE_URL = 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';
+// Em desenvolvimento, usa o proxy /api do Nginx para evitar pedidos cross-origin.
+const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+  ? ''
+  : 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';
 
 function formatDateTime(dateString) {
   if (!dateString) return '-';
@@ -188,6 +190,14 @@ async function loadEventDetails() {
     if (!isPublishedStatus(eventData.status)) {
       registrationClosed.classList.remove('hidden');
       registrationClosed.textContent = 'As inscrições não estão disponíveis neste momento.';
+      form.classList.add('hidden');
+      setLoading(false);
+      return;
+    }
+
+    if (eventData.acceptsRegistrations === false) {
+      registrationClosed.classList.remove('hidden');
+      registrationClosed.textContent = 'Este evento não aceita inscrições.';
       form.classList.add('hidden');
       setLoading(false);
       return;

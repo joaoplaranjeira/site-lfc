@@ -2,7 +2,7 @@
 
 // ── Session guard ──────────────────────────────────────────────────────────
 if (sessionStorage.getItem('museu_access_granted') !== '1') {
-  window.location.replace('museu.html');
+  window.location.replace('/museu');
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────

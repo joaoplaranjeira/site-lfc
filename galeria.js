@@ -1,7 +1,7 @@
 /**
  * galeria.js — Lógica da página de galeria fotográfica genérica
  *
- * Lê o parâmetro `id` da URL (ex: galeria.html?id=jogo-estrelas-2026)
+ * Lê o parâmetro `id` da URL (ex: /galeria?id=jogo-estrelas-2026)
  * e carrega a configuração correspondente de `galerias-data.js`.
  *
  * As imagens de cada secção são obtidas via endpoint público de listagem por tag:

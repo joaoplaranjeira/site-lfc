@@ -3,13 +3,15 @@
 ## Contexto do projeto
 
 Este repositório contém o site público multipágina do Leça Futebol Clube. É uma
-aplicação estática em HTML, CSS e JavaScript sem framework, bundler ou gestor de
-pacotes. Em desenvolvimento, o Nginx serve os ficheiros na porta `8081` e
-encaminha `/api/` para `host.docker.internal:5003`.
+aplicação React compilada pelo Vite como site estático. A camada de
+compatibilidade mantém a marcação e os scripts clássicos durante a migração.
+Em desenvolvimento, o Vite serve os ficheiros na porta `8081` e encaminha
+`/api/` para a API local na porta `5004`.
 
 ## Mapa do código
 
-- `*.html`: páginas independentes; muitas incluem estilos e scripts específicos.
+- `src/`: entrada React e camada de compatibilidade das páginas.
+- `legacy-pages/*.html`: marcação das páginas; muitas incluem estilos e scripts específicos.
 - `styles.css`: estilos globais pequenos.
 - `tailwind.css`: CSS Tailwind compilado usado por `index.html`.
 - `script.js`: comportamentos partilhados por algumas páginas.
@@ -22,8 +24,8 @@ encaminha `/api/` para `host.docker.internal:5003`.
 
 ## Princípios de alteração
 
-1. Faz alterações pequenas e localizadas. Não introduzas frameworks, passos de
-   build ou dependências npm sem pedido explícito.
+1. Faz alterações pequenas e localizadas. Não introduzas frameworks adicionais
+   nem dependências npm sem pedido explícito.
 2. Preserva o padrão visual existente: Poppins, Font Awesome, verde esmeralda e
    classes Tailwind. Garante comportamento responsivo.
 3. Mantém texto visível em português europeu e conserva acentos e nomes
@@ -40,7 +42,8 @@ encaminha `/api/` para `host.docker.internal:5003`.
 
 ## JavaScript e segurança
 
-- Usa JavaScript compatível com browsers modernos, sem imports nem módulos.
+- Nos scripts clássicos da raiz, usa JavaScript compatível com browsers
+  modernos, sem imports nem módulos. Em `src/`, segue o padrão React/Vite.
 - Inicializa código dependente do DOM em `DOMContentLoaded`, salvo quando o
   script está comprovadamente colocado depois da marcação correspondente.
 - Trata estados de carregamento, vazio e erro nas chamadas `fetch`.
@@ -60,8 +63,8 @@ Arranca o ambiente local com:
 docker compose -f docker-compose.dev.yml up
 ```
 
-Abre `http://localhost:8081`. Como não existe suite de testes automatizados,
-valida manualmente:
+Ou executa `npm install` e `npm run dev`. Abre `http://localhost:8081` e começa
+por executar `npm run validate` e `npm run build`. Valida também manualmente:
 
 - consola do browser sem erros;
 - navegação e recursos sem respostas 404;

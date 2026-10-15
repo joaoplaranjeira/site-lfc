@@ -652,7 +652,7 @@ function openReservationModal() {
 function closeReservationModal() {
   const modal = document.getElementById('reservationModal');
   if (RESERVATION_STATE.viewMode === 'page') {
-    window.location.href = 'pavilhao.html';
+    window.location.href = '/pavilhao';
     return;
   }
 

@@ -98,14 +98,14 @@ body[data-design-mode="institutional"]::before {
   mask-image: linear-gradient(to bottom, #000, transparent 70%);
 }
 
-body[data-design-mode="institutional"] > .min-h-screen {
+body[data-design-mode="institutional"] > #root > .legacy-page-root > .min-h-screen {
   position: relative;
   width: 100%;
   padding-top: clamp(1.5rem, 4vw, 3rem) !important;
   padding-bottom: clamp(3rem, 7vw, 6rem) !important;
 }
 
-body[data-design-mode="institutional"]:not([data-page="home"]) > .min-h-screen > a:first-child {
+body[data-design-mode="institutional"]:not([data-page="home"]) > #root > .legacy-page-root > .min-h-screen > a:first-child {
   display: inline-flex;
   align-items: center;
   align-self: center;
@@ -124,25 +124,25 @@ body[data-design-mode="institutional"]:not([data-page="home"]) > .min-h-screen >
     border-color 0.25s;
 }
 
-body[data-design-mode="institutional"]:not([data-page="home"]) > .min-h-screen > a:first-child:hover {
+body[data-design-mode="institutional"]:not([data-page="home"]) > #root > .legacy-page-root > .min-h-screen > a:first-child:hover {
   transform: translateY(-2px);
   border-color: rgba(94, 207, 177, 0.28);
   background: rgba(255, 255, 255, 0.065);
 }
 
-body[data-design-mode="institutional"] > .min-h-screen > a:first-child img,
-body[data-design-mode="institutional"] > .min-h-screen > img:first-child {
+body[data-design-mode="institutional"] > #root > .legacy-page-root > .min-h-screen > a:first-child img,
+body[data-design-mode="institutional"] > #root > .legacy-page-root > .min-h-screen > img:first-child {
   width: clamp(4rem, 7vw, 5.5rem) !important;
   height: clamp(4rem, 7vw, 5.5rem) !important;
   filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.24));
   transition: transform 0.35s var(--ul-ease);
 }
 
-body[data-design-mode="institutional"] > .min-h-screen > a:first-child:hover img {
+body[data-design-mode="institutional"] > #root > .legacy-page-root > .min-h-screen > a:first-child:hover img {
   transform: translateY(-2px);
 }
 
-body[data-design-mode="institutional"] > .min-h-screen > h1 {
+body[data-design-mode="institutional"] > #root > .legacy-page-root > .min-h-screen > h1 {
   max-width: 1100px;
   margin-inline: auto;
   font-size: clamp(2.4rem, 6.3vw, 5.5rem) !important;
@@ -152,21 +152,21 @@ body[data-design-mode="institutional"] > .min-h-screen > h1 {
   text-shadow: 0 10px 34px rgba(0, 0, 0, 0.18);
 }
 
-body[data-design-mode="institutional"] > .min-h-screen > h1 + p {
+body[data-design-mode="institutional"] > #root > .legacy-page-root > .min-h-screen > h1 + p {
   color: rgba(255, 255, 255, 0.72) !important;
   line-height: 1.7;
   text-wrap: balance;
 }
 
-body[data-design-mode="institutional"]:not([data-page="home"]) > .min-h-screen > h1 + p {
+body[data-design-mode="institutional"]:not([data-page="home"]) > #root > .legacy-page-root > .min-h-screen > h1 + p {
   margin-bottom: clamp(2.25rem, 5vw, 3.5rem) !important;
 }
 
-body[data-page="transparency"] > .min-h-screen > h1 + p {
+body[data-page="transparency"] > #root > .legacy-page-root > .min-h-screen > h1 + p {
   margin-bottom: 0.5rem !important;
 }
 
-body[data-page="transparency"] > .min-h-screen > h1 + p + p {
+body[data-page="transparency"] > #root > .legacy-page-root > .min-h-screen > h1 + p + p {
   margin-bottom: clamp(2.25rem, 5vw, 3.5rem) !important;
 }
 
@@ -327,21 +327,21 @@ body[data-page="home"] a.card:hover {
 }
 
 /* Transparency navigation mirrors the dark cards on the homepage. */
-body[data-page="transparency"] > .min-h-screen > .grid a.card {
+body[data-page="transparency"] > #root > .legacy-page-root > .min-h-screen > .grid a.card {
   border-color: var(--ul-line-dark);
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035));
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
 }
 
-body[data-page="transparency"] > .min-h-screen > .grid a.card h3 {
+body[data-page="transparency"] > #root > .legacy-page-root > .min-h-screen > .grid a.card h3 {
   color: #fff !important;
 }
 
-body[data-page="transparency"] > .min-h-screen > .grid a.card i {
+body[data-page="transparency"] > #root > .legacy-page-root > .min-h-screen > .grid a.card i {
   color: var(--ul-mint) !important;
 }
 
-body[data-page="transparency"] > .min-h-screen > .grid a.card:hover {
+body[data-page="transparency"] > #root > .legacy-page-root > .min-h-screen > .grid a.card:hover {
   border-color: rgba(94, 207, 177, 0.38);
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(94, 207, 177, 0.055));
   box-shadow: 0 22px 55px rgba(0, 0, 0, 0.3);
@@ -420,7 +420,7 @@ body[data-page="museum-video"] .card video {
 }
 
 @media (max-width: 640px) {
-  body[data-design-mode="institutional"] > .min-h-screen {
+  body[data-design-mode="institutional"] > #root > .legacy-page-root > .min-h-screen {
     padding-inline: 1rem !important;
   }
 
@@ -432,7 +432,7 @@ body[data-page="museum-video"] .card video {
     padding: 1.25rem !important;
   }
 
-  body[data-design-mode="institutional"] > .min-h-screen > h1 {
+  body[data-design-mode="institutional"] > #root > .legacy-page-root > .min-h-screen > h1 {
     font-size: clamp(2.1rem, 11vw, 3.4rem) !important;
   }
 }

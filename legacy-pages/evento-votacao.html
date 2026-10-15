@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P9ZCGD46H8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-P9ZCGD46H8');
+  </script>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Votação - Universo Leça FC</title>
+  <link rel="stylesheet" href="tailwind.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="icon" type="image/png" href="images/leca.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="design-system.css" />
+  <link rel="stylesheet" href="evento-votacao.css" />
+</head>
+<body data-design-mode="institutional" data-page="event-voting">
+  <div class="min-h-screen flex flex-col px-4 py-12">
+    <a href="/eventos" class="mb-6 text-center" aria-label="Voltar aos eventos">
+      <img src="images/leca.png" alt="Leça Futebol Clube" class="w-24 h-24 md:w-32 md:h-32 mx-auto" />
+    </a>
+
+    <main class="voting-shell" aria-labelledby="voting-title">
+      <header class="voting-hero">
+        <p class="voting-kicker"><span></span> Votação oficial <span></span></p>
+        <h1 id="voting-title">A carregar votação...</h1>
+        <p id="voting-award" class="voting-award hidden"></p>
+        <p id="voting-period" class="voting-period"></p>
+      </header>
+
+      <section id="voting-loading" class="voting-state" aria-live="polite">
+        <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+        <p>A preparar os nomeados...</p>
+      </section>
+
+      <section id="voting-error" class="voting-state voting-state--error hidden" role="alert">
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        <h2>Não foi possível abrir a votação</h2>
+        <p id="voting-error-text"></p>
+        <a href="/eventos" class="voting-secondary-action">Voltar aos eventos</a>
+      </section>
+
+      <div id="voting-content" class="hidden">
+        <nav id="category-navigation" class="category-navigation" aria-label="Categorias da votação"></nav>
+
+        <section class="category-stage" aria-labelledby="category-title">
+          <div class="category-heading">
+            <p id="category-counter" class="category-counter"></p>
+            <h2 id="category-title" tabindex="-1"></h2>
+            <p id="category-description"></p>
+          </div>
+
+          <div id="nominees-grid" class="nominees-grid" role="radiogroup" aria-labelledby="category-title"></div>
+
+          <form id="vote-form" class="vote-panel hidden" novalidate>
+            <div class="vote-panel__selection">
+              <span class="vote-panel__label">A tua escolha</span>
+              <strong id="selected-nominee-name"></strong>
+              <button id="change-vote-btn" type="button">Alterar</button>
+            </div>
+            <div class="vote-panel__email">
+              <label for="voter-email">Email para validar o voto</label>
+              <div class="vote-panel__controls">
+                <input id="voter-email" type="email" required autocomplete="email" placeholder="nome@exemplo.pt" />
+                <button id="request-vote-otp-btn" type="submit">
+                  Confirmar escolha
+                  <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                </button>
+              </div>
+              <p>Enviaremos um código de utilização única. Podes votar uma vez em cada categoria.</p>
+            </div>
+            <p id="vote-form-error" class="form-error hidden" role="alert"></p>
+          </form>
+        </section>
+
+        <section id="voting-complete" class="voting-complete hidden" role="status">
+          <span class="voting-complete__icon"><i class="fa-solid fa-check" aria-hidden="true"></i></span>
+          <p class="voting-kicker"><span></span> Votação concluída <span></span></p>
+          <h2>Obrigado por fazeres parte desta celebração.</h2>
+          <p>Os teus votos foram registados nas categorias escolhidas.</p>
+          <a href="/eventos" class="voting-primary-action">Voltar aos eventos</a>
+        </section>
+      </div>
+    </main>
+
+    <footer class="text-center text-white/70 text-sm mt-12">
+      <p class="mb-2">Vive a paixão do Leça FC.</p>
+      <p>© <span id="year"></span> Leça Futebol Clube — Votação.</p>
+    </footer>
+  </div>
+
+  <div id="otp-modal" class="otp-modal hidden" role="dialog" aria-modal="true" aria-labelledby="otp-title">
+    <div class="otp-modal__backdrop"></div>
+    <div class="otp-modal__dialog">
+      <button id="close-otp-modal" class="otp-modal__close" type="button" aria-label="Fechar confirmação">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <span class="otp-modal__icon"><i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i></span>
+      <p class="voting-kicker"><span></span> Último passo <span></span></p>
+      <h2 id="otp-title">Confirma o teu voto</h2>
+      <p id="otp-info" class="otp-modal__info"></p>
+      <form id="otp-form" novalidate>
+        <label for="otp-code">Código de 6 dígitos</label>
+        <input id="otp-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required aria-describedby="otp-info" />
+        <p id="otp-error" class="form-error hidden" role="alert"></p>
+        <button id="confirm-vote-otp-btn" type="submit">Registar voto</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="evento-votacao.js?v=20261004"></script>
+</body>
+</html>

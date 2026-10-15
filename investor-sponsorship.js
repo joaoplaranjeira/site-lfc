@@ -205,12 +205,12 @@ function renderSponsorshipProject() {
   document.getElementById('investor-content').innerHTML = `
     <div class="ir-progress" aria-hidden="true"><span></span></div>
     <header class="ir-topbar">
-      <a href="investor-room.html" class="ir-brand" aria-label="Regressar ao Investor Room">
+      <a href="/investor-room" class="ir-brand" aria-label="Regressar ao Investor Room">
         <img src="images/leca.png" alt="">
         <span class="ir-brand-copy"><strong>${project.name}</strong><span>Investor Room</span></span>
       </a>
       <nav class="ir-nav" aria-label="Navegação do projeto">
-        <a href="investor-room.html" class="ir-back"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Investor Room</a>
+        <a href="/investor-room" class="ir-back"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Investor Room</a>
       </nav>
     </header>
     <div class="ir-project-actions" aria-label="Ações rápidas">
@@ -290,7 +290,7 @@ function renderSponsorshipProject() {
     </main>
     <footer class="ir-footer">
       <span>© <span data-year></span> Leça Futebol Clube · Investor Room</span>
-      <a href="investor-room.html">Regressar aos projetos</a>
+      <a href="/investor-room">Regressar aos projetos</a>
     </footer>`;
 }
 

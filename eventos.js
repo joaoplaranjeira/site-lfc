@@ -1,5 +1,7 @@
-// URL base da API (sempre usado)
-const API_BASE_URL = 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';
+// Em desenvolvimento, usa o proxy /api do Nginx para evitar pedidos cross-origin.
+const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+  ? ''
+  : 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';
 
 // Events data structure
 const eventsData = {
@@ -42,7 +44,7 @@ const eventsData = {
       type: "default",
       status: "completed",
       image: null,
-      link: "galeria.html?id=jogo-estrelas-2026"
+      link: "/galeria?id=jogo-estrelas-2026"
     },
     {
       id: 4,
@@ -174,7 +176,7 @@ const eventsData = {
       type: "default",
       status: "completed",
       image: null,
-      link: "talkclub.html"
+      link: "/talkclub"
     },
     {
       id: 15,
@@ -186,7 +188,7 @@ const eventsData = {
       type: "default",
       status: "upcoming",
       image: null,
-      link: "talkclub.html"
+      link: "/talkclub"
     },
     {
       id: 16,
@@ -388,6 +390,15 @@ const eventsData = {
 
 const publicEventCache = {};
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function isPublishedStatus(status) {
   return String(status || '').toLowerCase() === 'published';
 }
@@ -424,6 +435,13 @@ function getRegistrationAvailability(apiEvent) {
     };
   }
 
+  if (apiEvent.acceptsRegistrations === false) {
+    return {
+      canRegister: false,
+      reason: 'Este evento não aceita inscrições.'
+    };
+  }
+
   if (!hasCapacityAvailable(apiEvent)) {
     const registrationsCount = Number(apiEvent.registrationsCount || 0);
     const capacityMax = Number(apiEvent.capacityMax);
@@ -434,10 +452,47 @@ function getRegistrationAvailability(apiEvent) {
     };
   }
 
+  if (!Array.isArray(apiEvent.registrationTypes) || apiEvent.registrationTypes.length === 0) {
+    return {
+      canRegister: false,
+      reason: 'As inscrições não estão disponíveis neste momento.'
+    };
+  }
+
   return {
     canRegister: true,
     reason: ''
   };
+}
+
+function getVotingAvailability(apiEvent) {
+  if (!apiEvent || !isPublishedStatus(apiEvent.status) || apiEvent.isVotingActive !== true) {
+    return { canVote: false, reason: '' };
+  }
+
+  const startsAt = new Date(apiEvent.votingStartDateTime);
+  const endsAt = new Date(apiEvent.votingEndDateTime);
+  if (Number.isNaN(startsAt.getTime()) || Number.isNaN(endsAt.getTime())) {
+    return { canVote: false, reason: 'A votação não está disponível neste momento.' };
+  }
+
+  const now = new Date();
+  const dateFormatter = new Intl.DateTimeFormat('pt-PT', {
+    day: 'numeric',
+    month: 'long',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  if (now < startsAt) {
+    return { canVote: false, reason: `A votação abre a ${dateFormatter.format(startsAt)}.` };
+  }
+
+  if (now > endsAt) {
+    return { canVote: false, reason: 'A votação deste evento já terminou.' };
+  }
+
+  return { canVote: true, reason: '' };
 }
 
 async function fetchPublicEventByCode(eventCode) {
@@ -467,20 +522,114 @@ async function fetchPublicEventByCode(eventCode) {
   }
 }
 
-async function enrichEventsWithRegistrationAvailability(events) {
-  const eventsWithRegistration = events.filter(event => event.registration?.eventCode);
+function getEventTypeFromCategory(categoryName) {
+  const category = String(categoryName || '').toLowerCase();
+  if (category.includes('jantar')) return 'jantar';
+  if (category.includes('assembleia')) return 'assembleia';
+  if (category.includes('conferência') || category.includes('conferencia')) return 'conferencia';
+  if (category.includes('aniversário') || category.includes('aniversario')) return 'aniversario';
+  if (category.includes('solid')) return 'solidario';
+  return 'default';
+}
+
+function formatApiEventTime(startDateTime, endDateTime) {
+  const start = new Date(startDateTime);
+  const end = new Date(endDateTime);
+  if (Number.isNaN(start.getTime())) return 'A definir';
+
+  const timeFormatter = new Intl.DateTimeFormat('pt-PT', {
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  const startLabel = timeFormatter.format(start);
+  if (Number.isNaN(end.getTime()) || start.toDateString() !== end.toDateString()) {
+    return startLabel;
+  }
+
+  return `${startLabel} - ${timeFormatter.format(end)}`;
+}
+
+function mapPublicEvent(apiEvent) {
+  const eventCode = String(apiEvent.code || '').trim();
+  return {
+    id: `api-${eventCode}`,
+    eventCode,
+    title: apiEvent.name || 'Evento do Leça Futebol Clube',
+    date: apiEvent.startDateTime,
+    time: formatApiEventTime(apiEvent.startDateTime, apiEvent.endDateTime),
+    location: apiEvent.location || 'Local a definir',
+    description: apiEvent.description || '',
+    type: getEventTypeFromCategory(apiEvent.categoryName),
+    status: updateEventStatus({ date: apiEvent.startDateTime, endDate: apiEvent.endDateTime }),
+    image: null,
+    link: null,
+    apiEvent,
+    registration: apiEvent.acceptsRegistrations === true ? { eventCode } : null,
+    voting: apiEvent.isVotingActive === true ? { eventCode } : null
+  };
+}
+
+async function fetchPublishedPublicEvents() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/Event/public`);
+    const payload = await response.json().catch(() => null);
+    if (!response.ok || payload?.success !== true || !Array.isArray(payload.content)) {
+      return [];
+    }
+
+    return payload.content
+      .filter(event => event?.code && event?.name && event?.startDateTime)
+      .map(mapPublicEvent);
+  } catch (error) {
+    return [];
+  }
+}
+
+function mergePublishedEvents(staticEvents, publicEvents) {
+  const knownCodes = new Set(staticEvents
+    .map(event => event.eventCode || event.registration?.eventCode || event.voting?.eventCode)
+    .filter(Boolean));
+  const knownContent = new Set(staticEvents.map(event => (
+    `${String(event.title).trim().toLowerCase()}|${String(event.date).slice(0, 10)}`
+  )));
+
+  const newEvents = publicEvents.filter(event => {
+    const contentKey = `${String(event.title).trim().toLowerCase()}|${String(event.date).slice(0, 10)}`;
+    return !knownCodes.has(event.eventCode) && !knownContent.has(contentKey);
+  });
+
+  return [...staticEvents, ...newEvents];
+}
+
+async function enrichEventsWithInteractionAvailability(events) {
+  const interactiveEvents = events.filter(event => (
+    event.eventCode || event.registration?.eventCode || event.voting?.eventCode
+  ));
 
   await Promise.all(
-    eventsWithRegistration.map(async (event) => {
-      const apiEvent = await fetchPublicEventByCode(event.registration.eventCode);
-      const availability = getRegistrationAvailability(apiEvent);
+    interactiveEvents.map(async (event) => {
+      const eventCode = event.eventCode || event.registration?.eventCode || event.voting?.eventCode;
+      const apiEvent = event.apiEvent || await fetchPublicEventByCode(eventCode);
 
-      event.registration = {
-        ...event.registration,
-        apiEvent,
-        canRegister: availability.canRegister,
-        unavailableReason: availability.reason
-      };
+      if (event.registration) {
+        const registrationAvailability = getRegistrationAvailability(apiEvent);
+        event.registration = {
+          ...event.registration,
+          apiEvent,
+          canRegister: registrationAvailability.canRegister,
+          unavailableReason: registrationAvailability.reason
+        };
+      }
+
+      if (event.voting || apiEvent?.isVotingActive === true) {
+        const votingAvailability = getVotingAvailability(apiEvent);
+        event.voting = {
+          ...event.voting,
+          eventCode,
+          canVote: votingAvailability.canVote,
+          unavailableReason: votingAvailability.reason
+        };
+      }
     })
   );
 }
@@ -599,8 +748,8 @@ function renderEventAlerts(alerts) {
             <i class="fa-solid ${style.icon} ${style.iconColor} text-sm"></i>
           </div>
           <div class="flex-1 min-w-0">
-            <h4 class="font-bold ${style.titleColor} text-sm mb-1">${alert.title}</h4>
-            <p class="${style.textColor} text-sm leading-relaxed">${alert.message}</p>
+            <h4 class="font-bold ${style.titleColor} text-sm mb-1">${escapeHtml(alert.title)}</h4>
+            <p class="${style.textColor} text-sm leading-relaxed">${escapeHtml(alert.message)}</p>
           </div>
         </div>
       </div>
@@ -642,7 +791,7 @@ function renderEventCard(event) {
   
   const registrationButton = event.registration?.canRegister
     ? `
-      <a href="evento-inscricao.html?code=${encodeURIComponent(event.registration.eventCode)}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition text-sm font-semibold">
+      <a href="/evento-inscricao?code=${encodeURIComponent(event.registration.eventCode)}" class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition text-sm font-semibold">
         <i class="fa-solid fa-ticket"></i>
         Inscrição
       </a>
@@ -653,6 +802,19 @@ function renderEventCard(event) {
     ? `<p class="text-sm text-emerald-700 font-semibold">${event.registration.unavailableReason || 'Inscrições indisponíveis.'}</p>`
     : '';
 
+  const votingButton = event.voting?.canVote
+    ? `
+      <a href="/evento-votacao?code=${encodeURIComponent(event.voting.eventCode)}" class="event-voting-button inline-flex items-center gap-2 px-4 py-2 rounded-lg transition text-sm font-semibold">
+        <i class="fa-solid fa-check-to-slot"></i>
+        Votar nos nomeados
+      </a>
+    `
+    : '';
+
+  const votingUnavailableMessage = event.voting && !event.voting.canVote && event.voting.unavailableReason
+    ? `<p class="text-sm text-amber-700 font-semibold">${event.voting.unavailableReason}</p>`
+    : '';
+
   return `
     <div class="${bgColor} rounded-lg p-4 md:p-6 hover:shadow-md transition">
       <div class="flex items-start gap-3 md:gap-4">
@@ -661,7 +823,7 @@ function renderEventCard(event) {
         </div>
         <div class="flex-1 min-w-0">
           <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
-            <h3 class="text-lg md:text-xl font-bold text-gray-900 break-words">${event.title}</h3>
+            <h3 class="text-lg md:text-xl font-bold text-gray-900 break-words">${escapeHtml(event.title)}</h3>
             <div class="flex-shrink-0 self-start">
               ${statusBadge}
             </div>
@@ -673,19 +835,20 @@ function renderEventCard(event) {
             </div>
             <div class="flex items-center gap-2 text-gray-700">
               <i class="fa-solid fa-clock text-emerald-700 flex-shrink-0"></i>
-              <span class="text-sm">${event.time}</span>
+              <span class="text-sm">${escapeHtml(event.time)}</span>
             </div>
             <div class="flex items-center gap-2 text-gray-700">
               <i class="fa-solid fa-location-dot text-emerald-700 flex-shrink-0"></i>
-              <span class="text-sm break-words">${event.location}</span>
+              <span class="text-sm break-words">${escapeHtml(event.location)}</span>
             </div>
           </div>
-          <p class="text-gray-600 text-sm mb-4 line-clamp-3">${event.description}</p>
+          <p class="text-gray-600 text-sm mb-4 line-clamp-3">${escapeHtml(event.description)}</p>
           ${renderEventAlerts(event.alerts)}
           ${registrationUnavailableMessage}
+          ${votingUnavailableMessage}
           <div class="flex flex-wrap gap-3">
             ${event.link ? (() => {
-              const isGallery = event.link.startsWith('galeria.html');
+              const isGallery = event.link.startsWith('/galeria');
               const isInternal = isGallery || (!event.link.startsWith('http') && !event.link.startsWith('//'));
               const target = isInternal ? '' : 'target="_blank"';
               const icon = isGallery ? 'fa-images' : 'fa-external-link-alt';
@@ -696,6 +859,7 @@ function renderEventCard(event) {
               </a>`;
             })() : ''}
             ${registrationButton}
+            ${votingButton}
           </div>
         </div>
       </div>
@@ -740,7 +904,9 @@ async function loadClubeEvents() {
   const container = document.getElementById('clube-events');
   
   try {
-    const events = eventsData.clube || [];
+    const staticEvents = eventsData.clube || [];
+    const publicEvents = await fetchPublishedPublicEvents();
+    const events = mergePublishedEvents(staticEvents, publicEvents);
     
     if (events.length === 0) {
       container.innerHTML = `
@@ -758,7 +924,7 @@ async function loadClubeEvents() {
       status: updateEventStatus(event)
     }));
 
-    await enrichEventsWithRegistrationAvailability(eventsWithUpdatedStatus);
+    await enrichEventsWithInteractionAvailability(eventsWithUpdatedStatus);
     
     // Sort events by date (most recent first)
     const sortedEvents = eventsWithUpdatedStatus.sort((a, b) => parseEventDate(b.date) - parseEventDate(a.date));
@@ -777,7 +943,7 @@ async function loadClubeEvents() {
 }
 
 // Load Institucionais Events
-function loadInstitucionaisEvents() {
+async function loadInstitucionaisEvents() {
   const container = document.getElementById('institucionais-events');
   
   try {
@@ -798,6 +964,8 @@ function loadInstitucionaisEvents() {
       ...event,
       status: updateEventStatus(event)
     }));
+
+    await enrichEventsWithInteractionAvailability(eventsWithUpdatedStatus);
     
     // Sort events by date (most recent first)
     const sortedEvents = eventsWithUpdatedStatus.sort((a, b) => parseEventDate(b.date) - parseEventDate(a.date));

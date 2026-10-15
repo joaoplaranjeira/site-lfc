@@ -1,0 +1,39 @@
+/* O contentor React não deve alterar a geometria das páginas migradas. */
+#root,
+.legacy-page-root {
+  display: contents;
+}
+
+.react-not-found {
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  background: linear-gradient(145deg, #022e26, #056b57);
+  color: #fff;
+  text-align: center;
+  font-family: Poppins, sans-serif;
+}
+
+.react-loading {
+  min-height: 100vh;
+  display: grid;
+  place-content: center;
+  background: #022e26;
+  color: #fff;
+  font: 700 1rem Poppins, sans-serif;
+}
+
+.react-not-found img { width: 7rem; }
+.react-not-found h1 { margin: 0; font-size: clamp(2rem, 6vw, 4rem); }
+.react-not-found p { margin: 0; }
+.react-not-found a {
+  padding: 0.8rem 1.4rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #056b57;
+  font-weight: 800;
+  text-decoration: none;
+}
