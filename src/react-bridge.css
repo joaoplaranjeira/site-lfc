@@ -4,6 +4,10 @@
   display: contents;
 }
 
+.legacy-page-root.is-preparing {
+  display: none;
+}
+
 .react-not-found {
   min-height: 100vh;
   display: grid;

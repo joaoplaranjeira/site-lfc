@@ -99,9 +99,13 @@ function appendScript(descriptor) {
 }
 
 function LegacyPage({ page }) {
+  const [stylesReady, setStylesReady] = useState(false);
+
   useLayoutEffect(() => {
+    let active = true;
     document.title = page.title;
     document.documentElement.lang = page.lang;
+    setStylesReady(false);
 
     [...document.body.attributes].forEach(({ name }) => {
       if (!['data-vite-dev-id'].includes(name)) document.body.removeAttribute(name);
@@ -111,12 +115,37 @@ function LegacyPage({ page }) {
     const headTemplate = document.createElement('template');
     headTemplate.innerHTML = page.headNodes.join('');
     const installedHeadNodes = [...headTemplate.content.children];
+    const stylesheets = installedHeadNodes.filter(
+      (node) => node.tagName === 'LINK' && node.rel.toLowerCase() === 'stylesheet'
+    );
+    let pendingStylesheets = stylesheets.length;
+
+    function stylesheetSettled() {
+      pendingStylesheets -= 1;
+      if (active && pendingStylesheets <= 0) setStylesReady(true);
+    }
+
+    stylesheets.forEach((stylesheet) => {
+      stylesheet.addEventListener('load', stylesheetSettled, { once: true });
+      stylesheet.addEventListener('error', stylesheetSettled, { once: true });
+    });
+
     installedHeadNodes.forEach((node) => {
       node.dataset.reactLegacyHead = 'true';
       document.head.appendChild(node);
     });
 
-    return () => installedHeadNodes.forEach((node) => node.remove());
+    if (!stylesheets.length) setStylesReady(true);
+
+    const revealFallback = window.setTimeout(() => {
+      if (active) setStylesReady(true);
+    }, 5000);
+
+    return () => {
+      active = false;
+      window.clearTimeout(revealFallback);
+      installedHeadNodes.forEach((node) => node.remove());
+    };
   }, [page]);
 
   useEffect(() => {
@@ -137,7 +166,16 @@ function LegacyPage({ page }) {
     };
   }, [page]);
 
-  return <div className="legacy-page-root" dangerouslySetInnerHTML={{ __html: page.bodyHtml }} />;
+  return (
+    <>
+      {!stylesReady && <LoadingPage />}
+      <div
+        className={`legacy-page-root${stylesReady ? '' : ' is-preparing'}`}
+        aria-hidden={!stylesReady}
+        dangerouslySetInnerHTML={{ __html: page.bodyHtml }}
+      />
+    </>
+  );
 }
 
 function NotFound({ pageName }) {
