@@ -5,9 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#034638" />
     <title>Universo Leça FC</title>
+    <style>
+      html, body, #root { min-height: 100%; }
+      html, body { margin: 0; background: #010f0c; }
+      .app-shell-loading {
+        min-height: 100vh;
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        gap: 1rem;
+        background:
+          radial-gradient(circle at 70% 15%, rgba(5, 107, 87, 0.32), transparent 30rem),
+          linear-gradient(145deg, #010907 0%, #010f0c 52%, #011713 100%);
+        color: #fff;
+        font: 700 0.85rem/1.4 Poppins, Arial, sans-serif;
+      }
+      .app-shell-loading__mark {
+        width: 2rem;
+        height: 2rem;
+        border: 3px solid rgba(255, 255, 255, 0.18);
+        border-top-color: #5ecfb1;
+        border-radius: 50%;
+        animation: app-shell-spin 0.8s linear infinite;
+      }
+      @keyframes app-shell-spin { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        .app-shell-loading__mark { animation: none; border-color: #5ecfb1; }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main class="app-shell-loading" role="status" aria-label="A carregar página">
+        <span class="app-shell-loading__mark" aria-hidden="true"></span>
+        <span>A carregar…</span>
+      </main>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -8,4 +8,7 @@
 .match-score-link { display:inline-flex; align-items:center; gap:.3rem; color:#056b57; text-decoration:none; transition:transform .18s ease,color .18s ease; }.match-score-link i { font-size:.62em; }.match-score-link:hover,.match-score-link:focus-visible { color:#034638; text-decoration:underline; }.match-score-link:focus-visible { outline:2px solid #056b57; outline-offset:4px; border-radius:.2rem; }
 .team-link .fa-arrow-up-right-from-square { font-size: .65em; opacity: .6; }
 .competition-meta { color: #60716b; font-size: .72rem; line-height: 1.35; }
+.match-venue { display: flex; align-items: baseline; justify-content: center; gap: .35rem; margin-top: .35rem; color: #315e52; font-size: .75rem; font-weight: 600; line-height: 1.35; }
+.match-venue i { flex: 0 0 auto; color: #056b57; }
+@media (min-width: 1024px) { .match-venue { justify-content: flex-end; } }
 @media (max-width: 520px) { .competition-tabs { display: grid; grid-template-columns: 1fr; }.competition-tabs .tab-button { width: 100%; }.match-card .match-teams { gap: .75rem; } }

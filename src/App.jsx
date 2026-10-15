@@ -153,7 +153,12 @@ function NotFound({ pageName }) {
 }
 
 function LoadingPage() {
-  return <main className="react-loading" role="status">A carregar…</main>;
+  return (
+    <main className="app-shell-loading" role="status" aria-label="A carregar página">
+      <span className="app-shell-loading__mark" aria-hidden="true" />
+      <span>A carregar…</span>
+    </main>
+  );
 }
 
 export default function App() {
