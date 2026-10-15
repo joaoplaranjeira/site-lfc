@@ -45,9 +45,12 @@
   if (!popup) return;
 
   if (today < showFrom || today >= showUntil) {
-    popup.classList.add('hidden');
     return;
   }
+
+  popup.hidden = false;
+  popup.classList.remove('hidden');
+  popup.setAttribute('aria-hidden', 'false');
 
   var closeBtn = document.getElementById('jamor-close');
   var ctaBtn   = document.getElementById('jamor-cta');
@@ -61,6 +64,8 @@
   function closePopup() {
     clearInterval(timer);
     popup.classList.add('hidden');
+    popup.hidden = true;
+    popup.setAttribute('aria-hidden', 'true');
   }
 
   function tick() {

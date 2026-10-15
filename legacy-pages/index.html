@@ -147,7 +147,8 @@
       z-index: 9999; backdrop-filter: blur(6px);
       animation: jfadeIn .35s ease;
     }
-    #jamor-popup.hidden { display: none; }
+    #jamor-popup.hidden,
+    #jamor-popup[hidden] { display: none; }
     @keyframes jfadeIn { from { opacity:0; } to { opacity:1; } }
     @keyframes jslideUp { from { opacity:0; transform: translateY(28px); } to { opacity:1; transform: translateY(0); } }
 
@@ -249,7 +250,7 @@
       #jamor-cta { font-size: .95rem; padding: .8rem 1.25rem; }
     }
   </style>
-  <div id="jamor-popup">
+  <div id="jamor-popup" class="hidden" hidden aria-hidden="true">
     <div id="jamor-card">
       <div id="jamor-header">
         <button id="jamor-close" aria-label="Fechar">&times;</button>
