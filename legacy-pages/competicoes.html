@@ -17,7 +17,7 @@
   <link rel="icon" type="image/png" href="images/leca.png" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="design-system.css" />
-  <link rel="stylesheet" href="competicoes.css?v=20261015-1" />
+  <link rel="stylesheet" href="competicoes.css?v=20261019-2" />
 </head>
 <body data-design-mode="institutional" data-page="competitions">
   <div class="min-h-screen flex flex-col px-4 py-12">
@@ -32,22 +32,44 @@
     </h1>
     
     <p class="text-lg md:text-xl text-white/90 text-center mb-12 max-w-3xl mx-auto">
-      Acompanha os jogos, resultados e classificações de todas as equipas
+      Acompanha o futebol e o bilhar do Universo Leça FC
     </p>
+
+    <!-- Sport Navigation -->
+    <div class="max-w-6xl w-full mx-auto mb-5">
+      <div class="sport-tabs" role="tablist" aria-label="Modalidade">
+        <button id="sport-futebol" class="sport-button active" type="button" role="tab" aria-selected="true" data-sport="futebol">
+          <span class="sport-button__icon"><i class="fa-solid fa-futbol" aria-hidden="true"></i></span>
+          <span><strong>Futebol</strong></span>
+        </button>
+        <button id="sport-bilhar" class="sport-button" type="button" role="tab" aria-selected="false" data-sport="bilhar">
+          <span class="sport-button__icon"><i class="fa-solid fa-circle-dot" aria-hidden="true"></i></span>
+          <span><strong>Bilhar Três Tabelas</strong></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="sport-context max-w-6xl w-full mx-auto mb-6" aria-live="polite">
+      <div>
+        <p id="sport-eyebrow">FUTEBOL</p>
+        <h2 id="sport-title">Competições de futebol</h2>
+      </div>
+      <p id="sport-description">Calendário, resultados e classificações das equipas do Universo Leça FC.</p>
+    </div>
     
     <!-- Tab Navigation -->
     <div class="max-w-6xl w-full mx-auto mb-8">
       <div class="competition-tabs flex flex-wrap gap-3 justify-center" role="tablist" aria-label="Informação das competições">
-        <button onclick="showTab('calendario')" id="tab-calendario" class="tab-button active px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
+        <button type="button" data-view="calendario" id="tab-calendario" class="tab-button active px-6 py-3 bg-white text-emerald-700 font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105" role="tab" aria-selected="true" aria-controls="content-calendario">
           <i class="fa-solid fa-calendar-days mr-2"></i>
           Calendário
         </button>
-        <button onclick="showTab('classificacao')" id="tab-classificacao" class="tab-button px-6 py-3 bg-white/20 text-white font-bold rounded-full hover:bg-white/30 transition-all">
+        <button type="button" data-view="classificacao" id="tab-classificacao" class="tab-button px-6 py-3 bg-white/20 text-white font-bold rounded-full hover:bg-white/30 transition-all" role="tab" aria-selected="false" aria-controls="content-classificacao">
           <i class="fa-solid fa-trophy mr-2"></i>
           Classificação
         </button>
-        <button onclick="showTab('resultados')" id="tab-resultados" class="tab-button px-6 py-3 bg-white/20 text-white font-bold rounded-full hover:bg-white/30 transition-all">
-          <i class="fa-solid fa-futbol mr-2"></i>
+        <button type="button" data-view="resultados" id="tab-resultados" class="tab-button px-6 py-3 bg-white/20 text-white font-bold rounded-full hover:bg-white/30 transition-all" role="tab" aria-selected="false" aria-controls="content-resultados">
+          <i id="results-tab-icon" class="fa-solid fa-circle-dot mr-2" aria-hidden="true"></i>
           Resultados
         </button>
       </div>
@@ -61,15 +83,15 @@
         <div class="card p-8 rounded-2xl">
           <div class="flex items-center gap-3 mb-6">
             <i class="fa-solid fa-calendar-days text-3xl text-emerald-700"></i>
-            <h2 class="text-3xl font-black text-gray-900">Calendário de Jogos</h2>
+            <h2 id="calendar-title" class="text-3xl font-black text-gray-900">Calendário de Jogos</h2>
           </div>
           
-          <p class="text-gray-600 mb-6">
+          <p id="calendar-description" class="text-gray-600 mb-6">
             Próximos jogos agendados para todas as equipas do Universo Leça Futebol Clube
           </p>
           
           <!-- Dynamic Match Cards Container -->
-          <div id="calendar-matches" class="space-y-4">
+          <div id="calendar-matches" class="space-y-4" aria-live="polite">
             <!-- Matches will be loaded here dynamically -->
             <div class="text-center py-12">
               <i class="fa-solid fa-spinner fa-spin text-4xl text-emerald-700 mb-3"></i>
@@ -84,15 +106,15 @@
         <div class="card p-8 rounded-2xl">
           <div class="flex items-center gap-3 mb-6">
             <i class="fa-solid fa-trophy text-3xl text-emerald-700"></i>
-            <h2 class="text-3xl font-black text-gray-900">Classificação</h2>
+            <h2 id="classification-title" class="text-3xl font-black text-gray-900">Classificação</h2>
           </div>
           
-          <p class="text-gray-600 mb-6">
+          <p id="classification-description" class="text-gray-600 mb-6">
             Tabelas de Classificação das várias competições
           </p>
           
           <!-- Classification Tables Container -->
-          <div id="classification-tables"></div>
+          <div id="classification-tables" aria-live="polite"></div>
         </div>
       </div>
       
@@ -100,16 +122,16 @@
       <div id="content-resultados" class="tab-content hidden" role="tabpanel" aria-labelledby="tab-resultados">
         <div class="card p-8 rounded-2xl">
           <div class="flex items-center gap-3 mb-6">
-            <i class="fa-solid fa-futbol text-3xl text-emerald-700"></i>
-            <h2 class="text-3xl font-black text-gray-900">Resultados</h2>
+            <i id="results-heading-icon" class="fa-solid fa-circle-dot text-3xl text-emerald-700" aria-hidden="true"></i>
+            <h2 id="results-title" class="text-3xl font-black text-gray-900">Resultados</h2>
           </div>
           
-          <p class="text-gray-600 mb-6">
+          <p id="results-description" class="text-gray-600 mb-6">
             Resultados dos últimos jogos realizados
           </p>
           
           <!-- Results Container -->
-          <div id="results-matches"></div>
+          <div id="results-matches" aria-live="polite"></div>
         </div>
       </div>
       
@@ -132,6 +154,6 @@
     </footer>
     </div>
 
-    <script src="competicoes.js?v=20261015-1"></script>
+    <script src="competicoes.js?v=20261019-2"></script>
   </body>
 </html>

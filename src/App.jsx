@@ -20,6 +20,14 @@ function requestedPageName() {
 
   if (pathname === '/' || pathname === '') return 'index.html';
   const segments = pathname.replace(/^\/+|\/+$/g, '').split('/');
+  if (
+    segments.length === 3 &&
+    segments[0] === 'bilhar' &&
+    ['equipas', 'atletas'].includes(segments[1]) &&
+    segments[2]
+  ) {
+    return segments[1] === 'equipas' ? 'bilhar-equipa.html' : 'bilhar-atleta.html';
+  }
   if (segments.length !== 1) return null;
   const [leaf] = segments;
   if (!leaf || leaf.includes('/') || leaf.includes('\\')) return null;
