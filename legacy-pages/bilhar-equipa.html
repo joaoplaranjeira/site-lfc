@@ -9,7 +9,7 @@
   <link rel="icon" type="image/png" href="/images/leca.png" />
   <link rel="stylesheet" href="/styles.css" />
   <link rel="stylesheet" href="/design-system.css" />
-  <link rel="stylesheet" href="/bilhar-detail.css?v=20261019-1" />
+  <link rel="stylesheet" href="/bilhar-detail.css?v=20261019-2" />
 </head>
 <body data-design-mode="institutional" data-page="billiards-team">
   <main class="billiards-detail-page">
@@ -19,6 +19,15 @@
       <div class="detail-state"><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><p>A carregar equipa...</p></div>
     </div>
   </main>
-  <script src="/bilhar-equipa.js?v=20261019-1"></script>
+
+  <div id="billiards-athlete-modal" class="billiards-athlete-modal" hidden role="dialog" aria-modal="true" aria-labelledby="billiards-athlete-name">
+    <div class="billiards-athlete-modal__backdrop" data-close-athlete-modal></div>
+    <article class="billiards-athlete-modal__card" tabindex="-1">
+      <button class="billiards-athlete-modal__close" type="button" aria-label="Fechar carta do atleta" data-close-athlete-modal><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      <div id="billiards-athlete-card-content"></div>
+    </article>
+  </div>
+
+  <script src="/bilhar-equipa.js?v=20261019-2"></script>
 </body>
 </html>
