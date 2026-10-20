@@ -181,6 +181,41 @@
     return '<article class="match-card billiards-match ' + (managed ? 'bg-emerald-50' : 'bg-gray-50') + ' rounded-xl p-4 transition"><div class="grid grid-cols-1 lg:grid-cols-[200px_1fr_200px] items-center gap-4"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-emerald-700 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-circle-dot text-white text-sm" aria-hidden="true"></i></div><div><p class="text-sm text-gray-700 font-semibold capitalize">' + escapeHtml(date) + '</p><p class="text-xs text-gray-500">' + escapeHtml(formatBilliardsTime(match.time)) + '</p></div></div><div class="match-teams flex items-center justify-center gap-4"><div class="text-right flex-1 min-w-0"><p class="font-bold text-gray-900 text-sm">' + billiardsTeam(match.homeTeam) + '</p><p class="text-xs text-gray-500">Casa</p></div><div class="billiards-score px-3 py-2 bg-white rounded-lg shadow-sm flex-shrink-0 text-center">' + scoreMarkup + '</div><div class="text-left flex-1 min-w-0"><p class="font-bold text-gray-900 text-sm">' + billiardsTeam(match.awayTeam) + '</p><p class="text-xs text-gray-500">Fora</p></div></div><div class="match-details text-center lg:text-right"><p class="text-sm font-semibold text-gray-900">' + escapeHtml(details) + '</p><p class="match-venue"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>' + escapeHtml(match.venue || 'Local a definir') + '</span></p></div></div></article>';
   }
   function billiardsCompetitionHeading(competition) { return [competition.name, competition.variant, competition.season, competition.phase, competition.series].filter(Boolean).join(' · '); }
+  function billiardsMatchTimestamp(match) {
+    var date = match && match.date ? String(match.date).slice(0, 10) : '';
+    var time = match && match.time ? String(match.time).slice(0, 5) : '23:59';
+    var timestamp = new Date(date + 'T' + time).getTime();
+    return Number.isNaN(timestamp) ? null : timestamp;
+  }
+  function billiardsManagedTeamKeys(match) {
+    return [match.homeTeam, match.awayTeam].filter(function (team) { return team && team.isManagedTeam === true; }).map(function (team) {
+      return String(team.id || team.name || '');
+    }).filter(Boolean);
+  }
+  function summarizeBilliardsMatches(competitions, result) {
+    var entries = [];
+    var now = Date.now();
+    competitions.forEach(function (competition) {
+      (competition.matches || []).forEach(function (match) {
+        var timestamp = billiardsMatchTimestamp(match);
+        if (!result && timestamp !== null && timestamp < now) return;
+        entries.push({ match: match, timestamp: timestamp });
+      });
+    });
+    var selectedByTeam = Object.create(null);
+    entries.forEach(function (entry) {
+      billiardsManagedTeamKeys(entry.match).forEach(function (teamKey) {
+        var selected = selectedByTeam[teamKey];
+        if (!selected || (entry.timestamp !== null && (selected.timestamp === null || (result ? entry.timestamp > selected.timestamp : entry.timestamp < selected.timestamp)))) selectedByTeam[teamKey] = entry;
+      });
+    });
+    var selectedMatches = Object.keys(selectedByTeam).map(function (teamKey) { return selectedByTeam[teamKey].match; });
+    return competitions.map(function (competition) {
+      var summary = Object.assign({}, competition);
+      summary.matches = (competition.matches || []).filter(function (match) { return selectedMatches.indexOf(match) !== -1; });
+      return summary;
+    }).filter(function (competition) { return competition.matches.length > 0; });
+  }
   function renderBilliardsMatches(competitions, result) {
     return competitions.map(function (competition) {
       var rounds = (competition.matches || []).reduce(function (all, match) { var round = match.round === null || match.round === undefined ? 'Jornada por definir' : 'Jornada ' + match.round; if (!all[round]) all[round] = []; all[round].push(match); return all; }, {});
@@ -301,8 +336,9 @@
     state(container, 'fa-spinner fa-spin', view === 'classificacao' ? 'A carregar classificação de bilhar...' : view === 'resultados' ? 'A carregar resultados de bilhar...' : 'A carregar calendário de bilhar...');
     billiardsData(view).then(function (competitions) {
       if (currentSport !== 'bilhar' || currentView !== view) return;
-      if (!competitions.length) { state(container, view === 'classificacao' ? 'fa-table-list' : 'fa-circle-dot', view === 'classificacao' ? 'Ainda não há classificações de bilhar disponíveis.' : view === 'resultados' ? 'Ainda não há resultados de bilhar disponíveis.' : 'Ainda não há jogos de bilhar agendados.'); return; }
-      container.innerHTML = view === 'classificacao' ? renderBilliardsRankings(competitions) : renderBilliardsMatches(competitions, view === 'resultados');
+      var displayCompetitions = view === 'classificacao' ? competitions : summarizeBilliardsMatches(competitions, view === 'resultados');
+      if (!displayCompetitions.length) { state(container, view === 'classificacao' ? 'fa-table-list' : 'fa-circle-dot', view === 'classificacao' ? 'Ainda não há classificações de bilhar disponíveis.' : view === 'resultados' ? 'Ainda não há resultados de bilhar disponíveis.' : 'Ainda não há jogos de bilhar agendados.'); return; }
+      container.innerHTML = view === 'classificacao' ? renderBilliardsRankings(displayCompetitions) : renderBilliardsMatches(displayCompetitions, view === 'resultados');
       installImageFallbacks(container);
     }).catch(function (error) {
       if (error.status !== 404) console.warn('Billiards information unavailable:', error);
@@ -318,9 +354,9 @@
     document.getElementById('sport-title').textContent = billiards ? 'Competições de bilhar' : 'Competições de futebol';
     document.getElementById('sport-description').textContent = billiards ? 'Calendário, resultados, classificação e acesso às equipas e atletas do universo Leça FC.' : 'Calendário, resultados e classificações das equipas do Universo Leça FC.';
     document.getElementById('calendar-title').textContent = billiards ? 'Calendário de Bilhar' : 'Calendário de Jogos';
-    document.getElementById('calendar-description').textContent = billiards ? 'Jogos de Carambola organizados por competição e jornada.' : 'Próximos jogos agendados para todas as equipas do Universo Leça Futebol Clube';
+    document.getElementById('calendar-description').textContent = billiards ? 'O próximo jogo de cada equipa do universo Leça FC.' : 'Próximos jogos agendados para todas as equipas do Universo Leça Futebol Clube';
     document.getElementById('classification-description').textContent = billiards ? 'Classificação completa, com as equipas do universo Leça FC em destaque.' : 'Tabelas de Classificação das várias competições';
-    document.getElementById('results-description').textContent = billiards ? 'Resultados oficiais dos jogos de Carambola.' : 'Resultados dos últimos jogos realizados';
+    document.getElementById('results-description').textContent = billiards ? 'O último resultado oficial de cada equipa do universo Leça FC.' : 'Resultados dos últimos jogos realizados';
     document.getElementById('results-tab-icon').className = 'fa-solid ' + resultsIcon + ' mr-2';
     document.getElementById('results-heading-icon').className = 'fa-solid ' + resultsIcon + ' text-3xl text-emerald-700';
     document.body.classList.toggle('is-billiards', billiards);
