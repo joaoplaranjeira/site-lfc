@@ -18,6 +18,9 @@
   var footballMatchesPromise = null;
   var footballRankingsPromise = null;
   var billiardsPromises = {};
+  var billiardsMatchDetailPromises = {};
+  var activeBilliardsMatchRequest = 0;
+  var lastBilliardsMatchTrigger = null;
 
   function escapeHtml(value) {
     return String(value === undefined || value === null ? '' : value)
@@ -57,6 +60,10 @@
     return Number.isNaN(date.getTime()) ? 'Hora por confirmar' : new Intl.DateTimeFormat('pt-PT', { hour: '2-digit', minute: '2-digit' }).format(date);
   }
   function formatBilliardsTime(value) { return value ? String(value).slice(0, 5) : 'Hora a definir'; }
+  function formatDateTime(value) {
+    var date = new Date(value);
+    return Number.isNaN(date.getTime()) ? null : new Intl.DateTimeFormat('pt-PT', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(date);
+  }
   function formatNumber(value, maximumFractionDigits) {
     return value === null || value === undefined ? '—' : new Intl.NumberFormat('pt-PT', { maximumFractionDigits: maximumFractionDigits === undefined ? 2 : maximumFractionDigits }).format(value);
   }
@@ -167,7 +174,11 @@
     var score = result && match.hasOfficialResult ? (match.result || [match.homeScore, match.awayScore].filter(function (value) { return value !== null && value !== undefined; }).join(' - ')) : 'A disputar';
     var date = match.date ? formatDate(match.date) : 'Data a definir';
     var details = ['Jornada ' + formatNumber(match.round, 0), match.matchNumber ? 'Jogo ' + match.matchNumber : null].filter(Boolean).join(' · ');
-    return '<article class="match-card billiards-match ' + (managed ? 'bg-emerald-50' : 'bg-gray-50') + ' rounded-xl p-4 transition"><div class="grid grid-cols-1 lg:grid-cols-[200px_1fr_200px] items-center gap-4"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-emerald-700 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-circle-dot text-white text-sm" aria-hidden="true"></i></div><div><p class="text-sm text-gray-700 font-semibold capitalize">' + escapeHtml(date) + '</p><p class="text-xs text-gray-500">' + escapeHtml(formatBilliardsTime(match.time)) + '</p></div></div><div class="match-teams flex items-center justify-center gap-4"><div class="text-right flex-1 min-w-0"><p class="font-bold text-gray-900 text-sm">' + billiardsTeam(match.homeTeam) + '</p><p class="text-xs text-gray-500">Casa</p></div><div class="billiards-score px-3 py-2 bg-white rounded-lg shadow-sm flex-shrink-0 text-center"><p class="font-bold text-emerald-700 text-sm">' + escapeHtml(score || 'Resultado pendente') + '</p></div><div class="text-left flex-1 min-w-0"><p class="font-bold text-gray-900 text-sm">' + billiardsTeam(match.awayTeam) + '</p><p class="text-xs text-gray-500">Fora</p></div></div><div class="match-details text-center lg:text-right"><p class="text-sm font-semibold text-gray-900">' + escapeHtml(details) + '</p><p class="match-venue"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>' + escapeHtml(match.venue || 'Local a definir') + '</span></p></div></div></article>';
+    var scoreContent = escapeHtml(score || 'Resultado pendente');
+    var scoreMarkup = result && match.hasOfficialResult === true && match.id
+      ? '<button class="billiards-score-button" type="button" data-billiards-match-id="' + escapeHtml(match.id) + '" aria-haspopup="dialog" aria-label="Ver detalhe do resultado ' + scoreContent + '"><span>' + scoreContent + '</span><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>'
+      : '<p class="font-bold text-emerald-700 text-sm">' + scoreContent + '</p>';
+    return '<article class="match-card billiards-match ' + (managed ? 'bg-emerald-50' : 'bg-gray-50') + ' rounded-xl p-4 transition"><div class="grid grid-cols-1 lg:grid-cols-[200px_1fr_200px] items-center gap-4"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-emerald-700 rounded-full flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-circle-dot text-white text-sm" aria-hidden="true"></i></div><div><p class="text-sm text-gray-700 font-semibold capitalize">' + escapeHtml(date) + '</p><p class="text-xs text-gray-500">' + escapeHtml(formatBilliardsTime(match.time)) + '</p></div></div><div class="match-teams flex items-center justify-center gap-4"><div class="text-right flex-1 min-w-0"><p class="font-bold text-gray-900 text-sm">' + billiardsTeam(match.homeTeam) + '</p><p class="text-xs text-gray-500">Casa</p></div><div class="billiards-score px-3 py-2 bg-white rounded-lg shadow-sm flex-shrink-0 text-center">' + scoreMarkup + '</div><div class="text-left flex-1 min-w-0"><p class="font-bold text-gray-900 text-sm">' + billiardsTeam(match.awayTeam) + '</p><p class="text-xs text-gray-500">Fora</p></div></div><div class="match-details text-center lg:text-right"><p class="text-sm font-semibold text-gray-900">' + escapeHtml(details) + '</p><p class="match-venue"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>' + escapeHtml(match.venue || 'Local a definir') + '</span></p></div></div></article>';
   }
   function billiardsCompetitionHeading(competition) { return [competition.name, competition.variant, competition.season, competition.phase, competition.series].filter(Boolean).join(' · '); }
   function renderBilliardsMatches(competitions, result) {
@@ -196,6 +207,79 @@
   function billiardsData(view) {
     if (!billiardsPromises[view]) billiardsPromises[view] = requestJson(BILLIARDS_ENDPOINTS[view]).then(function (data) { return collectionFrom(data, ['items']); }).catch(function (error) { billiardsPromises[view] = null; throw error; });
     return billiardsPromises[view];
+  }
+
+  function billiardsMatchDetail(matchId) {
+    if (!billiardsMatchDetailPromises[matchId]) {
+      billiardsMatchDetailPromises[matchId] = requestJson('/public/billiards/matches/' + encodeURIComponent(matchId)).then(function (data) {
+        return data && data.content !== undefined ? data.content : data;
+      }).catch(function (error) {
+        delete billiardsMatchDetailPromises[matchId];
+        throw error;
+      });
+    }
+    return billiardsMatchDetailPromises[matchId];
+  }
+  function billiardsModalTeam(team, side) {
+    var name = team && team.name ? team.name : 'Equipa por confirmar';
+    var logo = team && team.logoUrl
+      ? '<img data-team-logo class="billiards-match-detail__team-logo" src="' + escapeHtml(team.logoUrl) + '" alt="">'
+      : '<span class="billiards-match-detail__team-fallback"><i class="fa-solid fa-diamond" aria-hidden="true"></i></span>';
+    var nameMarkup = team && team.isManagedTeam === true && team.id
+      ? '<a href="/bilhar/equipas/' + encodeURIComponent(team.id) + '?returnTo=' + encodeURIComponent(returnTo('resultados')) + '">' + escapeHtml(name) + '<i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>'
+      : '<span>' + escapeHtml(name) + '</span>';
+    return '<div class="billiards-match-detail__team ' + (side === 'away' ? 'is-away' : '') + '">' + logo + '<p>' + nameMarkup + '</p><span>' + (side === 'away' ? 'Visitante' : 'Casa') + '</span></div>';
+  }
+  function billiardsGameCard(game) {
+    var label = game.label || (game.order ? 'Jogo ' + game.order : 'Partida');
+    return '<article class="billiards-game-card"><header><span>' + escapeHtml(label) + '</span><strong>' + escapeHtml(game.result || 'Resultado indisponível') + '</strong></header><div class="billiards-game-card__players"><div><span>Casa</span><p>' + escapeHtml(game.homeAthleteName || 'Atleta por confirmar') + '</p><strong>' + escapeHtml(formatNumber(game.homeScore, 0)) + '</strong><small>' + escapeHtml(formatNumber(game.homeInnings, 0)) + ' entradas</small></div><i class="fa-solid fa-circle-dot" aria-hidden="true"></i><div><span>Visitante</span><p>' + escapeHtml(game.awayAthleteName || 'Atleta por confirmar') + '</p><strong>' + escapeHtml(formatNumber(game.awayScore, 0)) + '</strong><small>' + escapeHtml(formatNumber(game.awayInnings, 0)) + ' entradas</small></div></div></article>';
+  }
+  function renderBilliardsMatchDetail(detail) {
+    var match = detail.match || {};
+    var competition = [detail.competitionCode, detail.season, detail.phase, detail.series ? 'Série ' + detail.series : null].filter(Boolean).join(' · ');
+    var matchMeta = [
+      match.date ? { icon: 'fa-calendar-day', text: formatDate(match.date) } : null,
+      match.time ? { icon: 'fa-clock', text: formatBilliardsTime(match.time) } : null,
+      match.venue ? { icon: 'fa-location-dot', text: match.venue } : null,
+      match.round !== null && match.round !== undefined ? { icon: 'fa-layer-group', text: 'Jornada ' + match.round } : null,
+      match.matchNumber ? { icon: 'fa-hashtag', text: 'Jogo ' + match.matchNumber } : null
+    ].filter(Boolean);
+    var score = match.result || [match.homeScore, match.awayScore].filter(function (value) { return value !== null && value !== undefined; }).join(' - ') || 'Resultado oficial';
+    var importedDate = formatDateTime(detail.importedDate);
+    var games = Array.isArray(detail.games) ? detail.games.slice().sort(function (a, b) { return Number(a.order || 0) - Number(b.order || 0); }) : [];
+    return '<div class="billiards-match-detail"><header class="billiards-match-detail__header"><p><i class="fa-solid fa-circle-dot" aria-hidden="true"></i> Bilhar Três Tabelas' + (detail.variant ? ' · ' + escapeHtml(detail.variant) : '') + '</p><h2 id="billiards-match-modal-title">' + escapeHtml(detail.competitionName || 'Detalhe do jogo') + '</h2><span>' + escapeHtml(competition) + '</span></header><div class="billiards-match-detail__scoreboard">' + billiardsModalTeam(match.homeTeam, 'home') + '<div class="billiards-match-detail__score"><span>Resultado final</span><strong>' + escapeHtml(score) + '</strong><small>Oficial</small></div>' + billiardsModalTeam(match.awayTeam, 'away') + '</div>' + (matchMeta.length ? '<div class="billiards-match-detail__meta">' + matchMeta.map(function (item) { return '<span><i class="fa-solid ' + item.icon + '" aria-hidden="true"></i>' + escapeHtml(item.text) + '</span>'; }).join('') + '</div>' : '') + '<section class="billiards-match-detail__games"><div class="billiards-match-detail__section-heading"><div><p>Ficha oficial</p><h3>Partidas individuais</h3></div><span>' + games.length + (games.length === 1 ? ' partida' : ' partidas') + '</span></div>' + (games.length ? '<div class="billiards-match-detail__game-list">' + games.map(billiardsGameCard).join('') + '</div>' : '<div class="billiards-match-detail__empty"><i class="fa-regular fa-rectangle-list" aria-hidden="true"></i><p>O resultado está confirmado, mas o detalhe das partidas ainda não está disponível.</p></div>') + '</section>' + (importedDate ? '<footer class="billiards-match-detail__footer"><i class="fa-solid fa-check-circle" aria-hidden="true"></i> Dados oficiais atualizados em ' + escapeHtml(importedDate) + '</footer>' : '') + '</div>';
+  }
+  function closeBilliardsMatchModal() {
+    var modal = document.getElementById('billiards-match-modal');
+    if (!modal || modal.hidden) return;
+    activeBilliardsMatchRequest += 1;
+    modal.hidden = true;
+    document.body.classList.remove('has-open-modal');
+    if (lastBilliardsMatchTrigger) lastBilliardsMatchTrigger.focus();
+    lastBilliardsMatchTrigger = null;
+  }
+  function openBilliardsMatchModal(matchId, trigger) {
+    var modal = document.getElementById('billiards-match-modal');
+    var panel = modal && modal.querySelector('.billiards-match-modal__panel');
+    var content = document.getElementById('billiards-match-detail');
+    if (!modal || !panel || !content || !matchId) return;
+    var requestId = activeBilliardsMatchRequest + 1;
+    activeBilliardsMatchRequest = requestId;
+    lastBilliardsMatchTrigger = trigger;
+    content.innerHTML = '<div class="billiards-match-detail__loading" role="status"><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><h2 id="billiards-match-modal-title">A carregar ficha do jogo</h2><p>A consultar o resultado oficial e as partidas individuais.</p></div>';
+    modal.hidden = false;
+    document.body.classList.add('has-open-modal');
+    panel.focus();
+    billiardsMatchDetail(matchId).then(function (detail) {
+      if (requestId !== activeBilliardsMatchRequest || modal.hidden) return;
+      content.innerHTML = renderBilliardsMatchDetail(detail || {});
+      installImageFallbacks(content);
+    }).catch(function (error) {
+      if (requestId !== activeBilliardsMatchRequest || modal.hidden) return;
+      if (error.status !== 404) console.warn('Billiards match detail unavailable:', error);
+      var message = error.status === 404 ? 'O detalhe deste jogo ainda não está disponível.' : 'Não foi possível carregar a ficha deste jogo neste momento.';
+      content.innerHTML = '<div class="billiards-match-detail__error"><i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i><h2 id="billiards-match-modal-title">Ficha indisponível</h2><p>' + escapeHtml(message) + '</p><button type="button" data-retry-billiards-match="' + escapeHtml(matchId) + '">Tentar novamente</button></div>';
+    });
   }
 
   function loadFootball(view) {
@@ -264,6 +348,24 @@
     currentSport = validSports.indexOf(requestedSport) !== -1 ? requestedSport : 'futebol'; currentView = validViews.indexOf(requestedView) !== -1 ? requestedView : 'calendario';
     document.querySelectorAll('[data-sport]').forEach(function (button) { button.addEventListener('click', function () { selectSport(button.dataset.sport); }); });
     document.querySelectorAll('[data-view]').forEach(function (button) { button.addEventListener('click', function () { selectView(button.dataset.view); }); });
+    document.addEventListener('click', function (event) {
+      var matchButton = event.target.closest('[data-billiards-match-id]');
+      if (matchButton) { openBilliardsMatchModal(matchButton.dataset.billiardsMatchId, matchButton); return; }
+      var retryButton = event.target.closest('[data-retry-billiards-match]');
+      if (retryButton) openBilliardsMatchModal(retryButton.dataset.retryBilliardsMatch, lastBilliardsMatchTrigger);
+      if (event.target.closest('[data-close-billiards-match]')) closeBilliardsMatchModal();
+    });
+    document.addEventListener('keydown', function (event) {
+      var modal = document.getElementById('billiards-match-modal');
+      if (!modal || modal.hidden) return;
+      if (event.key === 'Escape') { closeBilliardsMatchModal(); return; }
+      if (event.key !== 'Tab') return;
+      var focusable = Array.prototype.slice.call(modal.querySelectorAll('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'));
+      if (!focusable.length) return;
+      var first = focusable[0]; var last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
     selectSport(currentSport, false);
   });
 }());

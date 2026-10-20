@@ -17,7 +17,7 @@
   <link rel="icon" type="image/png" href="images/leca.png" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="design-system.css" />
-  <link rel="stylesheet" href="competicoes.css?v=20261019-2" />
+  <link rel="stylesheet" href="competicoes.css?v=20261020-1" />
 </head>
 <body data-design-mode="institutional" data-page="competitions">
   <div class="min-h-screen flex flex-col px-4 py-12">
@@ -154,6 +154,16 @@
     </footer>
     </div>
 
-    <script src="competicoes.js?v=20261019-2"></script>
+    <div id="billiards-match-modal" class="billiards-match-modal" hidden>
+      <div class="billiards-match-modal__backdrop" data-close-billiards-match></div>
+      <section class="billiards-match-modal__panel" role="dialog" aria-modal="true" aria-labelledby="billiards-match-modal-title" tabindex="-1">
+        <button class="billiards-match-modal__close" type="button" data-close-billiards-match aria-label="Fechar detalhe do jogo">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+        <div id="billiards-match-detail"></div>
+      </section>
+    </div>
+
+    <script src="competicoes.js?v=20261020-1"></script>
   </body>
 </html>
