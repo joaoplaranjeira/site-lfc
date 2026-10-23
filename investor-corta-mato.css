@@ -60,9 +60,11 @@
 .cm-media-expand { position: absolute; top: .8rem; right: .8rem; display: inline-flex; align-items: center; gap: .45rem; padding: .52rem .72rem; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; background: rgba(1,15,12,.74); color: rgba(255,255,255,.85); font-size: .58rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; box-shadow: 0 10px 28px rgba(0,0,0,.28); backdrop-filter: blur(12px); }
 .cm-media-expand--dark { background: rgba(1,15,12,.82); }
 .cm-route-visual figcaption, .cm-shirt-visual figcaption { padding: .85rem .7rem .35rem; color: var(--ir-faint); font-size: .62rem; line-height: 1.55; }
-.cm-race-grid { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: .8rem; margin-top: 3rem; }
+.cm-race-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .8rem; margin-top: 3rem; }
 .cm-race-card { position: relative; min-height: 330px; padding: 1.6rem; overflow: hidden; border: 1px solid var(--ir-line); border-radius: 1.2rem; background: linear-gradient(155deg, rgba(94,207,177,.08), rgba(255,255,255,.015)); }
 .cm-race-card--elite { background: radial-gradient(circle at 80% 18%, rgba(94,207,177,.2), transparent 24%), linear-gradient(145deg, #0b392f, #031410); }
+.cm-race-card--school { grid-column: 1 / -1; min-height: 250px; background: radial-gradient(circle at 88% 22%, rgba(94,207,177,.2), transparent 24%), linear-gradient(145deg, rgba(5,107,87,.45), #031410); }
+.cm-race-card--school h3 { margin-top: 6rem; }
 .cm-race-card > span { color: var(--ir-mint); font-size: .62rem; font-weight: 700; letter-spacing: .12em; }
 .cm-race-card > i { position: absolute; top: 1.5rem; right: 1.5rem; color: rgba(94,207,177,.35); font-size: 2.4rem; }
 .cm-race-card h3 { margin: 10rem 0 .7rem; font-size: clamp(1.3rem, 2.2vw, 2rem); letter-spacing: -.035em; }
@@ -116,6 +118,7 @@
 @media (max-width: 900px) {
   .cm-hero-art { right: -4rem; opacity: .45; }
   .cm-race-grid { grid-template-columns: 1fr; }
+  .cm-race-card--school { grid-column: auto; }
   .cm-race-card { min-height: 260px; }
   .cm-race-card h3 { margin-top: 6rem; }
   .cm-visibility-grid, .cm-package-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
