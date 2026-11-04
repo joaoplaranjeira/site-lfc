@@ -219,10 +219,24 @@ body[data-page="event-voting"]::before {
   transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.nominee-card:hover {
+.nominee-card-shell {
+  position: relative;
+  min-width: 0;
+  transition: transform 0.25s ease;
+}
+
+.nominee-card-shell:hover {
   transform: translateY(-4px);
+}
+
+.nominee-card-shell:hover .nominee-card {
   border-color: rgba(214, 174, 99, 0.5);
   box-shadow: 0 22px 48px rgba(0, 0, 0, 0.28);
+}
+
+.nominee-card-shell .nominee-card {
+  width: 100%;
+  height: 100%;
 }
 
 .nominee-card[aria-checked="true"] {
@@ -285,6 +299,35 @@ body[data-page="event-voting"]::before {
   border-color: var(--vote-gold);
   color: var(--vote-forest);
   background: var(--vote-gold);
+}
+
+.nominee-card__zoom {
+  position: absolute;
+  z-index: 3;
+  top: 0.8rem;
+  left: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  color: #fff;
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(1, 15, 12, 0.62);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  cursor: zoom-in;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.nominee-card__zoom:hover,
+.nominee-card__zoom:focus-visible {
+  border-color: var(--vote-gold-soft);
+  background: rgba(1, 39, 31, 0.9);
 }
 
 .nominee-card__body {
@@ -557,6 +600,51 @@ body[data-page="event-voting"] .otp-modal input {
   width: 100%;
 }
 
+.nominee-image-modal {
+  padding: clamp(0.65rem, 2vw, 1.5rem);
+}
+
+.nominee-image-modal__dialog {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(100%, 72rem);
+  max-height: calc(100vh - 1.3rem);
+  max-height: calc(100dvh - 1.3rem);
+  overflow: hidden;
+  border: 1px solid rgba(214, 174, 99, 0.3);
+  border-radius: clamp(1rem, 2vw, 1.5rem);
+  color: #fff;
+  background: #00110d;
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.68);
+}
+
+.nominee-image-modal__dialog img {
+  width: 100%;
+  max-height: calc(100vh - 5.5rem);
+  max-height: calc(100dvh - 5.5rem);
+  object-fit: contain;
+  background: #000906;
+}
+
+.nominee-image-modal__dialog figcaption {
+  padding: 0.9rem 3.5rem 0.95rem 1.1rem;
+  overflow: hidden;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nominee-image-modal__close {
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  color: #fff;
+  background: rgba(0, 9, 6, 0.76);
+  backdrop-filter: blur(8px);
+}
+
 body.modal-open { overflow: hidden; }
 
 @media (max-width: 720px) {
@@ -575,9 +663,21 @@ body.modal-open { overflow: hidden; }
   .nominee-card__description { display: block; }
 }
 
+@media (max-width: 480px) {
+  .nominee-card__zoom span { display: none; }
+  .nominee-card__zoom {
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    justify-content: center;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nominee-card,
+  .nominee-card-shell,
   .nominee-card__media img,
+  .nominee-card__zoom,
   .vote-panel__controls button,
   .otp-modal form button { transition: none; }
 }

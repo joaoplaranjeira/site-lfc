@@ -128,6 +128,17 @@
     </div>
   </div>
 
-  <script src="evento-votacao.js?v=20261104"></script>
+  <div id="nominee-image-modal" class="otp-modal nominee-image-modal hidden" role="dialog" aria-modal="true" aria-labelledby="nominee-image-caption">
+    <div class="otp-modal__backdrop"></div>
+    <figure class="nominee-image-modal__dialog">
+      <button id="close-nominee-image-modal" class="otp-modal__close nominee-image-modal__close" type="button" aria-label="Fechar fotografia ampliada">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <img id="nominee-image-large" alt="" />
+      <figcaption id="nominee-image-caption"></figcaption>
+    </figure>
+  </div>
+
+  <script src="evento-votacao.js?v=20261104-2"></script>
 </body>
 </html>

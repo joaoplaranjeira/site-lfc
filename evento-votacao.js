@@ -131,11 +131,13 @@
   }
 
   function buildNomineeCard(nominee) {
+    const shell = document.createElement('div');
     const card = document.createElement('button');
     const media = document.createElement('span');
     const check = document.createElement('span');
     const body = document.createElement('span');
 
+    shell.className = 'nominee-card-shell';
     card.type = 'button';
     card.className = 'nominee-card';
     card.dataset.nomineeId = nominee.id;
@@ -147,6 +149,9 @@
     media.className = 'nominee-card__media';
     if (nominee.imageUrl) {
       const image = document.createElement('img');
+      const zoomButton = document.createElement('button');
+      const zoomLabel = document.createElement('span');
+
       image.src = nominee.imageUrl;
       image.alt = `Retrato de ${nominee.name}`;
       image.loading = 'lazy';
@@ -155,8 +160,18 @@
         placeholder.className = 'nominee-card__placeholder';
         placeholder.appendChild(makeIcon('fa-solid fa-user'));
         image.replaceWith(placeholder);
+        zoomButton.remove();
       }, { once: true });
       media.appendChild(image);
+
+      zoomButton.type = 'button';
+      zoomButton.className = 'nominee-card__zoom';
+      zoomButton.setAttribute('aria-label', `Ampliar fotografia de ${nominee.name}`);
+      zoomButton.appendChild(makeIcon('fa-solid fa-expand'));
+      zoomLabel.textContent = 'Ampliar';
+      zoomButton.appendChild(zoomLabel);
+      zoomButton.addEventListener('click', () => openNomineeImageModal(nominee));
+      shell.appendChild(zoomButton);
     } else {
       const placeholder = document.createElement('span');
       placeholder.className = 'nominee-card__placeholder';
@@ -188,7 +203,8 @@
     }
 
     card.append(media, body);
-    return card;
+    shell.prepend(card);
+    return shell;
   }
 
   function renderCategory() {
@@ -287,6 +303,24 @@
 
   function closeVoteErrorModal() {
     byId('vote-error-modal').classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    if (state.lastFocusedElement) state.lastFocusedElement.focus();
+  }
+
+  function openNomineeImageModal(nominee) {
+    state.lastFocusedElement = document.activeElement;
+    const image = byId('nominee-image-large');
+    image.src = nominee.imageUrl;
+    image.alt = `Fotografia ampliada de ${nominee.name}`;
+    byId('nominee-image-caption').textContent = nominee.name;
+    byId('nominee-image-modal').classList.remove('hidden');
+    document.body.classList.add('modal-open');
+    window.setTimeout(() => byId('close-nominee-image-modal').focus(), 0);
+  }
+
+  function closeNomineeImageModal() {
+    byId('nominee-image-modal').classList.add('hidden');
+    byId('nominee-image-large').removeAttribute('src');
     document.body.classList.remove('modal-open');
     if (state.lastFocusedElement) state.lastFocusedElement.focus();
   }
@@ -438,9 +472,15 @@
     byId('vote-error-modal').addEventListener('click', event => {
       if (event.target.classList.contains('otp-modal__backdrop')) closeVoteErrorModal();
     });
+    byId('close-nominee-image-modal').addEventListener('click', closeNomineeImageModal);
+    byId('nominee-image-modal').addEventListener('click', event => {
+      if (event.target.classList.contains('otp-modal__backdrop')) closeNomineeImageModal();
+    });
     document.addEventListener('keydown', event => {
       if (event.key !== 'Escape') return;
-      if (!byId('vote-error-modal').classList.contains('hidden')) {
+      if (!byId('nominee-image-modal').classList.contains('hidden')) {
+        closeNomineeImageModal();
+      } else if (!byId('vote-error-modal').classList.contains('hidden')) {
         closeVoteErrorModal();
       } else if (!byId('otp-modal').classList.contains('hidden')) {
         closeOtpModal();
