@@ -530,6 +530,13 @@ body[data-page="event-voting"] .vote-panel input {
 .otp-modal form { display: grid; gap: 0.75rem; }
 .otp-modal form label { color: rgba(255, 255, 255, 0.55); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 
+.otp-modal form > input,
+.otp-modal form > button {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
 body[data-page="event-voting"] .otp-modal input {
   min-height: 3.4rem;
   color: #fff;
@@ -538,6 +545,16 @@ body[data-page="event-voting"] .otp-modal input {
   letter-spacing: 0.35em;
   text-align: center;
   background: rgba(255, 255, 255, 0.08);
+}
+
+.vote-error-modal__icon {
+  border-color: rgba(251, 113, 133, 0.42);
+  color: #fda4af;
+  background: rgba(159, 18, 57, 0.14);
+}
+
+.vote-error-modal__action {
+  width: 100%;
 }
 
 body.modal-open { overflow: hidden; }

@@ -102,6 +102,12 @@ Se o evento já tiver `registration.eventCode`, o mesmo código é reutilizado a
 
 `GET /api/EventVoting/public/event/{eventCode}`
 
+Cada nomeado deve incluir `imageUrl` com um URL absoluto e público da imagem
+(por exemplo, um URL HTTPS da Cloudinary). O site atribui esse valor diretamente
+ao `src` da imagem; este endpoint não deve enviar o ficheiro binário nem Base64.
+Quando `imageUrl` é nulo, vazio ou não pode ser carregado, é apresentado o ícone
+de substituição.
+
 ### Pedir OTP para o voto
 
 `POST /api/EventVoting/public/request-otp`

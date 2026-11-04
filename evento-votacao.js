@@ -4,6 +4,7 @@
   const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
     ? ''
     : 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';
+  const ALREADY_VOTED_MESSAGE = 'Este email já foi utilizado para votar nesta categoria.';
   const state = {
     eventCode: '',
     voting: null,
@@ -34,7 +35,9 @@
     if (!message) return fallback;
 
     const normalized = message.toLowerCase();
-    if (normalized.includes('already voted')) return 'Este email já foi utilizado para votar nesta categoria.';
+    if (normalized.includes('already voted') || normalized.includes('já votou') || normalized.includes('ja votou')) {
+      return ALREADY_VOTED_MESSAGE;
+    }
     if (normalized.includes('not found or expired') || normalized.includes('otp expired')) return 'O código expirou. Fecha esta janela e pede um novo código.';
     if (normalized.includes('invalid otp')) return 'O código introduzido não é válido.';
     if (normalized.includes('maximum otp attempts')) return 'Foi atingido o número máximo de tentativas. Pede um novo código.';
@@ -274,6 +277,20 @@
     if (state.lastFocusedElement) state.lastFocusedElement.focus();
   }
 
+  function openVoteErrorModal(message) {
+    state.lastFocusedElement = document.activeElement;
+    byId('vote-error-message').textContent = message;
+    byId('vote-error-modal').classList.remove('hidden');
+    document.body.classList.add('modal-open');
+    window.setTimeout(() => byId('close-vote-error-modal').focus(), 0);
+  }
+
+  function closeVoteErrorModal() {
+    byId('vote-error-modal').classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    if (state.lastFocusedElement) state.lastFocusedElement.focus();
+  }
+
   async function handleRequestOtp(event) {
     event.preventDefault();
     setFormError('vote-form-error', '');
@@ -301,7 +318,12 @@
       state.otpRequestId = result.otpRequestId;
       openOtpModal(result.email || emailInput.value.trim(), result.expiresInMinutes);
     } catch (error) {
-      setFormError('vote-form-error', error.message || 'Não foi possível enviar o código.');
+      const message = error.message || 'Não foi possível enviar o código.';
+      if (message === ALREADY_VOTED_MESSAGE) {
+        openVoteErrorModal(message);
+      } else {
+        setFormError('vote-form-error', message);
+      }
     } finally {
       setButtonLoading('request-vote-otp-btn', false, 'A enviar código...');
     }
@@ -411,8 +433,18 @@
     byId('otp-modal').addEventListener('click', event => {
       if (event.target.classList.contains('otp-modal__backdrop')) closeOtpModal();
     });
+    byId('close-vote-error-modal').addEventListener('click', closeVoteErrorModal);
+    byId('close-vote-error-action').addEventListener('click', closeVoteErrorModal);
+    byId('vote-error-modal').addEventListener('click', event => {
+      if (event.target.classList.contains('otp-modal__backdrop')) closeVoteErrorModal();
+    });
     document.addEventListener('keydown', event => {
-      if (event.key === 'Escape' && !byId('otp-modal').classList.contains('hidden')) closeOtpModal();
+      if (event.key !== 'Escape') return;
+      if (!byId('vote-error-modal').classList.contains('hidden')) {
+        closeVoteErrorModal();
+      } else if (!byId('otp-modal').classList.contains('hidden')) {
+        closeOtpModal();
+      }
     });
     loadVoting();
   });

@@ -114,6 +114,20 @@
     </div>
   </div>
 
-  <script src="evento-votacao.js?v=20261004"></script>
+  <div id="vote-error-modal" class="otp-modal hidden" role="alertdialog" aria-modal="true" aria-labelledby="vote-error-title" aria-describedby="vote-error-message">
+    <div class="otp-modal__backdrop"></div>
+    <div class="otp-modal__dialog">
+      <button id="close-vote-error-modal" class="otp-modal__close" type="button" aria-label="Fechar aviso">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+      <span class="otp-modal__icon vote-error-modal__icon"><i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i></span>
+      <p class="voting-kicker"><span></span> Voto não registado <span></span></p>
+      <h2 id="vote-error-title">Não foi possível continuar</h2>
+      <p id="vote-error-message" class="otp-modal__info"></p>
+      <button id="close-vote-error-action" class="vote-error-modal__action voting-primary-action" type="button">Fechar</button>
+    </div>
+  </div>
+
+  <script src="evento-votacao.js?v=20261104"></script>
 </body>
 </html>
