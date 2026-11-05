@@ -202,6 +202,66 @@ body[data-page="event-voting"]::before {
   gap: clamp(1rem, 2.5vw, 1.5rem);
 }
 
+.nominees-grid--revealed {
+  animation: nominees-reveal 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.nominees-loading {
+  display: grid;
+  min-height: clamp(16rem, 42vw, 26rem);
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  color: rgba(255, 255, 255, 0.52);
+  text-align: center;
+}
+
+.nominees-loading__mark {
+  position: relative;
+  display: grid;
+  width: 3.35rem;
+  height: 3.35rem;
+  place-items: center;
+  border: 1px solid rgba(214, 174, 99, 0.18);
+  border-radius: 50%;
+  background: rgba(214, 174, 99, 0.035);
+}
+
+.nominees-loading__mark::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 1px solid transparent;
+  border-top-color: var(--vote-gold);
+  border-radius: inherit;
+  animation: nominees-loading-spin 1.15s linear infinite;
+}
+
+.nominees-loading__mark span {
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 1px solid rgba(242, 223, 184, 0.75);
+  transform: rotate(45deg);
+  background: rgba(214, 174, 99, 0.12);
+}
+
+.nominees-loading p {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+@keyframes nominees-loading-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes nominees-reveal {
+  from { opacity: 0; transform: translateY(0.65rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .nominee-card {
   position: relative;
   display: flex;
@@ -266,8 +326,11 @@ body[data-page="event-voting"]::before {
   height: 100%;
   object-fit: contain;
   object-position: center;
-  transition: transform 0.5s ease;
+  opacity: 1;
+  transition: transform 0.5s ease, opacity 0.35s ease;
 }
+
+.nominee-card__media img.nominee-card__image--pending { opacity: 0; }
 
 .nominee-card:hover .nominee-card__media img { transform: scale(1.025); }
 
@@ -278,6 +341,12 @@ body[data-page="event-voting"]::before {
   place-items: center;
   color: rgba(255, 255, 255, 0.25);
   font-size: clamp(3.4rem, 8vw, 5rem);
+}
+
+.nominee-card__placeholder--overlay {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
 }
 
 .nominee-card__check {
@@ -681,6 +750,8 @@ body.modal-open { overflow: hidden; }
   .nominee-card__zoom,
   .vote-panel__controls button,
   .otp-modal form button { transition: none; }
+  .nominees-loading__mark::before { animation: none; }
+  .nominees-grid--revealed { animation: none; }
 }
 
 body[data-page="event-voting"] .hidden {

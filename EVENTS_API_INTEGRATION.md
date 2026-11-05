@@ -102,11 +102,38 @@ Se o evento já tiver `registration.eventCode`, o mesmo código é reutilizado a
 
 `GET /api/EventVoting/public/event/{eventCode}`
 
-Cada nomeado deve incluir `imageUrl` com um URL absoluto e público da imagem
-(por exemplo, um URL HTTPS da Cloudinary). O site atribui esse valor diretamente
-ao `src` da imagem; este endpoint não deve enviar o ficheiro binário nem Base64.
-Quando `imageUrl` é nulo, vazio ou não pode ser carregado, é apresentado o ícone
-de substituição.
+As fotografias são guardadas num bucket privado Cloudflare R2. Cada nomeado
+indica a disponibilidade da fotografia através de `hasImage` e, quando existe,
+inclui `imageUrl`, `imageFileName` e `imageMimeType`. O `imageUrl` aponta para o
+endpoint público abaixo e deve usar HTTPS:
+
+`GET /api/EventVoting/public/nominees/{nomineeId}/image`
+
+Este endpoint devolve diretamente os bytes da fotografia com o respetivo
+`Content-Type` (`image/jpeg`, `image/png` ou `image/webp`). Não devolve JSON nem
+Base64. No site público, o endereço pode ser atribuído diretamente ao `src` da
+imagem; o browser obtém o conteúdo binário. Quando `hasImage` é falso, o URL é
+nulo, ou a imagem não pode ser carregada, é apresentado o ícone de substituição.
+
+Ao mudar de categoria, o site aguarda no máximo cinco segundos pelo conjunto de
+fotografias. Depois apresenta os cartões com placeholders nas imagens em falta;
+essas fotografias continuam a carregar e são reveladas individualmente quando
+ficarem disponíveis.
+
+Se o carregamento inicial da votação responder com `429 Too Many Requests`, a
+página mantém o estado de carregamento e repete o pedido com espera progressiva,
+até 30 segundos entre tentativas. Quando existir, o cabeçalho `Retry-After` da
+API tem prioridade sobre esse intervalo.
+
+### Convite de votação na página inicial
+
+A página inicial consulta `GET /api/Event/public/code/GALA-DESPORTO-2026` e
+apresenta um convite flutuante apenas quando o evento está publicado,
+`isVotingActive` é verdadeiro e a data atual está entre `votingStartDateTime` e
+`votingEndDateTime`. O convite encaminha para
+`/evento-votacao?code=GALA-DESPORTO-2026` e fecha automaticamente após cinco
+segundos, sem redirecionar o utilizador. Falhas da API não são apresentadas na
+página; perante `429`, são feitas no máximo duas novas tentativas espaçadas.
 
 ### Pedir OTP para o voto
 

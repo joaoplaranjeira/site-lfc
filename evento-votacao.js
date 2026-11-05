@@ -5,6 +5,7 @@
     ? ''
     : 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';
   const ALREADY_VOTED_MESSAGE = 'Este email já foi utilizado para votar nesta categoria.';
+  const MAX_RATE_LIMIT_RETRY_DELAY_MS = 30000;
   const state = {
     eventCode: '',
     voting: null,
@@ -12,10 +13,24 @@
     selectedNomineeId: '',
     completedCategoryIds: new Set(),
     otpRequestId: '',
-    lastFocusedElement: null
+    lastFocusedElement: null,
+    categoryRenderId: 0
   };
 
   const byId = id => document.getElementById(id);
+
+  function getRateLimitRetryDelay(response, attempt) {
+    const retryAfter = response.headers.get('Retry-After');
+    if (retryAfter) {
+      const seconds = Number(retryAfter);
+      if (Number.isFinite(seconds) && seconds >= 0) return Math.max(1000, seconds * 1000);
+
+      const retryDate = new Date(retryAfter).getTime();
+      if (!Number.isNaN(retryDate)) return Math.max(1000, retryDate - Date.now());
+    }
+
+    return Math.min(2000 * (2 ** attempt), MAX_RATE_LIMIT_RETRY_DELAY_MS);
+  }
 
   function getApiError(result, fallback) {
     if (!result) return fallback;
@@ -61,12 +76,42 @@
       throw new Error('Não foi possível contactar o serviço de votação. Tenta novamente mais tarde.');
     }
 
+    if (response.status === 429) {
+      const error = new Error('O serviço está temporariamente ocupado. Tenta novamente dentro de instantes.');
+      error.code = 'RATE_LIMITED';
+      error.response = response;
+      throw error;
+    }
+
     const result = await response.json().catch(() => null);
     if (!response.ok || !result || result.success !== true) {
       throw new Error(getApiError(result, 'Não foi possível concluir o pedido.'));
     }
 
     return result.content;
+  }
+
+  function getNomineeImageUrl(nominee) {
+    if (!nominee || nominee.hasImage === false) return '';
+
+    if (typeof nominee.imageUrl === 'string' && nominee.imageUrl.trim()) {
+      try {
+        const imageUrl = new URL(nominee.imageUrl.trim(), API_BASE_URL || window.location.origin);
+        if (!['http:', 'https:'].includes(imageUrl.protocol)) throw new Error('Unsupported image URL protocol');
+        if (window.location.protocol === 'https:' && imageUrl.protocol === 'http:') {
+          imageUrl.protocol = 'https:';
+        }
+        return imageUrl.toString();
+      } catch (error) {
+        // Usa a rota pública conhecida quando a API devolver um URL inválido.
+      }
+    }
+
+    if (nominee.hasImage === true && nominee.id) {
+      return `${API_BASE_URL}/api/EventVoting/public/nominees/${encodeURIComponent(nominee.id)}/image`;
+    }
+
+    return '';
   }
 
   function formatVotingPeriod(start, end) {
@@ -88,6 +133,17 @@
     byId('voting-content').classList.add('hidden');
     byId('voting-error-text').textContent = message;
     byId('voting-error').classList.remove('hidden');
+  }
+
+  function showVotingRetryLoading() {
+    byId('voting-error').classList.add('hidden');
+    byId('voting-content').classList.add('hidden');
+    byId('voting-loading').classList.remove('hidden');
+    byId('voting-loading-text').textContent = 'Há muitos acessos neste momento. A aguardar disponibilidade...';
+  }
+
+  function wait(milliseconds) {
+    return new Promise(resolve => window.setTimeout(resolve, milliseconds));
   }
 
   function makeIcon(className) {
@@ -130,12 +186,52 @@
     });
   }
 
-  function buildNomineeCard(nominee) {
+  function preloadNomineeImage(imageUrl) {
+    if (!imageUrl) return Promise.resolve(false);
+
+    return new Promise(resolve => {
+      const image = new Image();
+      let settled = false;
+      const timeout = window.setTimeout(() => settle(false), 5000);
+
+      function settle(loaded) {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timeout);
+        image.onload = null;
+        image.onerror = null;
+        resolve(loaded);
+      }
+
+      image.onload = () => {
+        if (typeof image.decode !== 'function') {
+          settle(true);
+          return;
+        }
+        image.decode().then(() => settle(true)).catch(() => settle(true));
+      };
+      image.onerror = () => settle(false);
+      image.src = imageUrl;
+    });
+  }
+
+  async function preloadNomineeImages(nominees) {
+    const entries = await Promise.all(nominees.map(async nominee => {
+      const imageUrl = getNomineeImageUrl(nominee);
+      const loaded = await preloadNomineeImage(imageUrl);
+      return [nominee.id, { imageUrl, loaded }];
+    }));
+    return new Map(entries);
+  }
+
+  function buildNomineeCard(nominee, imageState) {
     const shell = document.createElement('div');
     const card = document.createElement('button');
     const media = document.createElement('span');
     const check = document.createElement('span');
     const body = document.createElement('span');
+    const imageUrl = imageState ? imageState.imageUrl : '';
+    const imageLoaded = Boolean(imageState && imageState.loaded);
 
     shell.className = 'nominee-card-shell';
     card.type = 'button';
@@ -147,30 +243,53 @@
     card.addEventListener('click', () => selectNominee(nominee.id));
 
     media.className = 'nominee-card__media';
-    if (nominee.imageUrl) {
+    if (imageUrl) {
       const image = document.createElement('img');
       const zoomButton = document.createElement('button');
       const zoomLabel = document.createElement('span');
+      let placeholder = null;
 
-      image.src = nominee.imageUrl;
-      image.alt = `Retrato de ${nominee.name}`;
-      image.loading = 'lazy';
-      image.addEventListener('error', () => {
-        const placeholder = document.createElement('span');
-        placeholder.className = 'nominee-card__placeholder';
+      function ensurePlaceholder() {
+        if (placeholder) return;
+        placeholder = document.createElement('span');
+        placeholder.className = 'nominee-card__placeholder nominee-card__placeholder--overlay';
         placeholder.appendChild(makeIcon('fa-solid fa-user'));
-        image.replaceWith(placeholder);
+        media.appendChild(placeholder);
+      }
+
+      image.alt = `Retrato de ${nominee.name}`;
+      image.loading = 'eager';
+      image.decoding = 'async';
+      image.classList.toggle('nominee-card__image--pending', !imageLoaded);
+      image.addEventListener('load', () => {
+        const reveal = () => {
+          if (placeholder) placeholder.remove();
+          image.classList.remove('nominee-card__image--pending');
+          zoomButton.classList.remove('hidden');
+        };
+        if (typeof image.decode === 'function') {
+          image.decode().then(reveal).catch(reveal);
+        } else {
+          reveal();
+        }
+      }, { once: true });
+      image.addEventListener('error', () => {
+        image.remove();
+        ensurePlaceholder();
         zoomButton.remove();
       }, { once: true });
+      image.src = imageUrl;
       media.appendChild(image);
+      if (!imageLoaded) ensurePlaceholder();
 
       zoomButton.type = 'button';
       zoomButton.className = 'nominee-card__zoom';
+      zoomButton.classList.toggle('hidden', !imageLoaded);
       zoomButton.setAttribute('aria-label', `Ampliar fotografia de ${nominee.name}`);
       zoomButton.appendChild(makeIcon('fa-solid fa-expand'));
       zoomLabel.textContent = 'Ampliar';
       zoomButton.appendChild(zoomLabel);
-      zoomButton.addEventListener('click', () => openNomineeImageModal(nominee));
+      zoomButton.addEventListener('click', () => openNomineeImageModal(nominee, imageUrl));
       shell.appendChild(zoomButton);
     } else {
       const placeholder = document.createElement('span');
@@ -207,17 +326,21 @@
     return shell;
   }
 
-  function renderCategory() {
+  async function renderCategory() {
     const category = getActiveCategory();
     const completed = state.completedCategoryIds.has(category.id);
+    const renderId = state.categoryRenderId + 1;
+    state.categoryRenderId = renderId;
 
     byId('category-counter').textContent = `Categoria ${state.activeCategoryIndex + 1} de ${state.voting.categories.length}`;
     byId('category-title').textContent = category.name;
     byId('category-description').textContent = category.description || 'Escolhe o nomeado que queres distinguir nesta categoria.';
 
     const grid = byId('nominees-grid');
+    const loading = byId('nominees-loading');
     grid.replaceChildren();
-    category.nominees.forEach(nominee => grid.appendChild(buildNomineeCard(nominee)));
+    grid.classList.add('hidden');
+    grid.classList.remove('nominees-grid--revealed');
 
     if (completed) {
       const message = document.createElement('div');
@@ -227,12 +350,31 @@
       text.textContent = 'O teu voto nesta categoria já foi registado.';
       message.appendChild(text);
       grid.replaceChildren(message);
+      loading.classList.add('hidden');
+      grid.classList.remove('hidden');
+    } else {
+      loading.classList.remove('hidden');
     }
 
     byId('vote-form').classList.add('hidden');
     setFormError('vote-form-error', '');
     state.selectedNomineeId = '';
     renderCategoryNavigation();
+
+    if (completed) return;
+
+    const [imageStates] = await Promise.all([
+      preloadNomineeImages(category.nominees),
+      wait(280)
+    ]);
+    if (renderId !== state.categoryRenderId) return;
+
+    category.nominees.forEach(nominee => {
+      grid.appendChild(buildNomineeCard(nominee, imageStates.get(nominee.id)));
+    });
+    loading.classList.add('hidden');
+    grid.classList.remove('hidden');
+    window.requestAnimationFrame(() => grid.classList.add('nominees-grid--revealed'));
   }
 
   function showCategory(index) {
@@ -307,10 +449,10 @@
     if (state.lastFocusedElement) state.lastFocusedElement.focus();
   }
 
-  function openNomineeImageModal(nominee) {
+  function openNomineeImageModal(nominee, imageUrl) {
     state.lastFocusedElement = document.activeElement;
     const image = byId('nominee-image-large');
-    image.src = nominee.imageUrl;
+    image.src = imageUrl;
     image.alt = `Fotografia ampliada de ${nominee.name}`;
     byId('nominee-image-caption').textContent = nominee.name;
     byId('nominee-image-modal').classList.remove('hidden');
@@ -444,11 +586,26 @@
       return;
     }
 
-    try {
-      const voting = await apiRequest(`/api/EventVoting/public/event/${encodeURIComponent(state.eventCode)}`);
-      renderVoting(voting);
-    } catch (error) {
-      showPageError(error.message || 'A votação não está disponível neste momento.');
+    let rateLimitAttempt = 0;
+    while (true) {
+      try {
+        const voting = await apiRequest(
+          `/api/EventVoting/public/event/${encodeURIComponent(state.eventCode)}`,
+          { cache: 'no-store' }
+        );
+        renderVoting(voting);
+        return;
+      } catch (error) {
+        if (error.code !== 'RATE_LIMITED') {
+          showPageError(error.message || 'A votação não está disponível neste momento.');
+          return;
+        }
+
+        const retryDelay = getRateLimitRetryDelay(error.response, rateLimitAttempt);
+        rateLimitAttempt += 1;
+        showVotingRetryLoading();
+        await wait(retryDelay);
+      }
     }
   }
 

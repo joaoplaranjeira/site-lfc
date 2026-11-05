@@ -34,98 +34,96 @@
   });
 })();
 
-// Popup Final Jamor – Final no Jamor (10 Jun 2026)
+// Convite para a votação da Gala do Desporto 2026, exclusivo da página inicial.
 (function () {
-  // Mostrar apenas nos dias 9 e 10 de junho de 2026
-  var today = new Date(); today.setHours(0, 0, 0, 0);
-  var showFrom  = new Date('2026-06-09'); showFrom.setHours(0, 0, 0, 0);
-  var showUntil = new Date('2026-06-11'); showUntil.setHours(0, 0, 0, 0);
+  'use strict';
 
-  var popup    = document.getElementById('jamor-popup');
+  const EVENT_CODE = 'GALA-DESPORTO-2026';
+  const DISPLAY_DURATION_MS = 5000;
+  const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
+    ? ''
+    : 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';
+  const popup = document.getElementById('event-voting-popup');
   if (!popup) return;
 
-  if (today < showFrom || today >= showUntil) {
-    return;
+  const closeButton = document.getElementById('event-voting-popup-close');
+  const cta = document.getElementById('event-voting-popup-cta');
+  const eventLabel = popup.querySelector('.event-voting-popup__event');
+  let closeTimer = null;
+  let closing = false;
+
+  function wait(milliseconds) {
+    return new Promise(resolve => window.setTimeout(resolve, milliseconds));
   }
 
-  popup.hidden = false;
-  popup.classList.remove('hidden');
-  popup.setAttribute('aria-hidden', 'false');
+  function isVotingOpen(event) {
+    if (!event || event.isVotingActive !== true) return false;
+    if (typeof event.status === 'string' && event.status.toLowerCase() !== 'published') return false;
 
-  var closeBtn = document.getElementById('jamor-close');
-  var ctaBtn   = document.getElementById('jamor-cta');
-  var countEl  = document.getElementById('jamor-countdown');
-  var progEl   = document.getElementById('jamor-progress');
+    const now = Date.now();
+    const start = event.votingStartDateTime ? new Date(event.votingStartDateTime).getTime() : Number.NaN;
+    const end = event.votingEndDateTime ? new Date(event.votingEndDateTime).getTime() : Number.NaN;
+    if (!Number.isNaN(start) && now < start) return false;
+    if (!Number.isNaN(end) && now > end) return false;
+    return true;
+  }
 
-  var DURATION   = 20;
-  var remaining  = DURATION;
-  var timer      = null;
+  async function getEvent() {
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/api/Event/public/code/${encodeURIComponent(EVENT_CODE)}`,
+          { cache: 'no-store', headers: { Accept: 'application/json' } }
+        );
+        if (response.status === 429 && attempt < 2) {
+          await wait(1000 * (attempt + 1));
+          continue;
+        }
+        if (!response.ok) return null;
+
+        const result = await response.json().catch(() => null);
+        return result && result.success === true ? result.content : null;
+      } catch (error) {
+        return null;
+      }
+    }
+    return null;
+  }
 
   function closePopup() {
-    clearInterval(timer);
-    popup.classList.add('hidden');
-    popup.hidden = true;
+    if (closing || popup.hidden) return;
+    closing = true;
+    window.clearTimeout(closeTimer);
+    popup.classList.remove('is-visible');
     popup.setAttribute('aria-hidden', 'true');
+    window.setTimeout(() => {
+      popup.hidden = true;
+    }, 450);
   }
 
-  function tick() {
-    remaining--;
-    if (remaining <= 0) {
-      countEl.textContent = '0';
-      progEl.style.width  = '0%';
-      closePopup();
-      return;
-    }
-    countEl.textContent = remaining;
-    progEl.style.width  = (remaining / DURATION * 100) + '%';
+  function showPopup(event) {
+    if (event.name) eventLabel.textContent = event.name;
+    popup.hidden = false;
+    popup.setAttribute('aria-hidden', 'false');
+    window.requestAnimationFrame(() => popup.classList.add('is-visible'));
+    closeTimer = window.setTimeout(closePopup, DISPLAY_DURATION_MS);
   }
 
-  timer = setInterval(tick, 1000);
-
-  closeBtn.addEventListener('click', closePopup);
-
-  ctaBtn.addEventListener('click', function () {
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'jamor_popup_cta_click', {
+  closeButton.addEventListener('click', closePopup);
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !popup.hidden) closePopup();
+  });
+  cta.addEventListener('click', () => {
+    window.clearTimeout(closeTimer);
+    if (typeof gtag === 'function') {
+      gtag('event', 'event_voting_popup_click', {
         event_category: 'engagement',
-        event_label: 'Tornar-me Sócio – Final Jamor'
+        event_label: EVENT_CODE
       });
     }
-    closePopup();
+  });
+
+  getEvent().then(event => {
+    if (isVotingOpen(event)) showPopup(event);
   });
 })();
-
-// Old popup disabled
-/*
-(function(){
-  const e="https://lecafc.pt",t=10;
-  let n,o=null,c=!1;
-  const d=document.getElementById("countdown"),
-        l=document.getElementById("progress"),
-        r=document.getElementById("popup"),
-        s=document.getElementById("stayBtn"),
-        i=document.getElementById("goBtn");
-  
-  function u(){
-    c||(n-=1,n<0&&(n=0),d.textContent=n,l.style.width=n/t*100+"%",0===n&&(a(),window.location.href=e))
-  }
-  
-  function f(){
-    c=!1,n=t,d.textContent=n,l.style.width="100%",r.classList.remove("hidden"),o&&clearInterval(o),o=setInterval(u,1e3)
-  }
-  
-  function a(){
-    o&&(clearInterval(o),o=null)
-  }
-  
-  s.addEventListener("click",(()=>{c=!0,a(),r.classList.add("hidden")})),
-  i.addEventListener("click",(()=>{window.location.href=e})),
-  f(),
-  window.addEventListener("pageshow",(t=>{
-    const n=performance.getEntriesByType&&performance.getEntriesByType("navigation"),
-          o=t.persisted||n&&n[0]&&"back_forward"===n[0].type;
-    o&&f()
-  })),
-  window.addEventListener("pagehide",a)
-})();
-*/
