@@ -39,7 +39,7 @@
   'use strict';
 
   const EVENT_CODE = 'GALA-DESPORTO-2026';
-  const DISPLAY_DURATION_MS = 5000;
+  const DISPLAY_DURATION_MS = 10000;
   const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
     ? ''
     : 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';

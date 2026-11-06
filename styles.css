@@ -31,11 +31,13 @@ body {
 .event-voting-popup {
   position: fixed;
   z-index: 80;
-  right: clamp(1rem, 3vw, 2.25rem);
-  bottom: clamp(1rem, 3vw, 2.25rem);
+  top: 50%;
+  left: 50%;
   width: min(calc(100vw - 2rem), 28rem);
+  max-height: calc(100dvh - 2rem);
   padding: 1.25rem;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   border: 1px solid rgba(214, 174, 99, 0.38);
   border-radius: 1.5rem;
   color: #fff;
@@ -43,7 +45,7 @@ body {
     linear-gradient(145deg, rgba(3, 70, 56, 0.97), rgba(1, 23, 19, 0.98));
   box-shadow: 0 28px 80px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(255, 255, 255, 0.035) inset;
   opacity: 0;
-  transform: translateY(1.25rem) scale(0.97);
+  transform: translate(-50%, calc(-50% + 1.25rem)) scale(0.97);
   pointer-events: none;
   backdrop-filter: blur(20px);
   transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -51,7 +53,7 @@ body {
 
 .event-voting-popup.is-visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translate(-50%, -50%) scale(1);
   pointer-events: auto;
 }
 
@@ -201,7 +203,7 @@ body {
   height: 100%;
   transform-origin: left;
   background: linear-gradient(90deg, #f2dfb8, #d6ae63);
-  animation: event-voting-progress 5s linear forwards;
+  animation: event-voting-progress 10s linear forwards;
 }
 
 @keyframes event-voting-pulse {
@@ -215,9 +217,8 @@ body {
 
 @media (max-width: 520px) {
   .event-voting-popup {
-    right: 0.75rem;
-    bottom: max(0.75rem, env(safe-area-inset-bottom));
     width: calc(100vw - 1.5rem);
+    max-height: calc(100dvh - 1.5rem);
     padding: 1.1rem;
     border-radius: 1.25rem;
   }
