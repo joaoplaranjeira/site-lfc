@@ -121,9 +121,13 @@ essas fotografias continuam a carregar e são reveladas individualmente quando
 ficarem disponíveis.
 
 Se o carregamento inicial da votação responder com `429 Too Many Requests`, a
-página mantém o estado de carregamento e repete o pedido com espera progressiva,
-até 30 segundos entre tentativas. Quando existir, o cabeçalho `Retry-After` da
-API tem prioridade sobre esse intervalo.
+página mantém o estado de carregamento, apresenta uma contagem decrescente de
+20 segundos e repete o pedido com espera progressiva. Quando existir, o
+cabeçalho `Retry-After` da API tem prioridade, limitado ao tempo restante. Se o
+serviço não recuperar, a página é recarregada automaticamente uma única vez. O
+estado da entrada atual do histórico impede ciclos de recarregamento durante
+dois minutos; se a limitação persistir, é apresentado um erro com uma ação
+manual para tentar novamente.
 
 ### Convite de votação na página inicial
 

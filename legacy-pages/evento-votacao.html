@@ -43,11 +43,16 @@
         <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
         <h2>Não foi possível abrir a votação</h2>
         <p id="voting-error-text"></p>
+        <button id="voting-retry-button" class="voting-secondary-action" type="button">Tentar novamente</button>
         <a href="/eventos" class="voting-secondary-action">Voltar aos eventos</a>
       </section>
 
       <div id="voting-content" class="hidden">
         <nav id="category-navigation" class="category-navigation" aria-label="Categorias da votação"></nav>
+        <p id="category-navigation-hint" class="category-navigation-hint">
+          <i class="fa-solid fa-arrows-left-right" aria-hidden="true"></i>
+          Desliza para ver mais categorias
+        </p>
 
         <section class="category-stage" aria-labelledby="category-title">
           <div class="category-heading">
@@ -144,6 +149,6 @@
     </figure>
   </div>
 
-  <script src="evento-votacao.js?v=20261105-4"></script>
+  <script src="evento-votacao.js?v=20261106-1"></script>
 </body>
 </html>

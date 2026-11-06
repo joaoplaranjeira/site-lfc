@@ -6,6 +6,11 @@
     : 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';
   const ALREADY_VOTED_MESSAGE = 'Este email já foi utilizado para votar nesta categoria.';
   const MAX_RATE_LIMIT_RETRY_DELAY_MS = 30000;
+  const RATE_LIMIT_RECOVERY_MS = 20000;
+  const RATE_LIMIT_RELOAD_GUARD_MS = 120000;
+  const RATE_LIMIT_RELOAD_STATE_KEY = 'eventVotingRateLimitReloadAt';
+  let rateLimitCountdownTimer = null;
+  let rateLimitRecoveryExpired = false;
   const state = {
     eventCode: '',
     voting: null,
@@ -129,17 +134,72 @@
   }
 
   function showPageError(message) {
+    stopRateLimitCountdown();
     byId('voting-loading').classList.add('hidden');
     byId('voting-content').classList.add('hidden');
     byId('voting-error-text').textContent = message;
     byId('voting-error').classList.remove('hidden');
   }
 
-  function showVotingRetryLoading() {
+  function showVotingRetryLoading(seconds, willReload) {
     byId('voting-error').classList.add('hidden');
     byId('voting-content').classList.add('hidden');
     byId('voting-loading').classList.remove('hidden');
-    byId('voting-loading-text').textContent = 'Há muitos acessos neste momento. A aguardar disponibilidade...';
+    byId('voting-loading-text').textContent = willReload
+      ? `Há muitos acessos neste momento. A página será recarregada em ${seconds} s.`
+      : `Há muitos acessos neste momento. A tentar novamente durante mais ${seconds} s.`;
+  }
+
+  function getRecentRateLimitReload() {
+    const historyState = window.history.state || {};
+    const reloadAt = Number(historyState[RATE_LIMIT_RELOAD_STATE_KEY]);
+    return Number.isFinite(reloadAt) && Date.now() - reloadAt < RATE_LIMIT_RELOAD_GUARD_MS;
+  }
+
+  function markRateLimitReload() {
+    const historyState = Object.assign({}, window.history.state || {});
+    historyState[RATE_LIMIT_RELOAD_STATE_KEY] = Date.now();
+    window.history.replaceState(historyState, '', window.location.href);
+  }
+
+  function clearRateLimitReloadMarker() {
+    const historyState = Object.assign({}, window.history.state || {});
+    if (!(RATE_LIMIT_RELOAD_STATE_KEY in historyState)) return;
+    delete historyState[RATE_LIMIT_RELOAD_STATE_KEY];
+    window.history.replaceState(historyState, '', window.location.href);
+  }
+
+  function stopRateLimitCountdown() {
+    window.clearInterval(rateLimitCountdownTimer);
+    rateLimitCountdownTimer = null;
+  }
+
+  function finishRateLimitRecovery(willReload) {
+    if (rateLimitRecoveryExpired) return;
+    rateLimitRecoveryExpired = true;
+    stopRateLimitCountdown();
+
+    if (willReload) {
+      markRateLimitReload();
+      window.location.reload();
+      return;
+    }
+
+    showPageError('O serviço continua com demasiados acessos. Tenta novamente dentro de instantes.');
+  }
+
+  function startRateLimitCountdown(deadline, willReload) {
+    stopRateLimitCountdown();
+
+    function updateCountdown() {
+      const remaining = deadline - Date.now();
+      const seconds = Math.max(0, Math.ceil(remaining / 1000));
+      showVotingRetryLoading(seconds, willReload);
+      if (remaining <= 0) finishRateLimitRecovery(willReload);
+    }
+
+    updateCountdown();
+    rateLimitCountdownTimer = window.setInterval(updateCountdown, 250);
   }
 
   function wait(milliseconds) {
@@ -184,6 +244,9 @@
       button.append(status, label);
       navigation.appendChild(button);
     });
+
+    const activeTab = navigation.querySelector('[aria-current="true"]');
+    if (activeTab) activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   }
 
   function preloadNomineeImage(imageUrl) {
@@ -513,6 +576,7 @@
     if (nextIndex === -1) {
       document.querySelector('.category-stage').classList.add('hidden');
       byId('category-navigation').classList.add('hidden');
+      byId('category-navigation-hint').classList.add('hidden');
       byId('voting-complete').classList.remove('hidden');
       byId('voting-complete').scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
@@ -564,6 +628,8 @@
     }
 
     state.voting = Object.assign({}, voting, { categories: activeCategories });
+    stopRateLimitCountdown();
+    clearRateLimitReloadMarker();
     document.title = `${voting.eventName || 'Votação'} - Universo Leça FC`;
     byId('voting-title').textContent = voting.eventName || 'Votação do evento';
     byId('voting-period').textContent = formatVotingPeriod(voting.votingStartDateTime, voting.votingEndDateTime);
@@ -575,6 +641,7 @@
 
     byId('voting-loading').classList.add('hidden');
     byId('voting-content').classList.remove('hidden');
+    byId('category-navigation-hint').classList.toggle('hidden', activeCategories.length < 2);
     renderCategory();
   }
 
@@ -587,23 +654,38 @@
     }
 
     let rateLimitAttempt = 0;
+    let recoveryDeadline = 0;
+    let willReload = false;
+    rateLimitRecoveryExpired = false;
     while (true) {
       try {
         const voting = await apiRequest(
           `/api/EventVoting/public/event/${encodeURIComponent(state.eventCode)}`,
           { cache: 'no-store' }
         );
-        renderVoting(voting);
+        if (!rateLimitRecoveryExpired) renderVoting(voting);
         return;
       } catch (error) {
+        if (rateLimitRecoveryExpired) return;
         if (error.code !== 'RATE_LIMITED') {
           showPageError(error.message || 'A votação não está disponível neste momento.');
           return;
         }
 
-        const retryDelay = getRateLimitRetryDelay(error.response, rateLimitAttempt);
+        if (!recoveryDeadline) {
+          recoveryDeadline = Date.now() + RATE_LIMIT_RECOVERY_MS;
+          willReload = !getRecentRateLimitReload();
+          startRateLimitCountdown(recoveryDeadline, willReload);
+        }
+
+        const remaining = recoveryDeadline - Date.now();
+        if (remaining <= 0) {
+          finishRateLimitRecovery(willReload);
+          return;
+        }
+
+        const retryDelay = Math.min(getRateLimitRetryDelay(error.response, rateLimitAttempt), remaining);
         rateLimitAttempt += 1;
-        showVotingRetryLoading();
         await wait(retryDelay);
       }
     }
@@ -613,6 +695,10 @@
     byId('year').textContent = new Date().getFullYear();
     byId('vote-form').addEventListener('submit', handleRequestOtp);
     byId('otp-form').addEventListener('submit', handleConfirmOtp);
+    byId('voting-retry-button').addEventListener('click', () => {
+      clearRateLimitReloadMarker();
+      window.location.reload();
+    });
     byId('change-vote-btn').addEventListener('click', () => {
       state.selectedNomineeId = '';
       byId('vote-form').classList.add('hidden');
