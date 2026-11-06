@@ -30,9 +30,35 @@
       UNIVERSO LEÇA FC
     </h1>
     
-    <p class="text-lg md:text-xl text-white/90 text-center mb-12 max-w-2xl">
+    <p class="text-lg md:text-xl text-white/90 text-center mb-8 max-w-2xl">
       O teu ponto de acesso a todo o universo leceiro
     </p>
+
+    <section
+      id="event-voting-banner"
+      class="event-voting-banner"
+      aria-labelledby="event-voting-banner-title"
+      aria-describedby="event-voting-banner-description"
+      aria-hidden="true"
+      hidden
+    >
+      <span class="event-voting-banner__icon" aria-hidden="true">
+        <i class="fa-solid fa-trophy"></i>
+      </span>
+      <div class="event-voting-banner__body">
+        <div class="event-voting-banner__eyebrow">
+          <span class="event-voting-banner__live-dot" aria-hidden="true"></span>
+          Votação aberta
+        </div>
+        <p class="event-voting-banner__event">Gala do Desporto 2026</p>
+        <h2 id="event-voting-banner-title">Tu decides os Brados D'Ouro.</h2>
+        <p id="event-voting-banner-description">Vota nos atletas, equipas e treinadores que marcaram o ano.</p>
+      </div>
+      <a id="event-voting-banner-cta" class="event-voting-banner__cta" href="/evento-votacao?code=GALA-DESPORTO-2026">
+        Votar agora
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    </section>
     
     <!-- Cards Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl w-full px-4">
@@ -138,40 +164,6 @@
 
   </div>
 
-  <aside
-    id="event-voting-popup"
-    class="event-voting-popup"
-    role="dialog"
-    aria-modal="false"
-    aria-labelledby="event-voting-popup-title"
-    aria-describedby="event-voting-popup-description"
-    aria-hidden="true"
-    hidden
-  >
-    <button id="event-voting-popup-close" class="event-voting-popup__close" type="button" aria-label="Fechar convite para votar">
-      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-    </button>
-    <div class="event-voting-popup__eyebrow">
-      <span class="event-voting-popup__live-dot" aria-hidden="true"></span>
-      Votação aberta
-    </div>
-    <div class="event-voting-popup__content">
-      <span class="event-voting-popup__icon" aria-hidden="true">
-        <i class="fa-solid fa-trophy"></i>
-      </span>
-      <div>
-        <p class="event-voting-popup__event">Gala do Desporto 2026</p>
-        <h2 id="event-voting-popup-title">Tu decides os Brados D'Ouro.</h2>
-        <p id="event-voting-popup-description">Vota nos atletas, equipas e treinadores que marcaram o ano.</p>
-      </div>
-    </div>
-    <a id="event-voting-popup-cta" class="event-voting-popup__cta" href="/evento-votacao?code=GALA-DESPORTO-2026">
-      Votar agora
-      <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-    </a>
-    <span class="event-voting-popup__progress" aria-hidden="true"><span></span></span>
-  </aside>
-
-  <script src="script.js?v=20261105-1"></script>
+  <script src="script.js?v=20261106-1"></script>
 </body>
 </html>

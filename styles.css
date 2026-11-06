@@ -28,66 +28,51 @@ body {
   font-size: 2.5rem;
 }
 
-.event-voting-popup {
-  position: fixed;
-  z-index: 80;
-  top: 50%;
-  left: 50%;
-  width: min(calc(100vw - 2rem), 28rem);
-  max-height: calc(100dvh - 2rem);
-  padding: 1.25rem;
-  overflow-x: hidden;
-  overflow-y: auto;
+.event-voting-banner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  width: min(calc(100% - 2rem), 70rem);
+  margin: 0 auto 2rem;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  overflow: hidden;
   border: 1px solid rgba(214, 174, 99, 0.38);
-  border-radius: 1.5rem;
+  border-radius: 1.35rem;
   color: #fff;
   background:
     radial-gradient(circle at 100% 0%, rgba(214, 174, 99, 0.22), transparent 42%),
     linear-gradient(145deg, rgba(3, 70, 56, 0.97), rgba(1, 23, 19, 0.98));
-  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.48), 0 0 0 1px rgba(255, 255, 255, 0.035) inset;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.035) inset;
   opacity: 0;
-  transform: translate(-50%, calc(-50% + 1.25rem)) scale(0.97);
-  pointer-events: none;
+  transform: translateY(0.65rem);
   backdrop-filter: blur(20px);
-  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.35s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.event-voting-popup.is-visible {
+.event-voting-banner.is-visible {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-  pointer-events: auto;
+  transform: translateY(0);
 }
 
-.event-voting-popup__close {
-  position: absolute;
-  z-index: 2;
-  top: 0.8rem;
-  right: 0.8rem;
+.event-voting-banner__icon {
   display: grid;
-  width: 2.15rem;
-  height: 2.15rem;
-  padding: 0;
+  width: clamp(3.25rem, 6vw, 4.25rem);
+  height: clamp(3.25rem, 6vw, 4.25rem);
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.13);
-  border-radius: 50%;
-  color: rgba(255, 255, 255, 0.72);
-  background: rgba(255, 255, 255, 0.055);
-  cursor: pointer;
-  transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  border: 1px solid rgba(214, 174, 99, 0.42);
+  border-radius: 1rem;
+  color: #f2dfb8;
+  font-size: 1.2rem;
+  background: rgba(214, 174, 99, 0.1);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
-.event-voting-popup__close:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.12);
-  transform: rotate(4deg);
-}
-
-.event-voting-popup__eyebrow {
-  position: relative;
+.event-voting-banner__eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  margin: 0 2.6rem 1rem 0;
+  margin-bottom: 0.35rem;
   color: #f2dfb8;
   font-size: 0.65rem;
   font-weight: 700;
@@ -95,7 +80,7 @@ body {
   text-transform: uppercase;
 }
 
-.event-voting-popup__live-dot {
+.event-voting-banner__live-dot {
   width: 0.45rem;
   height: 0.45rem;
   border-radius: 50%;
@@ -104,59 +89,37 @@ body {
   animation: event-voting-pulse 1.8s ease-out infinite;
 }
 
-.event-voting-popup__content {
-  position: relative;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 1rem;
-  align-items: start;
-}
-
-.event-voting-popup__icon {
-  display: grid;
-  width: 3.25rem;
-  height: 3.25rem;
-  place-items: center;
-  border: 1px solid rgba(214, 174, 99, 0.42);
-  border-radius: 1rem;
-  color: #f2dfb8;
-  font-size: 1.1rem;
-  background: rgba(214, 174, 99, 0.1);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-}
-
-.event-voting-popup__event {
+.event-voting-banner__event {
   margin: 0 0 0.25rem;
   color: rgba(255, 255, 255, 0.55);
   font-size: 0.7rem;
   font-weight: 600;
 }
 
-.event-voting-popup h2 {
+.event-voting-banner h2 {
   margin: 0;
   color: #fff;
-  font-size: clamp(1.35rem, 4vw, 1.75rem);
+  font-size: clamp(1.25rem, 2.5vw, 1.65rem);
   font-weight: 900;
   line-height: 1.08;
   letter-spacing: -0.04em;
   text-wrap: balance;
 }
 
-.event-voting-popup__content div > p:last-child {
-  margin: 0.65rem 0 0;
+.event-voting-banner__body > p:last-child {
+  margin: 0.45rem 0 0;
   color: rgba(255, 255, 255, 0.62);
   font-size: 0.78rem;
   line-height: 1.55;
 }
 
-.event-voting-popup__cta {
-  position: relative;
+.event-voting-banner__cta {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  min-width: 10.5rem;
   min-height: 3rem;
-  margin-top: 1.15rem;
   padding: 0.75rem 1rem;
   border: 1px solid rgba(242, 223, 184, 0.72);
   border-radius: 0.9rem;
@@ -169,59 +132,38 @@ body {
   transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-.event-voting-popup__cta:hover {
+.event-voting-banner__cta:hover {
   color: #01271f;
   filter: brightness(1.05);
   transform: translateY(-2px);
 }
 
-.event-voting-popup__cta i { transition: transform 0.2s ease; }
-.event-voting-popup__cta:hover i { transform: translateX(0.2rem); }
-
-.event-voting-popup__progress {
-  position: absolute;
-  inset: auto 0 0;
-  height: 3px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.event-voting-popup__progress span {
-  display: block;
-  width: 100%;
-  height: 100%;
-  transform-origin: left;
-  background: linear-gradient(90deg, #f2dfb8, #d6ae63);
-  animation: event-voting-progress 10s linear forwards;
-}
+.event-voting-banner__cta i { transition: transform 0.2s ease; }
+.event-voting-banner__cta:hover i { transform: translateX(0.2rem); }
 
 @keyframes event-voting-pulse {
   70% { box-shadow: 0 0 0 0.45rem rgba(214, 174, 99, 0); }
   100% { box-shadow: 0 0 0 0 rgba(214, 174, 99, 0); }
 }
 
-@keyframes event-voting-progress {
-  to { transform: scaleX(0); }
-}
-
-@media (max-width: 520px) {
-  .event-voting-popup {
-    width: calc(100vw - 1.5rem);
-    max-height: calc(100dvh - 1.5rem);
+@media (max-width: 720px) {
+  .event-voting-banner {
+    grid-template-columns: auto minmax(0, 1fr);
     padding: 1.1rem;
     border-radius: 1.25rem;
   }
 
-  .event-voting-popup__content { gap: 0.8rem; }
-  .event-voting-popup__icon { width: 2.8rem; height: 2.8rem; border-radius: 0.85rem; }
+  .event-voting-banner__cta {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .event-voting-popup { transition: none; }
-  .event-voting-popup__live-dot { animation: none; }
-  .event-voting-popup__cta,
-  .event-voting-popup__cta i,
-  .event-voting-popup__close { transition: none; }
+  .event-voting-banner { transition: none; }
+  .event-voting-banner__live-dot { animation: none; }
+  .event-voting-banner__cta,
+  .event-voting-banner__cta i { transition: none; }
 }
 
 /* Custom brand color */

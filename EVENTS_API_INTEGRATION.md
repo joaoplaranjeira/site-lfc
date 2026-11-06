@@ -132,12 +132,13 @@ manual para tentar novamente.
 ### Convite de votação na página inicial
 
 A página inicial consulta `GET /api/Event/public/code/GALA-DESPORTO-2026` e
-apresenta um convite flutuante apenas quando o evento está publicado,
+apresenta um banner integrado entre a introdução e as secções da página apenas
+quando o evento está publicado,
 `isVotingActive` é verdadeiro e a data atual está entre `votingStartDateTime` e
 `votingEndDateTime`. O convite encaminha para
-`/evento-votacao?code=GALA-DESPORTO-2026` e fecha automaticamente após cinco
-segundos, sem redirecionar o utilizador. Falhas da API não são apresentadas na
-página; perante `429`, são feitas no máximo duas novas tentativas espaçadas.
+`/evento-votacao?code=GALA-DESPORTO-2026` e permanece visível enquanto o
+utilizador estiver na página. Falhas da API não são apresentadas na página;
+perante `429`, são feitas no máximo duas novas tentativas espaçadas.
 
 ### Pedir OTP para o voto
 

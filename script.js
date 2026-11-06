@@ -34,23 +34,19 @@
   });
 })();
 
-// Convite para a votação da Gala do Desporto 2026, exclusivo da página inicial.
+// Banner da votação da Gala do Desporto 2026, exclusivo da página inicial.
 (function () {
   'use strict';
 
   const EVENT_CODE = 'GALA-DESPORTO-2026';
-  const DISPLAY_DURATION_MS = 10000;
   const API_BASE_URL = ['localhost', '127.0.0.1'].includes(window.location.hostname)
     ? ''
     : 'https://otw-clevvo-api-events-b91905bb79ee.herokuapp.com';
-  const popup = document.getElementById('event-voting-popup');
-  if (!popup) return;
+  const banner = document.getElementById('event-voting-banner');
+  if (!banner) return;
 
-  const closeButton = document.getElementById('event-voting-popup-close');
-  const cta = document.getElementById('event-voting-popup-cta');
-  const eventLabel = popup.querySelector('.event-voting-popup__event');
-  let closeTimer = null;
-  let closing = false;
+  const cta = document.getElementById('event-voting-banner-cta');
+  const eventLabel = banner.querySelector('.event-voting-banner__event');
 
   function wait(milliseconds) {
     return new Promise(resolve => window.setTimeout(resolve, milliseconds));
@@ -90,31 +86,14 @@
     return null;
   }
 
-  function closePopup() {
-    if (closing || popup.hidden) return;
-    closing = true;
-    window.clearTimeout(closeTimer);
-    popup.classList.remove('is-visible');
-    popup.setAttribute('aria-hidden', 'true');
-    window.setTimeout(() => {
-      popup.hidden = true;
-    }, 450);
-  }
-
-  function showPopup(event) {
+  function showBanner(event) {
     if (event.name) eventLabel.textContent = event.name;
-    popup.hidden = false;
-    popup.setAttribute('aria-hidden', 'false');
-    window.requestAnimationFrame(() => popup.classList.add('is-visible'));
-    closeTimer = window.setTimeout(closePopup, DISPLAY_DURATION_MS);
+    banner.hidden = false;
+    banner.setAttribute('aria-hidden', 'false');
+    window.requestAnimationFrame(() => banner.classList.add('is-visible'));
   }
 
-  closeButton.addEventListener('click', closePopup);
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && !popup.hidden) closePopup();
-  });
   cta.addEventListener('click', () => {
-    window.clearTimeout(closeTimer);
     if (typeof gtag === 'function') {
       gtag('event', 'event_voting_popup_click', {
         event_category: 'engagement',
@@ -124,6 +103,6 @@
   });
 
   getEvent().then(event => {
-    if (isVotingOpen(event)) showPopup(event);
+    if (isVotingOpen(event)) showBanner(event);
   });
 })();
