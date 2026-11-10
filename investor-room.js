@@ -103,7 +103,7 @@ function initInvestorInterface() {
   let documentTitleBeforePrint = '';
 
   function prepareBrochure() {
-    if (!document.body.dataset.sponsorshipProject) return;
+    if (!brochureButton) return;
     if (!documentTitleBeforePrint) documentTitleBeforePrint = document.title;
     const projectName = document.body.dataset.investorContextLabel || 'Projeto';
     document.title = `Brochura - ${projectName} - Leça Futebol Clube`;
