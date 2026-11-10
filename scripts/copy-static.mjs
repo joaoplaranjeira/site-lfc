@@ -3,7 +3,7 @@ import { extname, join } from 'node:path';
 
 const root = process.cwd();
 const output = join(root, 'dist');
-const publicDirectories = ['documents', 'images', 'videos'];
+const publicDirectories = ['documents', 'images', 'videos', 'output'];
 const publicExtensions = new Set(['.css', '.js']);
 const publicFiles = ['CNAME'];
 

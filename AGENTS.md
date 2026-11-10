@@ -72,6 +72,14 @@ por executar `npm run validate` e `npm run build`. Valida também manualmente:
 - estados de sucesso, vazio e erro das funcionalidades alteradas;
 - fluxos relacionados, incluindo inscrição/OTP, quando aplicável.
 
+### Brochuras dos projetos
+
+Sempre que o conteúdo ou a apresentação de um projeto do Investor/Sponsor Room
+for alterado, gera novamente a respetiva brochura em `output/pdf/` antes de
+concluir o trabalho. Confirma que o PDF contém a informação atualizada da
+página, valida visualmente a renderização e testa o botão de download. Não
+entregues alterações a estes projetos com uma brochura desatualizada.
+
 Se `tailwind.css` não for regenerado por uma ferramenta já disponível no
 ambiente, usa as classes presentes no ficheiro ou CSS em `styles.css`; não
 assumas que o CDN Tailwind está disponível em `index.html`.

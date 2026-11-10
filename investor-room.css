@@ -804,7 +804,7 @@ a { color: inherit; }
   .ir-scroll-cue { display: none; }
   .ir-project-actions { right: .85rem; bottom: .85rem; }
   .ir-project-action { min-width: 2.75rem; min-height: 2.75rem; }
-  .ir-nav .ir-project-action--brochure { display: inline-flex; width: 2.75rem; padding: 0; }
+  .ir-nav a.ir-project-action--brochure { display: inline-flex; width: 2.75rem; padding: 0; }
   .ir-project-action--brochure span { display: none; }
   .ir-story-section { min-height: auto; padding: 6rem 1.25rem; }
   .ir-offer-symbol { opacity: .55; }
@@ -828,25 +828,6 @@ a { color: inherit; }
 }
 
 @media print {
-  body.ir-brochure-printing {
-    background: var(--ir-bg) !important;
-    color: var(--ir-white) !important;
-    print-color-adjust: exact;
-    -webkit-print-color-adjust: exact;
-  }
-  body.ir-brochure-printing .ir-access-gate,
-  body.ir-brochure-printing .ir-progress,
-  body.ir-brochure-printing .ir-topbar,
-  body.ir-brochure-printing .ir-project-actions,
-  body.ir-brochure-printing .ir-chapter-nav,
-  body.ir-brochure-printing .ir-scroll-cue,
-  body.ir-brochure-printing .ir-footer {
-    display: none !important;
-  }
-  body.ir-brochure-printing .ir-reveal {
-    opacity: 1 !important;
-    transform: none !important;
-  }
   body[data-sponsorship-project] {
     width: 210mm;
     min-height: 297mm;

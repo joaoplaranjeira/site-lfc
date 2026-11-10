@@ -1,6 +1,7 @@
 const INVESTOR_SPONSORSHIP_PROJECTS = {
   pavilhao: {
     name: 'Pavilhão',
+    brochure: 'brochura-pavilhao.pdf',
     title: 'Pavilhão<br><span>Custódio Antunes</span>',
     icon: 'fa-building-columns',
     lead: 'Uma presença diária no centro da atividade desportiva, junto de atletas, famílias e comunidade.',
@@ -24,6 +25,7 @@ const INVESTOR_SPONSORSHIP_PROJECTS = {
   },
   formacao: {
     name: 'Formação Futebol',
+    brochure: 'brochura-formacao-futebol.pdf',
     title: 'Formação<br><span>de Futebol</span>',
     icon: 'fa-people-group',
     lead: 'Associar uma marca ao talento, aos valores e ao crescimento de novas gerações.',
@@ -50,6 +52,7 @@ const INVESTOR_SPONSORSHIP_PROJECTS = {
   },
   masters: {
     name: 'Masters Futebol',
+    brochure: 'brochura-masters-futebol.pdf',
     title: 'Futebol<br><span>Masters</span>',
     icon: 'fa-trophy',
     lead: 'Uma plataforma de relação, memória e pertença com capacidade de ativação à medida.',
@@ -76,6 +79,7 @@ const INVESTOR_SPONSORSHIP_PROJECTS = {
   },
   atletismo: {
     name: 'Atletismo',
+    brochure: 'brochura-atletismo.pdf',
     title: 'Leça<br><span>Atletismo</span>',
     icon: 'fa-person-running',
     lead: 'Uma marca em movimento, presente na competição, no treino e nos canais digitais.',
@@ -101,6 +105,7 @@ const INVESTOR_SPONSORSHIP_PROJECTS = {
   },
   bilhar: {
     name: 'Bilhar',
+    brochure: 'brochura-bilhar.pdf',
     title: 'Leça<br><span>Bilhar</span>',
     icon: 'fa-circle-dot',
     lead: 'Uma modalidade de precisão, excelência competitiva e projeção nacional e internacional.',
@@ -210,10 +215,10 @@ function renderSponsorshipProject() {
         <span class="ir-brand-copy"><strong>${project.name}</strong><span>Investor Room</span></span>
       </a>
       <nav class="ir-nav" aria-label="Navegação do projeto">
-        <button type="button" class="ir-project-action ir-project-action--brochure" data-create-brochure aria-label="Descarregar brochura PDF" title="Descarregar brochura PDF">
+        <a href="/output/pdf/${project.brochure}" class="ir-project-action ir-project-action--brochure" download aria-label="Descarregar brochura PDF" title="Descarregar brochura PDF">
           <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
           <span>Descarregar brochura PDF</span>
-        </button>
+        </a>
         <a href="/investor-room" class="ir-back"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Investor Room</a>
       </nav>
     </header>
