@@ -668,6 +668,29 @@ a { color: inherit; }
   transform: none;
 }
 .ir-project-action--top.visible:hover { transform: translateY(-2px); }
+.ir-project-action--brochure {
+  gap: .55rem;
+  min-height: 2.65rem;
+  padding: 0 1rem;
+  border-color: rgba(94,207,177,.28);
+  background: rgba(5,107,87,.88);
+  color: #fff;
+}
+.ir-project-action--brochure span {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.ir-nav .ir-project-action--brochure {
+  border: 1px solid rgba(94,207,177,.28);
+  background: rgba(5,107,87,.76);
+  color: #fff;
+}
+.ir-nav .ir-project-action--brochure:hover {
+  border-color: rgba(94,207,177,.5);
+  background: rgba(5,107,87,.95);
+}
 .ir-chapter-nav {
   position: fixed;
   right: 1.25rem;
@@ -781,6 +804,8 @@ a { color: inherit; }
   .ir-scroll-cue { display: none; }
   .ir-project-actions { right: .85rem; bottom: .85rem; }
   .ir-project-action { min-width: 2.75rem; min-height: 2.75rem; }
+  .ir-nav .ir-project-action--brochure { display: inline-flex; width: 2.75rem; padding: 0; }
+  .ir-project-action--brochure span { display: none; }
   .ir-story-section { min-height: auto; padding: 6rem 1.25rem; }
   .ir-offer-symbol { opacity: .55; }
   .ir-offer-grid, .ir-metric-grid, .ir-channel-list { grid-template-columns: 1fr; }
@@ -795,4 +820,95 @@ a { color: inherit; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .ir-reveal { opacity: 1; transform: none; }
+}
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  body[data-sponsorship-project] {
+    width: 210mm;
+    min-height: 297mm;
+    background: var(--ir-bg) !important;
+    color: var(--ir-white) !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  body[data-sponsorship-project] .ir-access-gate,
+  body[data-sponsorship-project] .ir-progress,
+  body[data-sponsorship-project] .ir-topbar,
+  body[data-sponsorship-project] .ir-project-actions,
+  body[data-sponsorship-project] .ir-chapter-nav,
+  body[data-sponsorship-project] .ir-scroll-cue,
+  body[data-sponsorship-project] .ir-footer {
+    display: none !important;
+  }
+  body[data-sponsorship-project] .ir-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  body[data-sponsorship-project] main > section {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 25mm 18mm 22mm;
+    overflow: hidden;
+    break-after: page;
+    page-break-after: always;
+    border-top: 0;
+  }
+  body[data-sponsorship-project] main > section:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+  body[data-sponsorship-project] .ir-project-hero {
+    align-items: flex-end;
+    padding-bottom: 30mm;
+  }
+  body[data-sponsorship-project] .ir-project-intro {
+    max-width: 160mm;
+  }
+  body[data-sponsorship-project] .ir-project-intro h1 {
+    font-size: 18mm;
+  }
+  body[data-sponsorship-project] .ir-story-section h2 {
+    margin-top: 4mm;
+    font-size: 11mm;
+  }
+  body[data-sponsorship-project] .ir-story-section .ir-copy {
+    font-size: 3.5mm;
+    line-height: 1.7;
+  }
+  body[data-sponsorship-project] .ir-metric-grid,
+  body[data-sponsorship-project] .ir-offer-grid,
+  body[data-sponsorship-project] .ir-inventory,
+  body[data-sponsorship-project] .ir-channel-list {
+    margin-top: 9mm;
+  }
+  body[data-sponsorship-project] .ir-metric-card {
+    min-height: 46mm;
+  }
+  body[data-sponsorship-project] .ir-offer-card {
+    min-height: 58mm;
+  }
+  body[data-sponsorship-project] .ir-inventory-item {
+    min-height: 25mm;
+  }
+  body[data-sponsorship-project] .ir-metric-card,
+  body[data-sponsorship-project] .ir-offer-card,
+  body[data-sponsorship-project] .ir-inventory-item,
+  body[data-sponsorship-project] .ir-channel {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  body[data-sponsorship-project] .ir-closing .ir-story-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 245mm;
+  }
+  body[data-sponsorship-project] .ir-closing .ir-button {
+    display: none;
+  }
 }

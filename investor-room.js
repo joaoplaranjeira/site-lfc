@@ -97,8 +97,26 @@ function initInvestorInterface() {
   const topbar = document.querySelector('.ir-topbar');
   const progress = document.querySelector('.ir-progress span');
   const scrollTopButton = document.querySelector('[data-scroll-top]');
+  const brochureButton = document.querySelector('[data-create-brochure]');
   const sections = Array.from(document.querySelectorAll('[data-chapter]'));
   const navLinks = Array.from(document.querySelectorAll('.ir-chapter-nav a'));
+  let documentTitleBeforePrint = '';
+
+  function prepareBrochure() {
+    if (!document.body.dataset.sponsorshipProject) return;
+    if (!documentTitleBeforePrint) documentTitleBeforePrint = document.title;
+    const projectName = document.body.dataset.investorContextLabel || 'Projeto';
+    document.title = `Brochura - ${projectName} - Leça Futebol Clube`;
+    document.body.classList.add('ir-brochure-printing');
+  }
+
+  function finishBrochure() {
+    document.body.classList.remove('ir-brochure-printing');
+    if (documentTitleBeforePrint) {
+      document.title = documentTitleBeforePrint;
+      documentTitleBeforePrint = '';
+    }
+  }
 
   function updateScrollState() {
     topbar?.classList.toggle('scrolled', window.scrollY > 24);
@@ -134,6 +152,12 @@ function initInvestorInterface() {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
   });
+  brochureButton?.addEventListener('click', () => {
+    prepareBrochure();
+    window.print();
+  });
+  window.addEventListener('beforeprint', prepareBrochure);
+  window.addEventListener('afterprint', finishBrochure);
   updateScrollState();
 
   document.querySelectorAll('[data-year]').forEach((element) => {
