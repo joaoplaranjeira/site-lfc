@@ -2,7 +2,8 @@ const state = {
   eventCode: null,
   eventData: null,
   otpRequestId: null,
-  otpExpiresInMinutes: 10
+  otpExpiresInMinutes: 10,
+  registrationAmount: null
 };
 
 // Em desenvolvimento, usa o proxy /api do Nginx para evitar pedidos cross-origin.
@@ -269,6 +270,7 @@ async function handleRequestOtp(event) {
 
     state.otpRequestId = otpPayload.content.otpRequestId;
     state.otpExpiresInMinutes = otpPayload.content.expiresInMinutes || 10;
+    state.registrationAmount = payload.totalAmount;
 
     const maskedEmail = otpPayload.content.email || payload.email;
     const otpInfo = document.getElementById('otp-info');
@@ -321,6 +323,7 @@ async function handleConfirmOtp(event) {
     const registrationCode = registration.registrationCode || registration.id || '-';
     document.getElementById('registration-code').textContent = `Código de inscrição: ${registrationCode}`;
     document.getElementById('payment-registration-code').textContent = registrationCode;
+    document.getElementById('registration-payment-methods').classList.toggle('hidden', state.registrationAmount <= 0);
   } catch (error) {
     setStepError('step2-error', error.message || 'Não foi possível confirmar o OTP.');
   } finally {

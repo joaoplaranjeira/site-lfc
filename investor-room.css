@@ -668,29 +668,6 @@ a { color: inherit; }
   transform: none;
 }
 .ir-project-action--top.visible:hover { transform: translateY(-2px); }
-.ir-project-action--brochure {
-  gap: .55rem;
-  min-height: 2.65rem;
-  padding: 0 1rem;
-  border-color: rgba(94,207,177,.28);
-  background: rgba(5,107,87,.88);
-  color: #fff;
-}
-.ir-project-action--brochure span {
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .02em;
-  white-space: nowrap;
-}
-.ir-nav .ir-project-action--brochure {
-  border: 1px solid rgba(94,207,177,.28);
-  background: rgba(5,107,87,.76);
-  color: #fff;
-}
-.ir-nav .ir-project-action--brochure:hover {
-  border-color: rgba(94,207,177,.5);
-  background: rgba(5,107,87,.95);
-}
 .ir-chapter-nav {
   position: fixed;
   right: 1.25rem;
@@ -804,8 +781,6 @@ a { color: inherit; }
   .ir-scroll-cue { display: none; }
   .ir-project-actions { right: .85rem; bottom: .85rem; }
   .ir-project-action { min-width: 2.75rem; min-height: 2.75rem; }
-  .ir-nav a.ir-project-action--brochure { display: inline-flex; width: 2.75rem; padding: 0; }
-  .ir-project-action--brochure span { display: none; }
   .ir-story-section { min-height: auto; padding: 6rem 1.25rem; }
   .ir-offer-symbol { opacity: .55; }
   .ir-offer-grid, .ir-metric-grid, .ir-channel-list { grid-template-columns: 1fr; }

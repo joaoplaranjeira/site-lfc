@@ -74,11 +74,11 @@ por executar `npm run validate` e `npm run build`. Valida também manualmente:
 
 ### Brochuras dos projetos
 
-Sempre que o conteúdo ou a apresentação de um projeto do Investor/Sponsor Room
-for alterado, gera novamente a respetiva brochura em `output/pdf/` antes de
-concluir o trabalho. Confirma que o PDF contém a informação atualizada da
-página, valida visualmente a renderização e testa o botão de download. Não
-entregues alterações a estes projetos com uma brochura desatualizada.
+Sempre que o conteúdo ou a apresentação do projeto Corta-Mato Matosinhos for
+alterado, gera novamente a brochura em `output/pdf/` antes de concluir o
+trabalho. Confirma que o PDF contém a informação atualizada da página, valida
+visualmente a renderização e testa o botão de download. Não entregues
+alterações a este projeto com uma brochura desatualizada.
 
 Se `tailwind.css` não for regenerado por uma ferramenta já disponível no
 ambiente, usa as classes presentes no ficheiro ou CSS em `styles.css`; não

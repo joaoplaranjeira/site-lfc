@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from 'react';
 import ApplicationsPage from './applications/ApplicationsPage.jsx';
+import ChristmasPage from './christmas/ChristmasPage.jsx';
 
 const pageModules = import.meta.glob('../legacy-pages/*.html', {
   query: '?raw',
@@ -210,6 +211,7 @@ function LoadingPage() {
 export default function App() {
   const [pageName] = useState(requestedPageName);
   const isApplicationsPage = pageName === 'candidaturas.html';
+  const isChristmasPage = pageName === 'natal.html';
   const loader = pageName ? pageLoaders[pageName] : null;
   const [page, setPage] = useState(null);
 
@@ -229,6 +231,7 @@ export default function App() {
   }, [isApplicationsPage, loader, pageName]);
 
   if (isApplicationsPage) return <ApplicationsPage />;
+  if (isChristmasPage) return <ChristmasPage />;
   if (!loader) return <NotFound pageName={pageName} />;
   return page ? <LegacyPage page={page} /> : <LoadingPage />;
 }

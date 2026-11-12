@@ -257,13 +257,13 @@ Este endpoint:
 3. Frontend chama `POST /api/EventRegistration/public/request-otp-by-code` com `eventCode` (do parâmetro da URL).
 4. Se sucesso, mostrar ecrã para inserir OTP.
 5. Frontend chama `POST /api/EventRegistration/public/confirm-otp` com `otpRequestId + otpCode`.
-6. Se sucesso, mostrar mensagem "Inscrição concluída" + `registrationCode` + métodos de pagamento disponíveis.
+6. Se sucesso, mostrar mensagem "Inscrição concluída" + `registrationCode`. Os métodos de pagamento são apresentados apenas quando o valor da inscrição é superior a `0`.
 
 ---
 
 ## Métodos de Pagamento
 
-Após confirmação da inscrição, o utilizador é informado dos seguintes métodos de pagamento disponíveis:
+Após confirmação de uma inscrição paga, o utilizador é informado dos seguintes métodos de pagamento disponíveis. Numa inscrição gratuita (`totalAmount` igual a `0`), esta informação, incluindo o IBAN e o pedido de comprovativo, não é apresentada.
 
 1. **Transferência Bancária**
    - IBAN: `PT50003300004567594559005`
