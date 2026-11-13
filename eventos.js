@@ -489,7 +489,7 @@ function getVotingAvailability(apiEvent) {
   }
 
   if (now > endsAt) {
-    return { canVote: false, reason: 'A votação deste evento já terminou.' };
+    return { canVote: false, reason: '' };
   }
 
   return { canVote: true, reason: '' };

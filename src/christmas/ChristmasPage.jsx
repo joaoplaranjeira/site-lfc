@@ -331,26 +331,27 @@ function PostcardStudio({ participant }) {
     }
     context.fillStyle = '#f2d792';
     context.font = '700 22px Poppins, sans-serif';
-    context.textAlign = 'left';
-    context.fillText('NATAL 2026 · LEÇA DA PALMEIRA', 110, 150);
+    context.textAlign = 'center';
+    context.fillText('NATAL 2026 · LEÇA DA PALMEIRA', 540, 150);
     context.fillStyle = '#ffffff';
-    context.font = '900 116px Poppins, sans-serif';
-    context.fillText('FELIZ', 105, 315);
-    context.fillText('NATAL', 105, 425);
-    context.font = '900 62px Poppins, sans-serif';
-    context.fillText('E UM', 110, 515);
+    context.font = '900 126px Poppins, sans-serif';
+    context.fillText('FELIZ', 540, 345);
+    context.fillText('NATAL', 540, 460);
+    context.font = '700 34px Poppins, sans-serif';
+    context.fillText('E UM', 540, 530);
     context.fillStyle = '#f2d792';
-    context.font = 'italic 600 88px Cormorant Garamond, Georgia, serif';
-    context.fillText('BOM', 315, 515);
-    context.font = 'italic 600 142px Cormorant Garamond, Georgia, serif';
-    context.fillText('2027', 105, 650);
+    context.font = 'italic 600 84px Cormorant Garamond, Georgia, serif';
+    context.fillText('BOM ANO', 540, 630);
+    context.font = 'italic 600 150px Cormorant Garamond, Georgia, serif';
+    context.fillText('2027', 540, 760);
     context.font = '600 24px Poppins, sans-serif';
     context.fillStyle = 'rgba(255,255,255,.82)';
-    context.fillText(selected.line, 110, 720);
+    context.fillText(selected.line, 540, 825);
 
     const logo = new Image();
     logo.onload = () => {
-      context.drawImage(logo, 110, 820, 180, 180);
+      context.textAlign = 'left';
+      context.drawImage(logo, 110, 910, 150, 150);
       context.fillStyle = '#f2d792';
       context.font = '700 22px Poppins, sans-serif';
       context.fillText('ACENDE A LUZ DO LEÇA', 340, 860);
@@ -407,8 +408,8 @@ function PostcardStudio({ participant }) {
             <div className="postcard-top"><span>NATAL 2026 · LEÇA DA PALMEIRA</span><i /></div>
             <div className="postcard-greeting">
               <strong>FELIZ<br />NATAL</strong>
-              <div><b>E UM</b><em>BOM</em></div>
-              <em className="postcard-year">2027</em>
+              <span>E UM</span>
+              <em>BOM ANO<br /><b>2027</b></em>
             </div>
             <small>{selected.line}</small>
             <div className="postcard-identity"><img src="/images/leca.png" alt="" /><div><span>ACENDE A LUZ DO LEÇA</span><small>LUZ 1.912</small><strong>{signature || participant.name || 'Família Leceira'}</strong></div></div>

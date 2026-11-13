@@ -140,13 +140,12 @@ body[data-design-mode="christmas"] #root { display: block; }
 .christmas-postcard.is-leca { background: radial-gradient(circle at 70% 18%, rgba(232,197,117,.35), transparent 13%), linear-gradient(#071f2b 0 58%, #087167 59% 68%, #031416 69%); }
 .postcard-top { position: relative; z-index: 2; display: flex; width: 100%; align-items: center; gap: 12px; color: var(--christmas-gold); font-size: 7px; font-weight: 800; letter-spacing: .13em; text-align: left; }
 .postcard-top i { flex: 1; height: 1px; background: rgba(232,197,117,.35); }
-.postcard-greeting { position: relative; z-index: 2; display: block; width: 100%; margin-top: 25px; text-align: left; }
-.postcard-greeting > strong { display: block; color: #fff; font-size: clamp(2.75rem, 5.4vw, 4rem); font-weight: 900; line-height: .72; letter-spacing: -.08em; }
-.postcard-greeting > div { display: flex; align-items: baseline; gap: 9px; margin-top: 10px; }
-.postcard-greeting b { color: #fff; font-size: clamp(1.35rem, 2.8vw, 2rem); font-weight: 900; letter-spacing: -.06em; }
-.postcard-greeting em { color: var(--christmas-gold); font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 600; line-height: .8; }
-.postcard-greeting .postcard-year { display: block; margin-top: -3px; font-size: clamp(4rem, 8vw, 6.2rem); line-height: .72; }
-.christmas-postcard > small { position: relative; z-index: 2; align-self: flex-start; margin-top: 12px; color: rgba(255,255,255,.72); font-size: 7px; text-align: left; }
+.postcard-greeting { position: relative; z-index: 2; display: grid; width: 100%; justify-items: center; margin-top: 35px; text-align: center; }
+.postcard-greeting > strong { color: #fff; font-size: clamp(3.1rem, 6vw, 4.5rem); font-weight: 900; line-height: .72; letter-spacing: -.08em; }
+.postcard-greeting > span { margin-top: 14px; color: #fff; font-size: clamp(.65rem, 1.4vw, .95rem); font-weight: 800; letter-spacing: .18em; }
+.postcard-greeting em { margin-top: 5px; color: var(--christmas-gold); font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(2.3rem, 4.5vw, 3.4rem); font-weight: 600; line-height: .7; }
+.postcard-greeting b { display: block; margin-top: 7px; font-size: 1.75em; font-weight: 600; }
+.christmas-postcard > small { position: relative; z-index: 2; align-self: center; margin-top: 14px; color: rgba(255,255,255,.72); font-size: 7px; text-align: center; }
 .postcard-identity { position: relative; z-index: 2; display: flex; width: 100%; align-items: center; gap: 15px; margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(232,197,117,.28); text-align: left; }
 .postcard-identity img { width: 19%; filter: drop-shadow(0 9px 14px rgba(0,0,0,.3)); }
 .postcard-identity > div { display: grid; gap: 3px; }
@@ -255,7 +254,7 @@ body[data-design-mode="christmas"] #root { display: block; }
   .christmas-season-script { position: relative; top: auto; right: auto; margin: -6px 0 6px; font-size: 2.5rem; transform: rotate(-5deg); }.christmas-light-string { width: 74vw; }.christmas-season-ribbon { justify-content: flex-start; padding-left: 24px; }
   .christmas-section-heading { margin-bottom: 45px; }.christmas-section-heading h2 { font-size: 2.8rem; }
   .christmas-theme-options { grid-template-columns: 1fr; }.christmas-theme-options button { display: grid; grid-template-columns: 70px 1fr; align-items: center; gap: 10px; }.theme-swatch { height: 42px; margin: 0; }
-  .christmas-postcard-frame { min-height: 490px; padding: 24px; }.christmas-postcard { padding: 25px; }.postcard-greeting { margin-top: 20px; }.postcard-greeting > strong { font-size: 3rem; }.postcard-greeting .postcard-year { font-size: 4.6rem; }.postcard-identity img { width: 18%; }
+  .christmas-postcard-frame { min-height: 490px; padding: 24px; }.christmas-postcard { padding: 25px; }.postcard-greeting { margin-top: 28px; }.postcard-greeting > strong { font-size: 3.25rem; }.postcard-greeting em { font-size: 2.55rem; }.postcard-identity img { width: 18%; }
   .christmas-sky-hint { max-width: calc(100% - 30px); overflow: hidden; text-overflow: ellipsis; }.christmas-wish-reveal { width: calc(100% - 36px); padding: 36px 24px; }.christmas-star-test-controls { right: 50%; bottom: 16px; width: calc(100% - 24px); flex-wrap: wrap; transform: translateX(50%); }.christmas-star-test-controls em { width: 100%; margin: 0 0 3px; text-align: center; }.christmas-adaptive-mode { top: 61px; }.christmas-footer { flex-direction: column; text-align: center; }.christmas-footer > div { flex-direction: column; }
   .christmas-panel { padding: 38px 24px; }.christmas-hold-button { width: 210px; height: 210px; }
   .christmas-milestone-content img { width: 72px; }.christmas-year { font-size: 32vw; }
