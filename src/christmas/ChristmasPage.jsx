@@ -1,7 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 import './christmas.css';
 
-const STARTING_LIGHTS = 1911;
+const STARTING_LIGHTS = 100;
+const FOUNDATION_LIGHTS = 1912;
+const MAX_LIGHTS = 2026;
+const CLUB_LIGHT_POINTS = 1088;
+const CHRISTMAS_ACCESS_API_BASE = 'https://otw-clevvo-api-authentication-67bd3c9de3ba.herokuapp.com';
+const CHRISTMAS_ACCESS_CONTEXT_TYPE = 'InvestorRoom';
+const CHRISTMAS_ACCESS_CONTEXT_ID = '5';
+const CHRISTMAS_ACCESS_SESSION_KEY = `investor_room_access_granted_${CHRISTMAS_ACCESS_CONTEXT_ID}`;
+
+const CHRISTMAS_ACCESS_ERRORS = {
+  'invalid access code': 'Código inválido. Por favor, tenta novamente.',
+  'código de acesso inválido': 'Código inválido. Por favor, tenta novamente.',
+  'código de acesso revogado': 'Este código foi revogado e já não pode ser utilizado.',
+  'código de acesso expirado': 'Este código expirou e já não é válido.',
+  'código de acesso atingiu o limite de utilizações': 'Este código já atingiu o número máximo de utilizações.',
+  'código de acesso inválido para este contexto': 'Código inválido. Por favor, tenta novamente.'
+};
 
 const INITIAL_WISHES = [
   { text: 'Que nunca nos falte força para acreditar.', author: 'Um leceiro' },
@@ -24,18 +40,111 @@ function seededRandom(seed) {
   };
 }
 
-function LightsCanvas({ count, complete, milestone }) {
+function shuffleLights(points, seed) {
+  const random = seededRandom(seed);
+  const shuffled = [...points];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const target = Math.floor(random() * (index + 1));
+    [shuffled[index], shuffled[target]] = [shuffled[target], shuffled[index]];
+  }
+  return shuffled;
+}
+
+function selectEvenLights(candidates, total, seed) {
+  const shuffled = shuffleLights(candidates, seed);
+  for (const minimumDistance of [12, 10, 8, 6, 4]) {
+    const cellSize = minimumDistance / 1000;
+    const buckets = new Map();
+    const selected = [];
+    for (const candidate of shuffled) {
+      const cellX = Math.floor(candidate.x / cellSize);
+      const cellY = Math.floor(candidate.y / cellSize);
+      let tooClose = false;
+      for (let offsetY = -1; offsetY <= 1 && !tooClose; offsetY += 1) {
+        for (let offsetX = -1; offsetX <= 1 && !tooClose; offsetX += 1) {
+          const neighbours = buckets.get(`${cellX + offsetX}:${cellY + offsetY}`) || [];
+          tooClose = neighbours.some((point) => Math.hypot(point.x - candidate.x, point.y - candidate.y) < cellSize);
+        }
+      }
+      if (tooClose) continue;
+      selected.push(candidate);
+      const key = `${cellX}:${cellY}`;
+      if (!buckets.has(key)) buckets.set(key, []);
+      buckets.get(key).push(candidate);
+      if (selected.length === total) return selected;
+    }
+  }
+  return shuffled.slice(0, total);
+}
+
+function sampleTextLights(context, text, options) {
+  const { y, font, total, color, seed } = options;
+  context.clearRect(0, 0, 1000, 1000);
+  context.fillStyle = '#fff';
+  context.font = font;
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.fillText(text, 500, y);
+
+  const pixels = context.getImageData(0, 0, 1000, 1000).data;
+  const candidates = [];
+  for (let pixelY = 0; pixelY < 1000; pixelY += 4) {
+    for (let pixelX = 0; pixelX < 1000; pixelX += 4) {
+      if (pixels[(pixelY * 1000 + pixelX) * 4 + 3] > 100) {
+        candidates.push({ x: pixelX / 1000, y: pixelY / 1000, color });
+      }
+    }
+  }
+  if (candidates.length >= total) return selectEvenLights(candidates, total, seed);
+  return Array.from({ length: total }, (_, index) => candidates[index % candidates.length]);
+}
+
+let christmasMessageDrawingCache = null;
+
+function createChristmasMessageDrawing() {
+  if (christmasMessageDrawingCache) return christmasMessageDrawingCache;
+  const surface = document.createElement('canvas');
+  surface.width = 1000;
+  surface.height = 1000;
+  const context = surface.getContext('2d', { willReadFrequently: true });
+
+  const greetingPoints = [
+    ...sampleTextLights(context, 'FELIZ', { y: 210, font: '900 240px Poppins, Arial, sans-serif', total: 800, color: 'warm', seed: 21 }),
+    ...sampleTextLights(context, 'NATAL', { y: 490, font: '900 270px Poppins, Arial, sans-serif', total: 1112, color: 'warm', seed: 25 })
+  ];
+  const clubPoints = sampleTextLights(context, 'LFC', { y: 950, font: '900 220px Poppins, Arial, sans-serif', total: CLUB_LIGHT_POINTS, color: 'gold', seed: 30 });
+  const greetingSequence = shuffleLights(greetingPoints.map((_, index) => index), FOUNDATION_LIGHTS);
+  const greetingActivation = new Array(greetingPoints.length);
+  greetingSequence.forEach((pointIndex, rank) => { greetingActivation[pointIndex] = rank; });
+  const clubSequence = shuffleLights(clubPoints.map((_, index) => index), MAX_LIGHTS);
+  const clubActivation = new Array(clubPoints.length);
+  clubSequence.forEach((pointIndex, rank) => {
+    clubActivation[pointIndex] = FOUNDATION_LIGHTS + Math.floor(rank * (MAX_LIGHTS - FOUNDATION_LIGHTS) / CLUB_LIGHT_POINTS);
+  });
+  christmasMessageDrawingCache = [
+    ...greetingPoints.map((point, index) => ({ ...point, activation: greetingActivation[index] })),
+    ...clubPoints.map((point, index) => ({ ...point, activation: clubActivation[index] }))
+  ];
+  return christmasMessageDrawingCache;
+}
+
+function ChristmasMessageLightsCanvas({ count, milestone }) {
   const canvasRef = useRef(null);
+  const displayedCountRef = useRef(STARTING_LIGHTS);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
     const context = canvas.getContext('2d');
-    const logo = new Image();
+    const drawing = createChristmasMessageDrawing();
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fromCount = displayedCountRef.current;
+    const targetCount = Math.min(count, MAX_LIGHTS);
+    const transitionDuration = reducedMotion ? 0 : Math.min(700, 180 + Math.abs(targetCount - fromCount) * .45);
+    let transitionStart = null;
     let frame = 0;
     let stopped = false;
-    let points = [];
-    const animatePoints = !window.matchMedia('(prefers-reduced-motion: reduce)').matches && count <= 1000;
+    const animatePoints = !reducedMotion && count <= 600;
 
     const draw = (time = 0) => {
       if (stopped) return;
@@ -48,70 +157,79 @@ function LightsCanvas({ count, complete, milestone }) {
         canvas.height = height;
       }
       context.clearRect(0, 0, width, height);
+      const random = seededRandom(1912);
+      if (transitionStart === null) transitionStart = time;
+      const transitionProgress = transitionDuration === 0 ? 1 : Math.min((time - transitionStart) / transitionDuration, 1);
+      const easedProgress = 1 - Math.pow(1 - transitionProgress, 3);
+      const visibleLights = Math.round(fromCount + (targetCount - fromCount) * easedProgress);
+      displayedCountRef.current = visibleLights;
+      const scale = Math.min(width, height);
+      const radiusBase = 1.7 * ratio;
 
-      const logoSize = Math.min(width, height) * 0.82;
-      const logoX = (width - logoSize) / 2;
-      const logoY = (height - logoSize) / 2;
-      context.save();
-      context.globalAlpha = milestone ? 0.42 : 0.12;
-      context.filter = milestone ? `drop-shadow(0 0 ${28 * ratio}px rgba(235,195,105,.55))` : 'none';
-      context.drawImage(logo, logoX, logoY, logoSize, logoSize);
-      context.restore();
-
-      const radiusBase = count <= 100 ? 3.2 : count <= 500 ? 2.1 : count <= 1000 ? 1.5 : count <= 2000 ? 1.04 : 0.78;
-      points.forEach((point, index) => {
-        const x = logoX + point.x * logoSize;
-        const y = logoY + point.y * logoSize;
-        const pulse = animatePoints && index < 420 ? 0.78 + Math.sin(time / 800 + point.phase) * 0.22 : 0.9;
-        const radius = (index === points.length - 1 && complete ? Math.max(4.8, radiusBase * 2.4) : radiusBase) * ratio;
+      for (let index = 0; index < drawing.length; index += 1) {
+        const point = drawing[index];
+        const x = width / 2 + (point.x - .5) * scale;
+        const y = height / 2 + (point.y - .5) * scale;
+        const isLit = point.activation < visibleLights;
+        const phase = random() * Math.PI * 2;
+        const isRecent = point.activation >= Math.max(0, visibleLights - 80) && point.activation < visibleLights;
+        const pulse = isLit ? (animatePoints && isRecent ? .62 + Math.sin(time / 700 + phase) * .24 : milestone ? .98 : .86) : .12;
+        const radius = isLit ? radiusBase : .72 * ratio;
+        const colors = {
+          gold: ['248,211,123', '#f6ce70'],
+          warm: ['255,238,190', '#ffe2a0'],
+          mint: ['155,241,211', '#64e5b7']
+        };
+        const [rgb, glow] = colors[point.color] || colors.gold;
         context.beginPath();
-        context.fillStyle = point.warm ? `rgba(247,211,124,${pulse})` : `rgba(221,255,241,${pulse})`;
-        context.shadowColor = point.warm ? '#f6ce70' : '#64e5b7';
-        context.shadowBlur = count <= 1000 ? (index % 5 === 0 ? 7 : 2) * ratio : 0;
+        context.fillStyle = `rgba(${rgb},${pulse})`;
+        context.shadowColor = isLit ? glow : 'transparent';
+        context.shadowBlur = isLit ? (index % 9 === 0 ? (milestone ? 10 : 7) : milestone ? 3 : 1.5) * ratio : 0;
         context.arc(x, y, radius, 0, Math.PI * 2);
         context.fill();
-      });
-
-      if (animatePoints) frame = window.requestAnimationFrame(draw);
-    };
-
-    logo.onload = () => {
-      const sample = document.createElement('canvas');
-      sample.width = 500;
-      sample.height = 500;
-      const sampleContext = sample.getContext('2d', { willReadFrequently: true });
-      sampleContext.drawImage(logo, 0, 0, 500, 500);
-      const pixels = sampleContext.getImageData(0, 0, 500, 500).data;
-      const random = seededRandom(1912);
-      let attempts = 0;
-      while (points.length < count && attempts < Math.max(3000, count * 30)) {
-        attempts += 1;
-        const x = Math.floor(38 + random() * 424);
-        const y = Math.floor(24 + random() * 452);
-        const index = (y * 500 + x) * 4;
-        if (pixels[index + 3] > 185 && (pixels[index] + pixels[index + 1] + pixels[index + 2]) < 730) {
-          points.push({ x: x / 500, y: y / 500, warm: random() > 0.74, phase: random() * Math.PI * 2 });
-        }
       }
-      draw();
+
+      if (transitionProgress < 1 || animatePoints) frame = window.requestAnimationFrame(draw);
     };
-    logo.src = '/images/leca.png';
+
+    draw(performance.now());
+    const resizeObserver = new ResizeObserver(() => draw(performance.now()));
+    resizeObserver.observe(canvas);
     return () => {
       stopped = true;
       window.cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
     };
-  }, [complete, count, milestone]);
+  }, [count, milestone]);
 
-  return <canvas ref={canvasRef} className="christmas-lights-canvas" aria-hidden="true" />;
+  return <canvas ref={canvasRef} className="christmas-village-lights" aria-hidden="true" />;
 }
 
-function WishStarsCanvas({ count }) {
+function createWishStarPoints(count) {
+  const random = seededRandom(2027);
+  return Array.from({ length: count }, (_, index) => ({
+    index,
+    x: 0.04 + random() * 0.92,
+    y: 0.08 + random() * 0.86,
+    phase: random() * Math.PI * 2,
+    warm: random() > 0.72,
+    brightness: random()
+  }));
+}
+
+function WishStarsCanvas({ count, highlightedIndices, onSelect, selectedIndex }) {
   const canvasRef = useRef(null);
+  const pointsRef = useRef([]);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const highlightedKey = highlightedIndices.join(':');
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return undefined;
     const context = canvas.getContext('2d');
+    const points = createWishStarPoints(count);
+    const highlighted = new Set(highlightedIndices);
+    pointsRef.current = points;
     const animate = count > 0 && count <= 180 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let frame = 0;
     let stopped = false;
@@ -127,18 +245,22 @@ function WishStarsCanvas({ count }) {
         canvas.height = height;
       }
       context.clearRect(0, 0, width, height);
-      const random = seededRandom(2027);
       const radius = (count < 80 ? 1.8 : count < 500 ? 1.25 : count < 1500 ? 0.9 : 0.62) * ratio;
 
-      for (let index = 0; index < count; index += 1) {
-        const x = (0.04 + random() * 0.92) * width;
-        const y = (0.08 + random() * 0.86) * height;
-        const phase = random() * Math.PI * 2;
-        const warm = random() > 0.72;
-        const pulse = animate ? 0.38 + (Math.sin(time / 850 + phase) + 1) * 0.26 : 0.62 + random() * 0.28;
+      for (const point of points) {
+        const x = point.x * width;
+        const y = point.y * height;
+        const pulse = animate ? 0.38 + (Math.sin(time / 850 + point.phase) + 1) * 0.26 : 0.62 + point.brightness * 0.28;
+        const isSelected = point.index === selectedIndex;
+        const isHovered = point.index === hoveredIndex;
+        const isOwned = highlighted.has(point.index);
+        const isHighlighted = isSelected || isHovered || isOwned;
         context.beginPath();
-        context.fillStyle = warm ? `rgba(244,211,126,${pulse})` : `rgba(225,255,245,${pulse})`;
-        context.arc(x, y, radius, 0, Math.PI * 2);
+        context.fillStyle = isOwned ? '#fff1bd' : point.warm ? `rgba(244,211,126,${isHighlighted ? 1 : pulse})` : `rgba(225,255,245,${isHighlighted ? 1 : pulse})`;
+        context.shadowColor = isHighlighted ? '#f4d681' : 'transparent';
+        context.shadowBlur = isSelected ? 16 * ratio : isHovered ? 11 * ratio : isOwned ? 8 * ratio : 0;
+        const emphasis = isSelected ? 2.4 : isHovered ? 1.8 : isOwned ? 1.55 : 1;
+        context.arc(x, y, isHighlighted ? Math.max(radius * emphasis, isOwned ? 2.6 * ratio : 3 * ratio) : radius, 0, Math.PI * 2);
         context.fill();
       }
       if (animate) frame = window.requestAnimationFrame(draw);
@@ -152,9 +274,51 @@ function WishStarsCanvas({ count }) {
       window.cancelAnimationFrame(frame);
       resizeObserver.disconnect();
     };
-  }, [count]);
+  }, [count, highlightedKey, hoveredIndex, selectedIndex]);
 
-  return <canvas ref={canvasRef} className="christmas-wish-stars-canvas" aria-hidden="true" />;
+  function findNearestStar(event) {
+    if (!count) return null;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const clickY = event.clientY - rect.top;
+    let nearest = null;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+    for (const point of pointsRef.current) {
+      const distance = Math.hypot(point.x * rect.width - clickX, point.y * rect.height - clickY);
+      if (distance < nearestDistance) {
+        nearest = point.index;
+        nearestDistance = distance;
+      }
+    }
+    const hitRadius = count > 1000 ? 10 : count > 180 ? 13 : 18;
+    return nearest !== null && nearestDistance <= hitRadius ? nearest : null;
+  }
+
+  function selectNearestStar(event) {
+    const nearest = findNearestStar(event);
+    if (nearest !== null) onSelect(nearest);
+  }
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="christmas-wish-stars-canvas"
+      role={count ? 'button' : undefined}
+      tabIndex={count ? 0 : -1}
+      aria-label={count ? `Campo com ${count.toLocaleString('pt-PT')} estrelas. Seleciona uma estrela para descobrir o desejo.${highlightedIndices.length ? ' A tua estrela está mais brilhante.' : ''}` : undefined}
+      aria-hidden={!count}
+      style={{ cursor: hoveredIndex === null ? 'default' : 'pointer' }}
+      onClick={selectNearestStar}
+      onPointerMove={(event) => setHoveredIndex(findNearestStar(event))}
+      onPointerLeave={() => setHoveredIndex(null)}
+      onKeyDown={(event) => {
+        if ((event.key === 'Enter' || event.key === ' ') && count) {
+          event.preventDefault();
+          onSelect(selectedIndex === null ? 0 : (selectedIndex + 1) % count);
+        }
+      }}
+    />
+  );
 }
 
 function Skyline() {
@@ -302,118 +466,125 @@ function Milestone({ name, onClose }) {
   );
 }
 
-function PostcardStudio({ participant }) {
+function copyRenderedStyles(source, target) {
+  const computed = window.getComputedStyle(source);
+  for (const property of computed) target.style.setProperty(property, computed.getPropertyValue(property), computed.getPropertyPriority(property));
+  Array.from(source.children).forEach((child, index) => copyRenderedStyles(child, target.children[index]));
+}
+
+async function collectPageStyles() {
+  const fontStyles = `@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&family=Poppins:wght@400;500;600;700;800;900&display=swap');`;
+  const decorationStyles = `
+    .christmas-postcard::before { position:absolute; inset:15px; border:1px solid rgba(232,197,117,.45); content:''; }
+    .christmas-postcard::after { position:absolute; z-index:0; top:11%; right:7%; width:40%; height:45%; content:''; opacity:.38; background-image:radial-gradient(circle,#f2d792 0 1px,transparent 1.5px),radial-gradient(circle,rgba(255,255,255,.72) 0 .7px,transparent 1.2px); background-position:0 0,13px 17px; background-size:34px 34px,27px 27px; mask-image:radial-gradient(circle,black,transparent 72%); }
+    .postcard-top::before,.postcard-top::after { height:1px; flex:1; background:rgba(232,197,117,.35); content:''; }
+    .christmas-postcard footer::before,.christmas-postcard footer::after { height:1px; flex:1; background:rgba(232,197,117,.28); content:''; }
+    .christmas-prize-card::before { position:absolute; top:-80px; right:-70px; width:240px; height:240px; border:1px solid rgba(232,197,117,.14); border-radius:50%; content:''; box-shadow:0 0 0 28px rgba(232,197,117,.025),0 0 0 55px rgba(232,197,117,.018); }
+  `;
+
+  return `${fontStyles}\n${decorationStyles}`;
+}
+
+/* Mantém cada exportação visualmente idêntica ao componente renderizado. */
+async function collectRenderedMarkup(element) {
+  const bounds = element.getBoundingClientRect();
+  const clone = element.cloneNode(true);
+  copyRenderedStyles(element, clone);
+
+  const originalImages = Array.from(element.querySelectorAll('img'));
+  const clonedImages = Array.from(clone.querySelectorAll('img'));
+  await Promise.all(originalImages.map(async (image, index) => {
+    try {
+      if (!image.complete) await image.decode();
+      const imageCanvas = document.createElement('canvas');
+      imageCanvas.width = image.naturalWidth;
+      imageCanvas.height = image.naturalHeight;
+      imageCanvas.getContext('2d').drawImage(image, 0, 0);
+      clonedImages[index].src = imageCanvas.toDataURL('image/png');
+    } catch {
+      clonedImages[index].src = image.src;
+    }
+  }));
+
+  clone.style.margin = '0';
+  clone.style.width = `${bounds.width}px`;
+  clone.style.height = `${bounds.height}px`;
+  const css = (await collectPageStyles()).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+  const markup = new XMLSerializer().serializeToString(clone);
+  return {
+    bounds,
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${bounds.width}" height="${bounds.height}" viewBox="0 0 ${bounds.width} ${bounds.height}"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml"><style>${css}</style>${markup}</div></foreignObject></svg>`
+  };
+}
+
+async function downloadRenderedElement(element, filename) {
+  if (!element) throw new Error('Elemento para exportação indisponível.');
+  await document.fonts?.ready;
+  const { svg } = await collectRenderedMarkup(element);
+  const downloadUrl = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml;charset=utf-8' }));
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = downloadUrl;
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+}
+
+function PostcardStudio({ participant, onDownload }) {
+  const postcardRef = useRef(null);
   const [theme, setTheme] = useState('classic');
   const [signature, setSignature] = useState('Família Leceira');
   const selected = CARD_THEMES[theme];
   const [notice, setNotice] = useState('');
 
-  function downloadPostcard() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1080;
-    canvas.height = 1350;
-    const context = canvas.getContext('2d');
-    const colors = theme === 'classic' ? ['#031b17', '#08715b'] : theme === 'football' ? ['#032e24', '#010807'] : ['#061b27', '#08715b'];
-    const gradient = context.createLinearGradient(0, 0, 1080, 1350);
-    gradient.addColorStop(0, colors[0]);
-    gradient.addColorStop(1, colors[1]);
-    context.fillStyle = gradient;
-    context.fillRect(0, 0, 1080, 1350);
-    context.strokeStyle = 'rgba(244,214,143,.65)';
-    context.lineWidth = 3;
-    context.strokeRect(54, 54, 972, 1242);
-    const decorationRandom = seededRandom(2027);
-    for (let index = 0; index < 18; index += 1) {
-      context.beginPath();
-      context.fillStyle = index % 4 === 0 ? 'rgba(242,215,146,.8)' : 'rgba(255,255,255,.38)';
-      context.arc(740 + decorationRandom() * 250, 120 + decorationRandom() * 520, index % 4 === 0 ? 4 : 2, 0, Math.PI * 2);
-      context.fill();
+  async function downloadPostcard() {
+    try {
+      await downloadRenderedElement(postcardRef.current, 'postal-natal-leca-2026.svg');
+      setNotice('Postal descarregado com sucesso. Já podes avançar.');
+      onDownload();
+    } catch (error) {
+      console.error('Falha ao exportar o postal.', error);
+      setNotice('Não foi possível descarregar o postal. Tenta novamente.');
     }
-    context.fillStyle = '#f2d792';
-    context.font = '700 22px Poppins, sans-serif';
-    context.textAlign = 'center';
-    context.fillText('NATAL 2026 · LEÇA DA PALMEIRA', 540, 150);
-    context.fillStyle = '#ffffff';
-    context.font = '900 126px Poppins, sans-serif';
-    context.fillText('FELIZ', 540, 345);
-    context.fillText('NATAL', 540, 460);
-    context.font = '700 34px Poppins, sans-serif';
-    context.fillText('E UM', 540, 530);
-    context.fillStyle = '#f2d792';
-    context.font = 'italic 600 84px Cormorant Garamond, Georgia, serif';
-    context.fillText('BOM ANO', 540, 630);
-    context.font = 'italic 600 150px Cormorant Garamond, Georgia, serif';
-    context.fillText('2027', 540, 760);
-    context.font = '600 24px Poppins, sans-serif';
-    context.fillStyle = 'rgba(255,255,255,.82)';
-    context.fillText(selected.line, 540, 825);
-
-    const logo = new Image();
-    logo.onload = () => {
-      context.textAlign = 'left';
-      context.drawImage(logo, 110, 910, 150, 150);
-      context.fillStyle = '#f2d792';
-      context.font = '700 22px Poppins, sans-serif';
-      context.fillText('ACENDE A LUZ DO LEÇA', 340, 860);
-      context.font = '600 19px Poppins, sans-serif';
-      context.fillText('LUZ 1.912', 340, 905);
-      context.fillStyle = '#ffffff';
-      context.font = '600 32px Poppins, sans-serif';
-      context.fillText(signature || participant.name || 'Família Leceira', 340, 960);
-      context.strokeStyle = 'rgba(242,215,146,.32)';
-      context.lineWidth = 2;
-      context.beginPath();
-      context.moveTo(110, 1115);
-      context.lineTo(970, 1115);
-      context.stroke();
-      context.font = '500 22px Poppins, sans-serif';
-      context.fillStyle = 'rgba(255,255,255,.66)';
-      context.fillText('Uma luz. Um clube. Um Natal leceiro.', 110, 1185);
-      const link = document.createElement('a');
-      link.download = 'postal-natal-leca-2026.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      setNotice('Postal descarregado com sucesso.');
-    };
-    logo.src = '/images/leca.png';
   }
 
   return (
     <section className="christmas-section christmas-studio" id="postal" aria-labelledby="studio-title">
-      <div className="christmas-section-heading">
-        <div><p className="christmas-kicker">O teu postal</p><h2 id="studio-title">Leva esta luz contigo.</h2></div>
-        <p>Cria uma memória digital da tua participação e partilha-a com quem faz parte do teu Natal.</p>
-      </div>
       <div className="christmas-studio-grid">
-        <div className="christmas-controls">
-          <fieldset>
-            <legend>Escolhe um ambiente</legend>
-            <div className="christmas-theme-options">
-              {Object.entries(CARD_THEMES).map(([key, item]) => (
-                <button key={key} type="button" className={theme === key ? 'is-active' : ''} onClick={() => setTheme(key)}>
-                  <span className={`theme-swatch ${item.className}`} /><strong>{item.label}</strong>
-                </button>
-              ))}
-            </div>
-          </fieldset>
-          <label>Assinatura do postal
-            <input maxLength="42" value={signature} onChange={(event) => setSignature(event.target.value)} />
-            <small>{signature.length}/42 caracteres</small>
-          </label>
-          <button className="christmas-primary-button" type="button" onClick={downloadPostcard}>Descarregar postal <span>↓</span></button>
-          <p className="christmas-form-notice" role="status">{notice}</p>
+        <div className="christmas-studio-intro">
+          <div className="christmas-section-heading">
+            <div><p className="christmas-kicker">O teu postal</p><h2 id="studio-title">Leva esta luz contigo.</h2></div>
+            <p>Cria uma memória digital da tua participação e partilha-a com quem faz parte do teu Natal.</p>
+          </div>
+          <div className="christmas-controls">
+            <fieldset>
+              <legend>Escolhe um ambiente</legend>
+              <div className="christmas-theme-options">
+                {Object.entries(CARD_THEMES).map(([key, item]) => (
+                  <button key={key} type="button" className={theme === key ? 'is-active' : ''} onClick={() => setTheme(key)}>
+                    <span className={`theme-swatch ${item.className}`} /><strong>{item.label}</strong>
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+            <label>Assinatura do postal
+              <input maxLength="42" value={signature} onChange={(event) => setSignature(event.target.value)} />
+              <small>{signature.length}/42 caracteres</small>
+            </label>
+            <button className="christmas-primary-button" type="button" onClick={downloadPostcard}>Descarregar postal <span>↓</span></button>
+            <p className="christmas-form-notice" role="status">{notice}</p>
+          </div>
         </div>
         <div className="christmas-postcard-frame">
-          <article className={`christmas-postcard ${selected.className}`}>
-            <div className="postcard-top"><span>NATAL 2026 · LEÇA DA PALMEIRA</span><i /></div>
+          <article ref={postcardRef} className={`christmas-postcard ${selected.className}`}>
+            <div className="postcard-top"><span>LEÇA FUTEBOL CLUBE</span></div>
             <div className="postcard-greeting">
               <strong>FELIZ<br />NATAL</strong>
               <span>E UM</span>
               <em>BOM ANO<br /><b>2027</b></em>
             </div>
             <small>{selected.line}</small>
-            <div className="postcard-identity"><img src="/images/leca.png" alt="" /><div><span>ACENDE A LUZ DO LEÇA</span><small>LUZ 1.912</small><strong>{signature || participant.name || 'Família Leceira'}</strong></div></div>
-            <footer>Uma luz. Um clube. Um Natal leceiro.</footer>
+            <div className="postcard-identity"><img src="/images/leca.png" alt="" /><div><span>VEM VIVER O LEÇA CONNOSCO.</span><small>SÃO OS VOTOS DE</small><strong>{signature || participant.name || 'Família Leceira'}</strong></div></div>
+            <footer>Uma cidade. Um clube. Um Natal Leceiro.</footer>
           </article>
         </div>
       </div>
@@ -421,36 +592,53 @@ function PostcardStudio({ participant }) {
   );
 }
 
-function WishWall({ participant }) {
+function WishWall({ participant, completed, onComplete }) {
+  const revealRef = useRef(null);
   const [wishes, setWishes] = useState(INITIAL_WISHES);
   const [starCount, setStarCount] = useState(INITIAL_WISHES.length);
   const [wish, setWish] = useState('');
-  const [named, setNamed] = useState(false);
   const [message, setMessage] = useState('');
   const [selectedWish, setSelectedWish] = useState(null);
-  const starPositions = [
-    [14, 20], [72, 16], [43, 33], [84, 48], [22, 58], [58, 68],
-    [9, 79], [91, 82], [37, 88], [65, 42], [52, 13], [76, 73]
-  ];
   const visibleWishes = wishes.slice(0, Math.min(wishes.length, starCount));
-  const simulatedStars = Math.max(0, starCount - visibleWishes.length);
+  const ownStarIndices = visibleWishes.reduce((indices, item, index) => item.isOwn ? [...indices, index] : indices, []);
+  const selectedEntry = selectedWish === null
+    ? null
+    : selectedWish < visibleWishes.length
+      ? { ...visibleWishes[selectedWish], simulated: false }
+      : selectedWish < starCount
+        ? { text: '', author: '', simulated: true }
+        : null;
+
+  useEffect(() => {
+    if (selectedWish === null) return undefined;
+
+    const closeOnOutsideClick = (event) => {
+      if (!revealRef.current?.contains(event.target)) setSelectedWish(null);
+    };
+
+    document.addEventListener('pointerdown', closeOnOutsideClick);
+    return () => document.removeEventListener('pointerdown', closeOnOutsideClick);
+  }, [selectedWish]);
 
   function adjustStars(amount) {
     const nextCount = Math.min(5000, Math.max(0, starCount + amount));
     setStarCount(nextCount);
-    if (selectedWish !== null && selectedWish >= Math.min(wishes.length, nextCount)) setSelectedWish(null);
+    if (selectedWish !== null && selectedWish >= nextCount) setSelectedWish(null);
   }
 
   function submitWish(event) {
     event.preventDefault();
+    if (completed) return;
     const cleanWish = wish.trim();
     if (!cleanWish) return;
-    const nextWishes = [{ text: cleanWish, author: named ? participant.name || 'Leceiro' : 'Anónimo' }, ...wishes];
+    const nextWishes = [{ text: cleanWish, author: participant.name || 'Leceiro', isOwn: true }, ...wishes];
+    const nextStarCount = Math.max(starCount + 1, nextWishes.length);
     setWishes(nextWishes);
-    setStarCount((current) => Math.max(current + 1, nextWishes.length));
+    setStarCount(nextStarCount);
     setSelectedWish(0);
     setWish('');
-    setMessage('O teu desejo entrou no mural de demonstração.');
+    setMessage('✓ Desejo inserido. A tua estrela está mais brilhante e a conclusão foi desbloqueada.');
+    onComplete(nextStarCount);
   }
 
   return (
@@ -461,14 +649,19 @@ function WishWall({ participant }) {
         <p>Escreve algo para o Clube, para a vila ou para alguém que caminha contigo.</p>
         <form onSubmit={submitWish}>
           <label className="sr-only" htmlFor="wish-text">O teu desejo</label>
-          <textarea id="wish-text" maxLength="200" value={wish} onChange={(event) => setWish(event.target.value)} placeholder="Em 2027, desejo que…" />
-          <div className="christmas-wish-meta"><span>{wish.length}/200</span><label><input type="checkbox" checked={named} onChange={(event) => setNamed(event.target.checked)} /> Mostrar o meu nome</label></div>
-          <button className="christmas-primary-button" type="submit">Entregar ao céu <span>↑</span></button>
+          <textarea id="wish-text" maxLength="200" value={wish} onChange={(event) => setWish(event.target.value)} placeholder="Em 2027, desejo que…" disabled={completed} />
+          <div className="christmas-wish-meta"><span>{wish.length}/200</span><strong>✦ Em nome de {participant.name || 'Leceiro'}</strong></div>
+          <button className="christmas-primary-button" type="submit" disabled={completed}>{completed ? 'Desejo entregue ✓' : 'Entregar ao céu'} {!completed && <span>↑</span>}</button>
           <p className="christmas-form-notice" role="status">{message}</p>
         </form>
       </div>
       <div className="christmas-wish-sky" aria-label="Desejos da comunidade">
-        <WishStarsCanvas count={simulatedStars} />
+        <WishStarsCanvas
+          count={starCount}
+          highlightedIndices={ownStarIndices}
+          selectedIndex={selectedWish}
+          onSelect={setSelectedWish}
+        />
         <p className="christmas-sky-hint"><span>✦</span> Seleciona uma estrela para descobrir um desejo</p>
         <div className="christmas-test-controls christmas-star-test-controls" role="group" aria-label="Controlos de teste da contagem de estrelas">
           <em>Teste rápido</em>
@@ -479,28 +672,12 @@ function WishWall({ participant }) {
           <output>{starCount.toLocaleString('pt-PT')} estrelas</output>
         </div>
         {starCount > 120 && <p className="christmas-adaptive-mode"><span /> Modo adaptativo · Canvas</p>}
-        {visibleWishes.map((item, index) => {
-          const [x, y] = starPositions[index % starPositions.length];
-          return (
-            <button
-              key={`${item.text}-${index}`}
-              className={`christmas-wish-star${selectedWish === index ? ' is-selected' : ''}`}
-              type="button"
-              style={{ '--star-x': `${x}%`, '--star-y': `${y}%`, '--star-delay': `${index * -0.43}s`, '--star-size': `${18 + (index % 3) * 5}px` }}
-              onClick={() => setSelectedWish(index)}
-              aria-label={`Ler o desejo da estrela ${index + 1}`}
-              aria-pressed={selectedWish === index}
-            >
-              <span aria-hidden="true">✦</span>
-            </button>
-          );
-        })}
-        {selectedWish !== null && visibleWishes[selectedWish] && (
-          <article className="christmas-wish-reveal" aria-live="polite">
+        {selectedEntry && (
+          <article ref={revealRef} className="christmas-wish-reveal" aria-live="polite" aria-label={selectedEntry.simulated ? 'Desejo simulado sem conteúdo' : undefined}>
             <button type="button" onClick={() => setSelectedWish(null)} aria-label="Fechar desejo">×</button>
             <span aria-hidden="true">✦</span>
-            <p>“{visibleWishes[selectedWish].text}”</p>
-            <small>— {visibleWishes[selectedWish].author}</small>
+            <p>{selectedEntry.text ? `“${selectedEntry.text}”` : '\u00A0'}</p>
+            <small>{selectedEntry.author ? `— ${selectedEntry.author}` : '\u00A0'}</small>
           </article>
         )}
       </div>
@@ -508,43 +685,294 @@ function WishWall({ participant }) {
   );
 }
 
+function DrawResultsPage({ result, onReturn }) {
+  return (
+    <main className="christmas-page christmas-draw-page">
+      <header className="christmas-header">
+        <a href="/" className="christmas-brand" aria-label="Leça Futebol Clube — página inicial"><img src="/images/leca.png" alt="" /><span>LEÇA FUTEBOL CLUBE</span></a>
+      </header>
+      <section className="christmas-draw-screen" aria-labelledby="draw-title">
+        <FestiveDecor />
+        <div className="christmas-draw-screen-copy">
+          <p className="christmas-kicker"><span /> Sorteio realizado · 25 de dezembro · 15h</p>
+          <h1 id="draw-title">JÁ TEMOS<br /><em>VENCEDORES.</em></h1>
+          <p>Os titulares dos números sorteados serão contactados em breve através do e-mail disponibilizado na participação.</p>
+        </div>
+        <div className="christmas-draw-winners" aria-label="Resultados do sorteio" aria-live="polite">
+          <article>
+            <span>01 · Luz vencedora</span>
+            <strong>#{result.light.toLocaleString('pt-PT')}</strong>
+            <p>Camisola oficial do Leça Futebol Clube</p>
+          </article>
+          <article>
+            <span>02 · Estrela vencedora</span>
+            <strong>#{result.star.toLocaleString('pt-PT')}</strong>
+            <p>Hoodie versão jogador</p>
+          </article>
+        </div>
+        <button className="christmas-draw-return" type="button" onClick={onReturn}>Voltar ao início da experiência <span>↺</span></button>
+        <div className="christmas-season-ribbon" aria-hidden="true"><span>Leça Futebol Clube</span><i>✦</i><span>1912</span><i>✦</i><span>Leça da Palmeira</span></div>
+      </section>
+    </main>
+  );
+}
+
+function JourneyIntro({ onStart, onToggleDraw }) {
+  return (
+    <section className="christmas-journey-intro" id="inicio" aria-labelledby="journey-title">
+      <FestiveDecor />
+      <div className="christmas-journey-intro-copy">
+        <p className="christmas-kicker"><span /> Natal 2026 · Leça Futebol Clube</p>
+        <p className="christmas-season-script">Boas Festas</p>
+        <h1 id="journey-title">ESTE NATAL,<br /><em>O LEÇA BRILHA CONTIGO.</em></h1>
+        <p>Cada leceiro deixa uma luz, leva uma memória e entrega um desejo ao universo leceiro. No final, a tua luz e a tua estrela dão-te duas oportunidades de ganhar.</p>
+        <button className="christmas-primary-button" type="button" onClick={onStart}>Começar a experiência <span>→</span></button>
+        <p className="christmas-demo-note"><span>●</span> Protótipo UI — nenhum dado é enviado</p>
+        <button className="christmas-draw-mode-toggle" type="button" onClick={onToggleDraw}>Simular resultado do sorteio <span>→</span></button>
+      </div>
+      <div className="christmas-journey-map" aria-label="A experiência tem quatro passos">
+        <article><Icon>01</Icon><div><h2>Acender</h2><p>Acende uma luz e recebe o teu número para o sorteio da camisola oficial.</p></div></article>
+        <article><Icon>02</Icon><div><h2>Personalizar</h2><p>Cria o teu cartão de Boas Festas e descarrega-o para partilhar.</p></div></article>
+        <article><Icon>03</Icon><div><h2>Desejar</h2><p>Entrega um desejo e recebe o número da tua estrela para o sorteio do hoodie.</p></div></article>
+        <article><Icon>04</Icon><div><h2>Premiar</h2><p>No dia 25 de dezembro, às 15h, sorteamos uma camisola oficial e um hoodie versão jogador entre os números participantes.</p></div></article>
+      </div>
+      <div className="christmas-season-ribbon" aria-hidden="true"><span>Leça Futebol Clube</span><i>✦</i><span>1912</span><i>✦</i><span>Leça da Palmeira</span></div>
+    </section>
+  );
+}
+
+function ExperienceComplete({ participant, lightNumber, starNumber, onRestart }) {
+  const lightCardRef = useRef(null);
+  const starCardRef = useRef(null);
+  const [downloadNotice, setDownloadNotice] = useState('');
+
+  async function downloadCard(kind) {
+    const isLight = kind === 'light';
+    try {
+      await downloadRenderedElement(
+        isLight ? lightCardRef.current : starCardRef.current,
+        isLight ? `cartao-luz-${lightNumber}-lfc.svg` : `cartao-estrela-${starNumber}-lfc.svg`
+      );
+      setDownloadNotice(`Cartão da ${isLight ? 'luz' : 'estrela'} descarregado com sucesso.`);
+    } catch (error) {
+      console.error('Falha ao exportar o cartão do sorteio.', error);
+      setDownloadNotice(`Não foi possível descarregar o cartão da ${isLight ? 'luz' : 'estrela'}. Tenta novamente.`);
+    }
+  }
+
+  return (
+    <section className="christmas-experience-complete" id="conclusao" aria-labelledby="complete-title">
+      <FestiveDecor />
+      <div className="christmas-complete-copy">
+        <p className="christmas-kicker"><span /> Participação concluída</p>
+        <h1 id="complete-title">A tua experiência<br /><em>ficou completa.</em></h1>
+        <p>{participant.name || 'Leceiro'}, guarda estes dois números. Cada um representa uma participação no respetivo sorteio, realizado no dia <strong>25 de dezembro, às 15h</strong>.</p>
+        <div className="christmas-complete-date"><span>25</span><div>DEZEMBRO · 15H<br /><strong>DOIS SORTEIOS</strong></div></div>
+        <button className="christmas-text-button" type="button" onClick={onRestart}>Recomeçar a experiência <span>↺</span></button>
+      </div>
+      <div className="christmas-prize-grid">
+        <article ref={lightCardRef} className="christmas-prize-card">
+          <div className="christmas-entry-number"><span>A TUA LUZ</span><strong>#{lightNumber.toLocaleString('pt-PT')}</strong></div>
+          <div className="christmas-prize-participant"><strong>{participant.name || 'Leceiro'}</strong><span>{participant.email}</span></div>
+          <p>1.º PRÉMIO</p>
+          <h2>Camisola oficial do Leça Futebol Clube</h2>
+          <small>A luz que acendeste dá-te acesso a este sorteio.</small>
+          <button type="button" onClick={() => downloadCard('light')}>Descarregar cartão <span>↓</span></button>
+        </article>
+        <article ref={starCardRef} className="christmas-prize-card">
+          <div className="christmas-entry-number"><span>A TUA ESTRELA</span><strong>#{starNumber.toLocaleString('pt-PT')}</strong></div>
+          <div className="christmas-prize-participant"><strong>{participant.name || 'Leceiro'}</strong><span>{participant.email}</span></div>
+          <p>2.º PRÉMIO</p>
+          <h2>Hoodie versão jogador</h2>
+          <small>A estrela que inseriste dá-te acesso a este sorteio.</small>
+          <button type="button" onClick={() => downloadCard('star')}>Descarregar cartão <span>↓</span></button>
+        </article>
+      </div>
+      <p className="christmas-complete-notice" role="status">{downloadNotice}</p>
+      <div className="christmas-season-ribbon" aria-hidden="true"><span>Leça Futebol Clube</span><i>✦</i><span>1912</span><i>✦</i><span>Leça da Palmeira</span></div>
+    </section>
+  );
+}
+
+async function validateChristmasAccessCode(code) {
+  const response = await fetch(`${CHRISTMAS_ACCESS_API_BASE}/api/AccessCode/validate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      code: code.trim().toUpperCase(),
+      contextType: CHRISTMAS_ACCESS_CONTEXT_TYPE,
+      contextId: CHRISTMAS_ACCESS_CONTEXT_ID
+    })
+  });
+
+  if (response.ok) return { valid: true };
+
+  let message = 'Código inválido. Por favor, tenta novamente.';
+  try {
+    const data = await response.json();
+    const rawMessage = (data?.content?.message || data?.message || '').toLowerCase();
+    message = CHRISTMAS_ACCESS_ERRORS[rawMessage] || message;
+  } catch {
+    // Mantém uma mensagem segura quando a API não devolve JSON.
+  }
+  return { valid: false, message };
+}
+
+function ChristmasAccessGate({ onAccess }) {
+  const [code, setCode] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  async function submitAccessCode(event) {
+    event.preventDefault();
+    const cleanCode = code.trim();
+    if (!cleanCode) {
+      setError('Introduz o código de acesso.');
+      return;
+    }
+
+    setError('');
+    setLoading(true);
+    try {
+      const result = await validateChristmasAccessCode(cleanCode);
+      if (!result.valid) {
+        setError(result.message);
+        setCode('');
+        return;
+      }
+      sessionStorage.setItem(CHRISTMAS_ACCESS_SESSION_KEY, '1');
+      onAccess();
+    } catch {
+      setError('Erro de ligação. Tenta novamente.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <main className="christmas-access-gate">
+      <section className="christmas-access-card" aria-labelledby="christmas-access-title">
+        <div className="christmas-access-heading">
+          <img src="/images/leca.png" alt="Leça FC" className="christmas-access-logo" />
+          <h1 id="christmas-access-title">Área Reservada</h1>
+          <p>Introduz o teu código de acesso para entrar na área reservada do Universo Leça.</p>
+        </div>
+        <form className="christmas-access-form" onSubmit={submitAccessCode} noValidate>
+          <label className="sr-only" htmlFor="christmas-access-code">Código de acesso</label>
+          <input
+            id="christmas-access-code"
+            className="christmas-access-input"
+            type="text"
+            value={code}
+            onChange={(event) => setCode(event.target.value.toUpperCase())}
+            maxLength="20"
+            autoComplete="off"
+            spellCheck="false"
+            autoFocus
+            aria-describedby={error ? 'christmas-access-error' : undefined}
+            aria-invalid={Boolean(error)}
+            placeholder="Código de acesso"
+          />
+          {error && <p id="christmas-access-error" className="christmas-access-error" role="alert">{error}</p>}
+          <button className="christmas-access-submit" type="submit" disabled={loading}>{loading ? 'A verificar…' : 'Entrar'}</button>
+        </form>
+      </section>
+    </main>
+  );
+}
+
 export default function ChristmasPage() {
+  const [accessGranted, setAccessGranted] = useState(() => {
+    try {
+      return sessionStorage.getItem(CHRISTMAS_ACCESS_SESSION_KEY) === '1';
+    } catch {
+      return false;
+    }
+  });
   const [stage, setStage] = useState('closed');
   const [participant, setParticipant] = useState({ name: '', email: '' });
   const [complete, setComplete] = useState(false);
   const [milestone, setMilestone] = useState(false);
   const [showMilestone, setShowMilestone] = useState(false);
   const [lightCount, setLightCount] = useState(STARTING_LIGHTS);
+  const [showLightDebug, setShowLightDebug] = useState(true);
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [postcardDownloaded, setPostcardDownloaded] = useState(false);
+  const [starNumber, setStarNumber] = useState(null);
+  const [drawResult, setDrawResult] = useState({ published: false, light: 101, star: 5 });
+  const [demoVersion, setDemoVersion] = useState(0);
+  const touchStartX = useRef(null);
+
+  const slideLabels = ['Início', 'Acender', 'Postal', 'Desejo', 'Conclusão'];
+  const maxAccessibleSlide = starNumber ? 4 : postcardDownloaded ? 3 : complete ? 2 : 1;
+  const currentStepComplete = activeSlide === 0 || activeSlide === 4 || (activeSlide === 1 && complete) || (activeSlide === 2 && postcardDownloaded) || (activeSlide === 3 && Boolean(starNumber));
+
+  function goToSlide(index) {
+    const nextSlide = Math.min(maxAccessibleSlide, slideLabels.length - 1, Math.max(0, index));
+    setActiveSlide(nextSlide);
+    const hashes = ['inicio', 'acender', 'postal', 'desejos', 'conclusao'];
+    window.history.replaceState(null, '', `#${hashes[nextSlide]}`);
+  }
 
   useEffect(() => {
-    document.title = 'Acende a Luz do Leça · Natal 2026';
     document.documentElement.lang = 'pt';
     document.body.dataset.designMode = 'christmas';
     document.body.dataset.page = 'christmas';
+    let robotsMeta = document.querySelector('meta[name="robots"]');
+    const previousRobotsContent = robotsMeta?.getAttribute('content') || null;
+    if (!robotsMeta) {
+      robotsMeta = document.createElement('meta');
+      robotsMeta.name = 'robots';
+      document.head.appendChild(robotsMeta);
+    }
+    robotsMeta.content = 'noindex, nofollow, noarchive';
     return () => {
       delete document.body.dataset.designMode;
       delete document.body.dataset.page;
+      if (previousRobotsContent === null) robotsMeta.remove();
+      else robotsMeta.content = previousRobotsContent;
     };
   }, []);
 
+  useEffect(() => {
+    document.title = accessGranted ? 'Acende a Luz do Leça · Natal 2026' : 'Acesso reservado · Universo Leça';
+  }, [accessGranted]);
+
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLButtonElement) return;
+      if (event.key === 'ArrowRight') goToSlide(activeSlide + 1);
+      if (event.key === 'ArrowLeft') goToSlide(activeSlide - 1);
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeSlide, maxAccessibleSlide]);
+
   function lightUp() {
-    const nextCount = Math.min(5000, lightCount + 1);
+    const nextCount = Math.min(MAX_LIGHTS, lightCount + 1);
     setStage('closed');
     setComplete(true);
     setLightCount(nextCount);
-    if (lightCount < 1912 && nextCount >= 1912) {
+    if (lightCount < FOUNDATION_LIGHTS && nextCount >= FOUNDATION_LIGHTS) {
       setMilestone(true);
       window.setTimeout(() => setShowMilestone(true), 800);
     }
   }
 
   function adjustLights(amount) {
-    const nextCount = Math.min(5000, Math.max(0, lightCount + amount));
-    const crossedMilestone = lightCount < 1912 && nextCount >= 1912;
+    const nextCount = Math.min(MAX_LIGHTS, Math.max(0, lightCount + amount));
+    const crossedMilestone = lightCount < FOUNDATION_LIGHTS && nextCount >= FOUNDATION_LIGHTS;
     setLightCount(nextCount);
-    setMilestone(nextCount >= 1912);
-    if (nextCount < 1912) setShowMilestone(false);
+    setMilestone(nextCount >= FOUNDATION_LIGHTS);
+    if (nextCount < FOUNDATION_LIGHTS) setShowMilestone(false);
     if (crossedMilestone) window.setTimeout(() => setShowMilestone(true), 250);
+  }
+
+  function toggleDrawResults() {
+    const showResults = !drawResult.published;
+    setDrawResult((current) => ({ ...current, published: showResults }));
+    window.history.replaceState(null, '', showResults ? '#resultados' : '#inicio');
+    if (!showResults) setActiveSlide(0);
   }
 
   function resetDemo() {
@@ -554,75 +982,115 @@ export default function ChristmasPage() {
     setShowMilestone(false);
     setLightCount(STARTING_LIGHTS);
     setParticipant({ name: '', email: '' });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setPostcardDownloaded(false);
+    setStarNumber(null);
+    setDemoVersion((current) => current + 1);
+    goToSlide(0);
+  }
+
+  if (!accessGranted) {
+    return <ChristmasAccessGate onAccess={() => setAccessGranted(true)} />;
+  }
+
+  if (drawResult.published) {
+    return <DrawResultsPage result={drawResult} onReturn={toggleDrawResults} />;
   }
 
   return (
     <main className={`christmas-page${milestone ? ' has-milestone' : ''}`}>
       <header className="christmas-header">
-        <a href="/" className="christmas-brand" aria-label="Universo Leça FC — página inicial"><img src="/images/leca.png" alt="" /><span>UNIVERSO<br /><strong>LEÇA FC</strong></span></a>
-        <nav aria-label="Navegação da campanha"><a href="#postal">Postal</a><a href="#desejos">Desejos</a><button type="button" onClick={() => setStage('form')}>Acender a minha luz</button></nav>
+        <a href="/" className="christmas-brand" aria-label="Leça Futebol Clube — página inicial"><img src="/images/leca.png" alt="" /><span>LEÇA FUTEBOL CLUBE</span></a>
+        <nav className="christmas-journey-nav" aria-label="Navegação da experiência">
+          {slideLabels.map((label, index) => <button key={label} type="button" className={activeSlide === index ? 'is-active' : ''} disabled={index > maxAccessibleSlide} onClick={() => goToSlide(index)} aria-label={index > maxAccessibleSlide ? `${label} — bloqueado` : label}><span>{index === 0 ? 'I' : `0${index}`}</span>{label}</button>)}
+        </nav>
       </header>
 
-      <section className="christmas-hero" aria-labelledby="christmas-title">
+      <div
+        className="christmas-carousel"
+        role="region"
+        aria-roledescription="carrossel"
+        aria-label="Experiência de Natal do Leça"
+        onTouchStart={(event) => { touchStartX.current = event.touches[0].clientX; }}
+        onTouchEnd={(event) => {
+          if (touchStartX.current === null) return;
+          const distance = touchStartX.current - event.changedTouches[0].clientX;
+          if (Math.abs(distance) > 55) goToSlide(activeSlide + (distance > 0 ? 1 : -1));
+          touchStartX.current = null;
+        }}
+      >
+        <div className="christmas-carousel-track" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
+          <div className="christmas-carousel-slide" aria-hidden={activeSlide !== 0} inert={activeSlide !== 0}>
+            <JourneyIntro onStart={() => goToSlide(1)} onToggleDraw={toggleDrawResults} />
+          </div>
+          <div className="christmas-carousel-slide" aria-hidden={activeSlide !== 1} inert={activeSlide !== 1}>
+      <section className="christmas-hero christmas-village-hero" id="acender" aria-labelledby="christmas-title">
         <FestiveDecor />
-        <Skyline />
+        <div
+          className="christmas-village-scene"
+          aria-label={lightCount < FOUNDATION_LIGHTS
+            ? `${lightCount} de 1.912 luzes acesas na mensagem Feliz Natal`
+            : `Mensagem Feliz Natal completa, seguida de E Bom Ano 2027; ${lightCount - FOUNDATION_LIGHTS} de 114 participações a iluminar o LFC`}
+        >
+          <ChristmasMessageLightsCanvas count={lightCount} milestone={milestone} />
+          <div className={`christmas-new-year-reveal${milestone ? ' is-visible' : ''}`} aria-hidden={!milestone}>
+            <span>E BOM ANO</span>
+            <strong>2027</strong>
+          </div>
+        </div>
         <div className="christmas-hero-copy">
-          <p className="christmas-kicker"><span /> Natal 2026 · Leça da Palmeira</p>
+          <p className="christmas-kicker"><span /> Natal 2026 · Leça Futebol Clube</p>
           <p className="christmas-season-script">Boas Festas</p>
           <h1 id="christmas-title">ACENDE<br />A LUZ <em>DO LEÇA</em></h1>
           <p>Há coisas que não se embrulham. Sentem-se. Este Natal, cada leceiro acende uma parte de nós.</p>
           <div className="christmas-hero-actions">
-            <button className="christmas-primary-button" type="button" onClick={() => setStage('form')}>{complete ? 'Ver a minha luz' : 'Acender a minha luz'} <span>→</span></button>
-            <a href="#como-funciona">Descobrir a experiência <span>↓</span></a>
+            <button className="christmas-primary-button" type="button" onClick={() => setStage('form')} disabled={complete}>{complete ? `Luz ${lightCount.toLocaleString('pt-PT')} acesa ✓` : 'Acender a minha luz'} {!complete && <span>→</span>}</button>
           </div>
           <p className="christmas-demo-note"><span>●</span> Protótipo UI — nenhum dado é enviado</p>
         </div>
 
-        <div className="christmas-emblem-stage" aria-label={`${lightCount} luzes acesas no símbolo do Leça Futebol Clube`}>
-          <div className="christmas-emblem-halo" />
-          <LightsCanvas count={lightCount} complete={complete} milestone={milestone} />
-          <div className="christmas-counter" aria-live="polite">
-            <span>{lightCount >= 1912 ? 'Marco fundador alcançado' : 'Luzes acesas'}</span>
+        {showLightDebug ? <div className="christmas-counter christmas-village-counter" aria-live="polite">
+            <span>{lightCount === MAX_LIGHTS ? 'LFC totalmente iluminado' : lightCount >= FOUNDATION_LIGHTS ? 'A iluminar o LFC' : 'Luzes acesas'}</span>
             <strong>{lightCount.toLocaleString('pt-PT')}</strong>
-            <small>{lightCount >= 1912 ? '1912 · Para sempre o nosso começo' : lightCount === 1911 ? 'Falta uma luz para fazer história' : 'Cada luz aproxima-nos do marco fundador'}</small>
+            <small>{lightCount === MAX_LIGHTS
+              ? '2.026 luzes · O Leça brilha por inteiro'
+              : lightCount >= FOUNDATION_LIGHTS
+                ? `${(MAX_LIGHTS - lightCount).toLocaleString('pt-PT')} luzes para completar o LFC`
+                : lightCount === FOUNDATION_LIGHTS - 1
+                  ? 'Falta uma luz para completar os votos de Natal'
+                  : 'Cada luz aproxima-nos da mensagem completa'}</small>
             <div className="christmas-test-controls" role="group" aria-label="Controlos de teste da contagem de luzes">
               <em>Teste rápido</em>
               <button type="button" onClick={() => adjustLights(-100)} disabled={lightCount === 0} aria-label="Retirar 100 luzes">−100</button>
               <button type="button" onClick={() => adjustLights(-1)} disabled={lightCount === 0} aria-label="Retirar uma luz">−1</button>
-              <button type="button" onClick={() => adjustLights(1)} disabled={lightCount === 5000} aria-label="Adicionar uma luz">+1</button>
-              <button type="button" onClick={() => adjustLights(100)} disabled={lightCount === 5000} aria-label="Adicionar 100 luzes">+100</button>
+              <button type="button" onClick={() => adjustLights(1)} disabled={lightCount === MAX_LIGHTS} aria-label="Adicionar uma luz">+1</button>
+              <button type="button" onClick={() => adjustLights(100)} disabled={lightCount === MAX_LIGHTS} aria-label="Adicionar 100 luzes">+100</button>
             </div>
+            <button className="christmas-debug-hide" type="button" onClick={() => setShowLightDebug(false)}>Ocultar debug</button>
+        </div> : <button className="christmas-debug-restore" type="button" onClick={() => setShowLightDebug(true)}>Mostrar debug</button>}
+        <div className="christmas-season-ribbon" aria-hidden="true"><span>Leça Futebol Clube</span><i>✦</i><span>1912</span><i>✦</i><span>Leça da Palmeira</span></div>
+      </section>
           </div>
+          <div className="christmas-carousel-slide" aria-hidden={activeSlide !== 2} inert={activeSlide !== 2}><PostcardStudio key={`postal-${demoVersion}`} participant={participant} onDownload={() => setPostcardDownloaded(true)} /></div>
+          <div className="christmas-carousel-slide" aria-hidden={activeSlide !== 3} inert={activeSlide !== 3}><WishWall key={`desejo-${demoVersion}`} participant={participant} completed={Boolean(starNumber)} onComplete={setStarNumber} /></div>
+          <div className="christmas-carousel-slide" aria-hidden={activeSlide !== 4} inert={activeSlide !== 4}><ExperienceComplete participant={participant} lightNumber={lightCount} starNumber={starNumber || 0} onRestart={resetDemo} /></div>
         </div>
-        <div className="christmas-season-ribbon" aria-hidden="true"><span>Boas Festas</span><i>✦</i><span>Leça da Palmeira</span><i>✦</i><span>Desde 1912</span><i>✦</i><span>Um clube, milhares de luzes</span></div>
-      </section>
 
-      <section className="christmas-how" id="como-funciona" aria-labelledby="how-title">
-        <div className="christmas-section-heading"><div><p className="christmas-kicker">Uma luz. Uma história.</p><h2 id="how-title">O símbolo somos todos nós.</h2></div><p>Cada participação ocupa um lugar único no emblema. Individualmente somos um ponto de luz; juntos, damos forma ao Leça.</p></div>
-        <div className="christmas-how-grid">
-          <article><Icon>01</Icon><h3>Acende</h3><p>Entrega uma luz ao símbolo através de um pequeno gesto.</p></article>
-          <article><Icon>02</Icon><h3>Personaliza</h3><p>Cria o teu postal e deixa um desejo para o novo ano.</p></article>
-          <article><Icon>03</Icon><h3>Partilha</h3><p>Leva contigo a memória do lugar que ocupas no Clube.</p></article>
-        </div>
-      </section>
-
-      <section className="christmas-1912-story" aria-labelledby="story-title">
-        <div className="christmas-story-year">1912</div>
-        <div><p className="christmas-kicker">O marco fundador</p><h2 id="story-title">Quando a luz 1.912 se acende, o tempo pára.</h2><p>O símbolo ilumina-se por completo e revela o ano em que esta história começou. Porque 1.912 nunca será um limite — será sempre o nosso ponto de partida.</p><button type="button" onClick={() => { setParticipant({ name: 'Leceiro', email: '' }); setComplete(true); setMilestone(true); setLightCount(1912); setShowMilestone(true); }}>Rever o momento 1912 <span>↗</span></button></div>
-      </section>
-
-      <PostcardStudio participant={participant} />
-      <WishWall participant={participant} />
-
-      <footer className="christmas-footer">
-        <div><img src="/images/leca.png" alt="" /><p><strong>Leça Futebol Clube</strong><br />Uma vila. Um símbolo. Milhares de luzes.</p></div>
-        <p>Experiência conceptual · Natal 2026</p>
-        <button type="button" onClick={resetDemo}>Recomeçar demonstração</button>
-      </footer>
+        <nav className="christmas-carousel-controls" aria-label="Controlos do carrossel">
+          <button type="button" onClick={() => goToSlide(activeSlide - 1)} disabled={activeSlide === 0} aria-label="Etapa anterior">←</button>
+          <div className="christmas-carousel-progress" aria-live="polite">
+            <span>{activeSlide === 0 ? 'INÍCIO' : activeSlide === 4 ? 'CONCLUSÃO' : `PASSO 0${activeSlide}`}</span>
+            <strong>{slideLabels[activeSlide]}</strong>
+            {!currentStepComplete && <small>Conclui este passo para avançar</small>}
+            <i><b style={{ width: `${((activeSlide + 1) / slideLabels.length) * 100}%` }} /></i>
+          </div>
+          {activeSlide < slideLabels.length - 1
+            ? <button type="button" onClick={() => goToSlide(activeSlide + 1)} disabled={!currentStepComplete} aria-label={currentStepComplete ? 'Etapa seguinte' : 'Conclui este passo para avançar'}>→</button>
+            : <button type="button" onClick={resetDemo} aria-label="Recomeçar a experiência">↺</button>}
+        </nav>
+      </div>
 
       <ParticipationPanel stage={stage} setStage={setStage} participant={participant} setParticipant={setParticipant} onLight={lightUp} />
-      {showMilestone && <Milestone name={participant.name} onClose={() => { setShowMilestone(false); document.querySelector('.christmas-emblem-stage')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }} />}
+      {showMilestone && <Milestone name={participant.name} onClose={() => { setShowMilestone(false); document.querySelector('.christmas-village-scene')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }} />}
     </main>
   );
 }
